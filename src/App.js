@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import MainMenuUI from "./components/MainMenuUI";
+import GameModeUI from "./components/GameModeUI";
+import ChessUI from "./components/ChessUI";
+import HelpTutorialMenuUI from "./components/HelpTutorialMenuUI";
+import LeaderboardUI from "./components/LeaderboardUI";
+import SettingsUI from "./components/SettingsUI";
+import CustomPuzzlesUI from "./components/CustomPuzzlesUI";
+import LoginUI from "./components/LoginUI";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={MainMenuUI} />
+          <Route path="/gamemode" component={GameModeUI} />
+          <Route path="/chess" component={ChessUI} />
+          <Route path="/help-tutorial" component={HelpTutorialMenuUI} />
+          <Route path="/leaderboard" component={LeaderboardUI} />
+          <Route path="/settings" component={SettingsUI} />
+          <Route path="/custom-puzzles" component={CustomPuzzlesUI} />
+          <Route path="/login" component={LoginUI} />
+          <Redirect to="/" />
+        </Switch>
+      </Router>
+    </>
   );
 }
 
