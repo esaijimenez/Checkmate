@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import React, { Component } from 'react';
-import { db } from "../firebase.js";
+import { db } from "../../firebase.js";
 import { ref, onValue } from 'firebase/database';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
