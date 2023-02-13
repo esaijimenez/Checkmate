@@ -1,11 +1,22 @@
 import React from "react";
 
-const GameModeUI = () => {
-    return (
-        <div>
-            <h1>GameModeUI</h1>
-        </div>
-    );
-};
+export default class GameModeUI extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
 
-export default GameModeUI;
+        };
+    };
+
+    componentDidMount() {
+
+    };
+
+    render() {
+        return (
+            <div>
+                <h1>GameModeUI</h1>
+            </div>
+        );
+    }
+}

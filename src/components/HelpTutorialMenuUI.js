@@ -1,11 +1,22 @@
 import React from "react";
 
-const HelpTutorialMenuUI = () => {
-    return (
-        <div>
-            <h1>HelpTutorialMenuUI</h1>
-        </div>
-    );
-};
+export default class HelpTutorialMenuUI extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
 
-export default HelpTutorialMenuUI;
+        };
+    };
+
+    componentDidMount() {
+
+    };
+
+    render() {
+        return (
+            <div>
+                <h1>Help</h1>
+            </div>
+        );
+    }
+}

@@ -1,11 +1,22 @@
 import React from "react";
 
-const CustomPuzzlesUI = () => {
-    return (
-        <div>
-            <h1>CustomPuzzlesUI</h1>
-        </div>
-    );
-};
+export default class CustomPuzzlesUI extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
 
-export default CustomPuzzlesUI;
+        };
+    };
+
+    componentDidMount() {
+
+    };
+
+    render() {
+        return (
+            <div>
+                <h1>CustomPuzzlesUI</h1>
+            </div>
+        );
+    }
+}

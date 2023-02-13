@@ -1,11 +1,22 @@
 import React from "react";
 
-const SettingsUI = () => {
-    return (
-        <div>
-            <h1>SettingsUI</h1>
-        </div>
-    );
-};
+export default class Settings extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
 
-export default SettingsUI;
+        };
+    };
+
+    componentDidMount() {
+
+    };
+
+    render() {
+        return (
+            <div>
+                <h1>Settings</h1>
+            </div>
+        );
+    }
+}
