@@ -4,7 +4,7 @@ import { ref, onValue } from 'firebase/database';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
 
-import '../App.css'
+import '../Checkmate.css'
 
 export default class ChessUI extends React.Component {
     constructor(props) {
@@ -72,7 +72,6 @@ export default class ChessUI extends React.Component {
                     <h1>Checkmate</h1>
                     <div className='Chess'>
                         <button onClick={this.handleNewPositionClick}>Generate Position</button>
-                        <h1>{this.state.checkmates[this.state.randomCheckmateIndex].moves}</h1>
                         <Chessboard position={this.state.position} />
                     </div>
                 </div >

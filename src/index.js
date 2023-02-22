@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Checkmate from './Checkmate';
 
 ReactDOM.render(
-  <App />, document.getElementById('root')
+  <Checkmate />, document.getElementById('root')
 );
