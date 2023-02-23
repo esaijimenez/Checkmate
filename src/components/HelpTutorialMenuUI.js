@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default class HelpTutorialMenuUI extends React.Component {
     constructor(props) {
@@ -15,6 +16,7 @@ export default class HelpTutorialMenuUI extends React.Component {
     render() {
         return (
             <div>
+                <Link to="/"><button>Back</button></Link>
                 <h1>Help</h1>
             </div>
         );
