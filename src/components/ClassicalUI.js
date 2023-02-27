@@ -14,11 +14,13 @@ export default class ClassicalUI extends React.Component {
 
         //State variables that continuously update
         this.state = {
-            randomCheckmateIndex: 0,
+            checkmateIndex: 0,
             numCheckmates: 0,
             checkmates: [],
             position: "start",
-            move: ""
+            move: "",
+            ratings: 5,
+            indexes: 0
         };
     };
 
@@ -28,7 +30,7 @@ export default class ClassicalUI extends React.Component {
         const mateRef = ref(db, '/checkmates');
         onValue(mateRef, (snapshot) => {
             const count = snapshot.size;
-            const randomIndex = Math.floor(Math.random() * count);
+            //const randomIndex = Math.floor(Math.random() * count);
             let newState = [];
             snapshot.forEach((checkmateSnapshot) => {
                 newState.push({
@@ -41,42 +43,66 @@ export default class ClassicalUI extends React.Component {
             });
             //Sets some of the state
             this.setState({
-                randomCheckmateIndex: randomIndex,
+                //randomCheckmateIndex: randomIndex,
                 numCheckmates: count,
                 checkmates: newState
             })
         })
+
     };
 
-    //This function is only a placeholder, it was used to figure out how to move the pieces
-    handleNewPositionClick = () => {
-        const newRandomIndex = Math.floor(Math.random() * this.state.numCheckmates) + 1;
-        const newPosition = this.state.checkmates[newRandomIndex].fen;
+    getIndex = () => {
+        let ratings = this.state.ratings;
+        let multiplier = 100;
+        let index = [];
+
+        for (let i = 0; i < this.state.numCheckmates; i++) {
+            if (this.state.checkmates[i].rating > (ratings * multiplier) && (this.state.checkmates[i].rating < ((ratings + 1) * multiplier))) {
+                index.push(i);
+            }
+        }
+
+        let randomIndex = Math.floor(Math.random() * index.length)
+        this.setState({
+            indexes: index[randomIndex]
+        })
+    }
+
+    handleBotMoves = () => {
+        const newPosition = this.state.checkmates[this.state.indexes].fen;
         const chess = new Chess()
-        const firstMove = this.state.checkmates[newRandomIndex].moves
-        const move = firstMove.split(' ')[0];
-        chess.load(this.state.checkmates[newRandomIndex].fen)
+        const botMoves = this.state.checkmates[this.state.indexes].moves
+
+        const moves = botMoves.split(' ')[0];
+        chess.load(this.state.checkmates[this.state.indexes].fen)
 
         this.setState({
             position: newPosition,
-            randomCheckmateIndex: newRandomIndex
+            checkmateIndex: this.state.indexes
         });
 
-        chess.move(move)
+        chess.move(moves)
 
         setTimeout(() => {
             this.setState({
                 position: chess.fen()
             })
         }, 1000);
+
+
+    }
+
+    handleUserMoves = () => {
+
+    }
+
+
+    //This function is only a placeholder, it was used to figure out how to move the pieces
+    handleNewPositionClick = () => {
+        this.handleBotMoves();
     }
 
     render() {
-        console.log("Random index generated: " + this.state.randomCheckmateIndex);
-        console.log("Length: " + this.state.numCheckmates);
-
-        //<button onClick={this.handleNewPositionClick}>Generate Position</button>
-
         if (this.state.checkmates.length >= 1) {
             return (
                 <div className='classical'>
