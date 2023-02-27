@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import Navbar from './Navbar.js';
 import ClassicalUI from './ClassicalUI.js';
 
-import '../Checkmate.css'
+import '../styles/Checkmate.css'
 
 export default class BulletUI extends ClassicalUI {
     constructor(props) {
@@ -74,14 +74,17 @@ export default class BulletUI extends ClassicalUI {
 
     render() {
         console.log("Random index generated: " + this.state.randomCheckmateIndex);
+        console.log("Length: " + this.state.numCheckmates);
+
+        //<button onClick={this.handleNewPositionClick}>Generate Position</button>
 
         if (this.state.checkmates.length >= 1) {
             return (
-                <div>
+                <div className='bullet'>
                     <Navbar />
                     <Link to="/"><button>Back</button></Link>
-                    <h1>Bullet</h1>
-                    <div className='Bullet'>
+                    <h1>Bullet Mate</h1>
+                    <div className='bullet--board'>
                         <button onClick={this.handleNewPositionClick}>Generate Position</button>
                         <Chessboard position={this.state.position} />
                     </div>

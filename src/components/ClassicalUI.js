@@ -6,7 +6,7 @@ import { Chess } from "chess.js";
 import { Link } from "react-router-dom";
 import Navbar from './Navbar.js';
 
-import '../Checkmate.css'
+import '../styles/Checkmate.css'
 
 export default class ClassicalUI extends React.Component {
     constructor(props) {
@@ -23,6 +23,7 @@ export default class ClassicalUI extends React.Component {
     };
 
     componentDidMount() {
+
         //Pulls chess puzzles from database
         const mateRef = ref(db, '/checkmates');
         onValue(mateRef, (snapshot) => {
@@ -72,18 +73,21 @@ export default class ClassicalUI extends React.Component {
 
     render() {
         console.log("Random index generated: " + this.state.randomCheckmateIndex);
+        console.log("Length: " + this.state.numCheckmates);
+
+        //<button onClick={this.handleNewPositionClick}>Generate Position</button>
 
         if (this.state.checkmates.length >= 1) {
             return (
-                <div>
+                <div className='classical'>
                     <Navbar />
                     <Link to="/"><button>Back</button></Link>
-                    <h1>Classical</h1>
-                    <div className='Classical'>
+                    <h1>Classical Mate</h1>
+                    <div className='classical--board'>
                         <button onClick={this.handleNewPositionClick}>Generate Position</button>
                         <Chessboard position={this.state.position} />
                     </div>
-                </div >
+                </div>
             );
         }
     }

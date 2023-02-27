@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import Navbar from './Navbar.js';
 import GameModeUI from './GameModeUI.js';
 
-import '../Checkmate.css'
+import '../styles/Checkmate.css'
 
 export default class ChessUI extends React.Component {
     constructor(props) {
