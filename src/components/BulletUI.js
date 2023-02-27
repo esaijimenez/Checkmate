@@ -5,17 +5,16 @@ import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
 import { Link } from "react-router-dom";
 import Navbar from './Navbar.js';
-import GameModeUI from './GameModeUI.js';
+import ClassicalUI from './ClassicalUI.js';
 
 import '../Checkmate.css'
 
-export default class ChessUI extends React.Component {
+export default class BulletUI extends ClassicalUI {
     constructor(props) {
         super(props);
 
         //State variables that continuously update
         this.state = {
-            gameMode: "",
             randomCheckmateIndex: 0,
             numCheckmates: 0,
             checkmates: [],
@@ -50,7 +49,6 @@ export default class ChessUI extends React.Component {
         })
     };
 
-
     //This function is only a placeholder, it was used to figure out how to move the pieces
     handleNewPositionClick = () => {
         const newRandomIndex = Math.floor(Math.random() * this.state.numCheckmates) + 1;
@@ -74,63 +72,20 @@ export default class ChessUI extends React.Component {
         }, 1000);
     }
 
-    updateGameMode = (mode) => {
-        this.setState({
-            gameMode: mode,
-        });
-    };
-
-
-
     render() {
         console.log("Random index generated: " + this.state.randomCheckmateIndex);
-        console.log("gameMode: " + this.state.gameMode);
-
-        // if (this.state.checkmates.length >= 1) {
-        //     if (this.state.gameMode === "classical") {
-        //         return (
-        //             <div>
-        //                 <Navbar />
-        //                 <Link to="/"><button>Back</button></Link>
-        //                 <h1>Classical</h1>
-        //                 <div className='Chess'>
-        //                     <button onClick={this.handleNewPositionClick}>Generate Position</button>
-        //                     <Chessboard position={this.state.position} />
-        //                 </div>
-        //             </div >
-        //         );
-        //     }
-
-        //     else if (this.state.gameMode === "bullet") {
-        //         return (
-        //             <div>
-        //                 <Navbar />
-        //                 <Link to="/"><button>Back</button></Link>
-        //                 <h1>Bullet</h1>
-        //                 <div className='Chess'>
-        //                     <button onClick={this.handleNewPositionClick}>Generate Position</button>
-        //                     <Chessboard position={this.state.position} />
-        //                 </div>
-        //             </div >
-        //         );
-        //     }
-        // }
-
-
 
         if (this.state.checkmates.length >= 1) {
             return (
                 <div>
                     <Navbar />
                     <Link to="/"><button>Back</button></Link>
-                    <h1>Checkmate</h1>
-                    <div className='Chess'>
+                    <h1>Bullet</h1>
+                    <div className='Bullet'>
                         <button onClick={this.handleNewPositionClick}>Generate Position</button>
-                        <p>GameMode State: {this.state.gameMode}</p>
-                        <GameModeUI updateGameMode={this.updateGameMode} />
                         <Chessboard position={this.state.position} />
                     </div>
-                </div >
+                </div>
             );
         }
     }

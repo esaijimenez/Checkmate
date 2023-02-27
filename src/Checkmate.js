@@ -7,7 +7,8 @@ import {
 import React from "react";
 import MainMenuUI from "./components/MainMenuUI";
 import GameModeUI from "./components/GameModeUI";
-import ChessUI from "./components/ChessUI";
+import ClassicalUI from "./components/ClassicalUI";
+import BulletUI from "./components/BulletUI";
 import HelpTutorialMenuUI from "./components/HelpTutorialMenuUI";
 import LeaderboardUI from "./components/LeaderboardUI";
 import SettingsUI from "./components/SettingsUI";
@@ -23,7 +24,8 @@ export default class Checkmate extends React.Component {
           <Switch>
             <Route exact path="/" component={MainMenuUI} />
             <Route path="/gamemode" component={GameModeUI} />
-            <Route path="/chess" component={ChessUI} />
+            <Route path="/classical" component={ClassicalUI} />
+            <Route path="/bullet" component={BulletUI} />
             <Route path="/help-tutorial" component={HelpTutorialMenuUI} />
             <Route path="/leaderboard" component={LeaderboardUI} />
             <Route path="/settings" component={SettingsUI} />
