@@ -1,4 +1,12 @@
-.Chess {
+.Classical {
+  padding: 20px;
+  width: 800px;
+  /* adjust this value to change the width of the chessboard */
+  height: 800px;
+  /* adjust this value to change the height of the chessboard */
+}
+
+.Bullet {
   padding: 20px;
   width: 800px;
   /* adjust this value to change the width of the chessboard */
