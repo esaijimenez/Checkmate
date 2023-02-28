@@ -67,14 +67,11 @@ export default class ClassicalUI extends React.Component {
         let randomIndex = Math.floor(Math.random() * index.length)
         this.setState({
             indexes: index[randomIndex],
-            ratings: this.state.ratings + 1
         })
     }
 
-
-
     //Aims to take care of the moves that need to be automatically done in each position
-    handleBotMoves = () => {
+    handleBoardState = () => {
         const currPosition = this.state.checkmates[this.state.indexes].fen;
         const chess = new Chess()
         const allMoves = this.state.checkmates[this.state.indexes].moves
@@ -86,7 +83,7 @@ export default class ClassicalUI extends React.Component {
             checkmateIndex: this.state.indexes
         });
 
-        chess.load(this.state.checkmates[this.state.indexes].fen)
+        chess.load(currPosition)
         chess.move(moves)
 
         setTimeout(() => {
@@ -94,59 +91,91 @@ export default class ClassicalUI extends React.Component {
                 position: chess.fen()
             })
         }, 1000);
+    }
 
+    handleSubsequentMoves = (currFen) => {
+        const chess = new Chess(currFen)
+        if (chess.isCheckmate() === false) {
 
+            let moves = this.state.moves;
+            console.log(moves)
+            let nextMove = moves.split(' ')[2];
+            chess.load(currFen)
+
+            chess.move(nextMove)
+
+            setTimeout(() => {
+                this.setState({
+                    position: chess.fen()
+                })
+            }, 1000);
+
+        }
     }
 
     //Validates the users moves and updates the position
     handleUserMoves = (sourceSquare, targetSquare) => {
         const chess = new Chess(this.state.position)
 
-        const moves = chess.moves({ square: sourceSquare });
+        //const moves = chess.moves({ square: sourceSquare });
 
-        const correctMoves = this.state.moves.split(' ')[1];
-        const correctMove = correctMoves.split("-")[1];
-
+        const moves = this.state.moves.split(' ');
+        const correctMoves = moves.filter((move, index) => index % 2 === 1);
+        const correctMovesToString = correctMoves.toString();
+        const correctMove = correctMovesToString.split("-")[1];
+        console.log(correctMoves)
 
         if (targetSquare !== correctMove) {
             console.log("Not correct move")
-        } else if (targetSquare === correctMove) {
+            this.getIndex(this.state.ratings)
+            this.handleBoardState()
+        }
+        else if (targetSquare === correctMove) {
             console.log("Correct Move")
-            chess.move(correctMoves)
+            chess.move(correctMovesToString)
             this.setState({
                 position: chess.fen(),
             })
-            // if(chess.isCheckmate()){
-            // }
+            if (chess.isCheckmate() === true) {
+                this.setState({
+                    ratings: this.state.ratings + 1
+                })
+                console.log("Checkmate!")
+                setTimeout(() => {
+                    this.getIndex(this.state.ratings)
+                    this.handleBoardState()
+                }, 1000);
+
+            }
+            this.handleSubsequentMoves(this.state.position)
 
         }
     }
 
-    handlePieceClick = (piece, square) => {
+    handlePieceClick = (piece) => {
         console.log(`You clicked on piece ${piece}`);
     }
 
     //This function is only a placeholder, it was used to figure out how to move the pieces
-    handleNewPositionClick = () => {
+    handleStartButton = () => {
         this.getIndex(this.state.ratings)
-        this.handleBotMoves();
+        this.handleBoardState();
     }
 
     render() {
-        console.log(this.state.ratings);
         if (this.state.checkmates.length >= 1) {
-            console.log(this.state.checkmates[this.state.indexes].rating)
             return (
                 <div className='classical'>
                     <Navbar />
                     <Link to="/"><button>Back</button></Link>
                     <h1>Classical Mate</h1>
                     <div className='classical--board'>
-                        <button onClick={this.handleNewPositionClick}>Generate Position</button>
+                        <button onClick={this.handleStartButton}>Start</button>
                         <Chessboard
                             position={this.state.position}
                             onPieceDrop={this.handleUserMoves}
                             onPieceClick={this.handlePieceClick}
+                            animationDuration={500}
                         />
                     </div>
                 </div>
