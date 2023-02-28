@@ -16,10 +16,10 @@
     flex-wrap: wrap;
     border: 2px solid red;
     margin: 20px;
-    justify-content: left;
+    justify-content: center;
 }
 
-.title { 
+.title {
     position: static;
     padding: 30px;
     margin: auto;
@@ -38,7 +38,7 @@
 .button {
     background-color: blueviolet;
     font-size: 30px;
-    width:300px;
+    width: 300px;
     padding: 10px;
     margin: 20px;
 }
