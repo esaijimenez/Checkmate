@@ -18,7 +18,7 @@ export default class ClassicalUI extends React.Component {
             numCheckmates: 0,
             checkmates: [],
             position: "start",
-            move: "",
+            moves: [],
             ratings: 5,
             indexes: 0
         };
@@ -51,8 +51,10 @@ export default class ClassicalUI extends React.Component {
 
     };
 
-    getIndex = () => {
-        let ratings = this.state.ratings;
+    //Gets the initial index of the puzzle by grabbing a random rating within a particular rating range.
+    //After each successful puzzle, the range increases by 50 difficulty.
+    getIndex = (rating) => {
+        let ratings = rating;
         let multiplier = 100;
         let index = [];
 
@@ -64,23 +66,27 @@ export default class ClassicalUI extends React.Component {
 
         let randomIndex = Math.floor(Math.random() * index.length)
         this.setState({
-            indexes: index[randomIndex]
+            indexes: index[randomIndex],
+            ratings: this.state.ratings + 1
         })
     }
 
-    handleBotMoves = () => {
-        const newPosition = this.state.checkmates[this.state.indexes].fen;
-        const chess = new Chess()
-        const botMoves = this.state.checkmates[this.state.indexes].moves
 
-        const moves = botMoves.split(' ')[0];
-        chess.load(this.state.checkmates[this.state.indexes].fen)
+
+    //Aims to take care of the moves that need to be automatically done in each position
+    handleBotMoves = () => {
+        const currPosition = this.state.checkmates[this.state.indexes].fen;
+        const chess = new Chess()
+        const allMoves = this.state.checkmates[this.state.indexes].moves
+        const moves = allMoves.split(' ')[0];
 
         this.setState({
-            position: newPosition,
+            moves: allMoves,
+            position: currPosition,
             checkmateIndex: this.state.indexes
         });
 
+        chess.load(this.state.checkmates[this.state.indexes].fen)
         chess.move(moves)
 
         setTimeout(() => {
@@ -92,18 +98,44 @@ export default class ClassicalUI extends React.Component {
 
     }
 
-    handleUserMoves = () => {
+    //Validates the users moves and updates the position
+    handleUserMoves = (sourceSquare, targetSquare) => {
+        const chess = new Chess(this.state.position)
 
+        const moves = chess.moves({ square: sourceSquare });
+
+        const correctMoves = this.state.moves.split(' ')[1];
+        const correctMove = correctMoves.split("-")[1];
+
+
+        if (targetSquare !== correctMove) {
+            console.log("Not correct move")
+        } else if (targetSquare === correctMove) {
+            console.log("Correct Move")
+            chess.move(correctMoves)
+            this.setState({
+                position: chess.fen(),
+            })
+            // if(chess.isCheckmate()){
+            // }
+
+        }
     }
 
+    handlePieceClick = (piece, square) => {
+        console.log(`You clicked on piece ${piece}`);
+    }
 
     //This function is only a placeholder, it was used to figure out how to move the pieces
     handleNewPositionClick = () => {
+        this.getIndex(this.state.ratings)
         this.handleBotMoves();
     }
 
     render() {
+        console.log(this.state.ratings);
         if (this.state.checkmates.length >= 1) {
+            console.log(this.state.checkmates[this.state.indexes].rating)
             return (
                 <div className='classical'>
                     <Navbar />
@@ -111,7 +143,11 @@ export default class ClassicalUI extends React.Component {
                     <h1>Classical Mate</h1>
                     <div className='classical--board'>
                         <button onClick={this.handleNewPositionClick}>Generate Position</button>
-                        <Chessboard position={this.state.position} />
+                        <Chessboard
+                            position={this.state.position}
+                            onPieceDrop={this.handleUserMoves}
+                            onPieceClick={this.handlePieceClick}
+                        />
                     </div>
                 </div>
             );
