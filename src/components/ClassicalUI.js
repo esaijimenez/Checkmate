@@ -35,7 +35,6 @@ export default class ClassicalUI extends React.Component {
         const mateRef = ref(db, '/checkmates');
         onValue(mateRef, (snapshot) => {
             const count = snapshot.size;
-            //const randomIndex = Math.floor(Math.random() * count);
             let newState = [];
             snapshot.forEach((checkmateSnapshot) => {
                 newState.push({
@@ -48,7 +47,6 @@ export default class ClassicalUI extends React.Component {
             });
             //Sets some of the state
             this.setState({
-                //randomCheckmateIndex: randomIndex,
                 numCheckmates: count,
                 checkmates: newState
             })
@@ -119,49 +117,17 @@ export default class ClassicalUI extends React.Component {
 
             chess.move(nextMove)
 
-            // setTimeout(() => {
-            //     this.setState({
-            //         position: chess.fen(),
-            //     })
-            // }, 500);
-
             this.setState({
                 position: chess.fen(),
                 userSequenceIndex: this.state.userSequenceIndex + 1
 
             })
-
         }
-
-
-
-        // if (chess.isCheckmate() === false) {
-
-        //     let moves = this.state.moves;
-        //     console.log(moves)
-        //     let nextMove = moves.split(' ')[2];
-        //     chess.load(currFen)
-
-        //     chess.move(nextMove)
-
-        //     setTimeout(() => {
-        //         this.setState({
-        //             position: chess.fen()
-        //         })
-        //     }, 1000);
-
-        // }
     }
 
     //Validates the users moves and updates the position
     handleUserMoves = (sourceSquare, targetSquare) => {
         const chess = new Chess(this.state.position)
-
-
-        // const pieceSelected = chess.moves({ square: sourceSquare });
-        // const verifyPieceSelected = pieceSelected.map(move => move.split('-')[0]).filter(square => /[a-h][1-8]/.test(square))
-        // const verifyPieceSelectedToString = verifyPieceSelected.toString();
-        // const verifiedPiece = pieceSelected;
 
         const allMoves = this.state.moves;
         const splitAllMoves = allMoves.split(' ');
@@ -189,8 +155,10 @@ export default class ClassicalUI extends React.Component {
                 userMoveIndex: 0,
                 ratings: this.state.ratings,
             })
-            this.getIndex(this.state.ratings)
-            this.handleBoardState()
+            setTimeout(() => {
+                this.getIndex(this.state.ratings)
+                this.handleBoardState()
+            }, 500);
         }
         else if (targetSquare === correctMove) {
             console.log("Correct Move")
