@@ -22,6 +22,7 @@ export default class ClassicalUI extends React.Component {
             userMoveIndex: 0,
             botMoves: [],
             userMoves: [],
+            userSequenceIndex: 0,
             moves: [],
             ratings: 5,
             indexes: 0
@@ -85,14 +86,16 @@ export default class ClassicalUI extends React.Component {
         const allBotMoves = filterBotMoves.toString();
         const botMoves = allBotMoves.split(' ')[this.state.botMoveIndex];
 
-        console.log("All Bot Moves: ", allBotMoves)
+        console.log("All Bot Moves: ", filterBotMoves)
 
         this.setState({
-            botMoves: allBotMoves,
+            botMoves: filterBotMoves,
             moves: allMoves,
             position: currPosition,
             checkmateIndex: this.state.indexes
         });
+
+        console.log("botMoves: ", botMoves)
 
         chess.load(currPosition)
         chess.move(botMoves)
@@ -106,11 +109,28 @@ export default class ClassicalUI extends React.Component {
 
     handleSubsequentMoves = (currFen) => {
         const chess = new Chess(currFen)
-        console.log("Inside of handleSubsequentMoves")
-        let moves = this.state.botMoves;
-        let nextMove = moves[this.state.botMoveIndex] + moves[this.state.botMoveIndex + 1];
-        console.log("nextMove: ", nextMove)
+        if (chess.isCheckmate() === false) {
+            console.log("Inside of handleSubsequentMoves")
+            let moves = this.state.botMoves;
+            let nextMove = moves[this.state.botMoveIndex];
+            console.log("nextMove: ", nextMove)
+            console.log("moves: ", moves)
 
+            chess.move(nextMove)
+
+            // setTimeout(() => {
+            //     this.setState({
+            //         position: chess.fen(),
+            //     })
+            // }, 500);
+
+            this.setState({
+                position: chess.fen(),
+                userSequenceIndex: this.state.userSequenceIndex + 1
+
+            })
+
+        }
 
 
 
@@ -145,23 +165,42 @@ export default class ClassicalUI extends React.Component {
         const allUserMoves = filteredMoves.toString();
         const correctMove = allUserMoves[this.state.userMoveIndex] + allUserMoves[this.state.userMoveIndex + 1];
         const correctSequence = filterUserMoves.toString();
+        const correctPieceMovement = filterUserMoves[this.state.userSequenceIndex]
+
+        this.setState({
+            userMoves: correctSequence
+        })
+
+        console.log("filterUserMoves moves: ", filterUserMoves);
+        console.log("Correct moves: ", correctMove);
+        console.log("correctPieceMovement moves: ", correctPieceMovement);
+        console.log("userSequenceIndex: ", this.state.userSequenceIndex);
 
         if (targetSquare !== correctMove) {
             console.log("Not correct move")
+            this.setState({
+                botMoveIndex: 0,
+                userSequenceIndex: 0,
+                userMoveIndex: 0
+            })
             this.getIndex(this.state.ratings)
             this.handleBoardState()
         }
         else if (targetSquare === correctMove) {
             console.log("Correct Move")
-            chess.move(correctSequence)
+            chess.move(correctPieceMovement)
             this.setState({
                 position: chess.fen(),
-                botMoveIndex: this.state.botMoveIndex + 1
+                botMoveIndex: this.state.botMoveIndex + 1,
+                userSequenceIndex: this.state.userSequenceIndex,
+                userMoveIndex: this.state.userMoveIndex + 3
             })
             if (chess.isCheckmate() === true) {
                 this.setState({
                     ratings: this.state.ratings + 1,
-                    botMoveIndex: 0
+                    botMoveIndex: 0,
+                    userSequenceIndex: 0,
+                    userMoveIndex: 0
                 })
                 console.log("Checkmate!")
                 setTimeout(() => {
@@ -170,9 +209,9 @@ export default class ClassicalUI extends React.Component {
                 }, 1000);
 
             }
-            this.handleSubsequentMoves(this.state.position)
 
         }
+        this.handleSubsequentMoves(this.state.position)
     }
 
     handlePieceClick = (piece) => {
