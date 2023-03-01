@@ -18,8 +18,8 @@ export default class MainMenuUI extends React.Component {
     render() {
         return (
             <div className = "container">
-                <h1 className = "title">Checkmate</h1>
-                <p className = "motto">Find the checkmate!</p>
+                <h1 class = "title">Checkmate</h1>
+                <p class = "motto">Find the checkmate!</p>
                 <br />
                 <div className = "buttons-container">
                 <Link to="/"></Link>

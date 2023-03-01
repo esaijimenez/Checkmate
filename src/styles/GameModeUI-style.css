@@ -1,41 +1,38 @@
-body {
-    background-color: #b7ccdf;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px 100px 20px 100px;
-}
-
-.buttons-container {
+.gameMode-container {
+    border: 2px solid blue;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    margin: 20px;
     justify-content: center;
 }
 
-.title {
+.classical-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid red;
+}
+
+.bullet-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid green;
+}
+
+.gameMode-title {
     position: static;
     padding: 70px 30px 0px 30px;
     margin: auto;
     font-weight: bold;
-    font-size: 150px;
+    font-size: 100px;
     letter-spacing: 2px;
 }
 
-.motto {
-    position: static;
-    margin: auto;
-    font-size: 30px;
-}
-
-.button {
+.gameMode-button {
     background-color: blueviolet;
     font-size: 30px;
     width: 300px;
     padding: 10px;
     margin: 20px;
 }
+
