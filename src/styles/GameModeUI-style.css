@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    gap: 20px;
 }
 
 .classical-item {
@@ -34,5 +35,12 @@
     width: 300px;
     padding: 10px;
     margin: 20px;
+}
+
+
+.gameMode-caption {
+    position: static;
+    margin: auto;
+    font-size: 30px;
 }
 
