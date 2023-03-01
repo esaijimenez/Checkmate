@@ -18,6 +18,10 @@ export default class ClassicalUI extends React.Component {
             numCheckmates: 0,
             checkmates: [],
             position: "start",
+            botMoveIndex: 0,
+            userMoveIndex: 0,
+            botMoves: [],
+            userMoves: [],
             moves: [],
             ratings: 5,
             indexes: 0
@@ -74,17 +78,24 @@ export default class ClassicalUI extends React.Component {
     handleBoardState = () => {
         const currPosition = this.state.checkmates[this.state.indexes].fen;
         const chess = new Chess()
+
         const allMoves = this.state.checkmates[this.state.indexes].moves
-        const moves = allMoves.split(' ')[0];
+        const splitAllMoves = allMoves.split(' ');
+        const filterBotMoves = splitAllMoves.filter((move, index) => index % 2 === 0);
+        const allBotMoves = filterBotMoves.toString();
+        const botMoves = allBotMoves.split(' ')[this.state.botMoveIndex];
+
+        console.log("All Bot Moves: ", allBotMoves)
 
         this.setState({
+            botMoves: allBotMoves,
             moves: allMoves,
             position: currPosition,
             checkmateIndex: this.state.indexes
         });
 
         chess.load(currPosition)
-        chess.move(moves)
+        chess.move(botMoves)
 
         setTimeout(() => {
             this.setState({
@@ -95,22 +106,30 @@ export default class ClassicalUI extends React.Component {
 
     handleSubsequentMoves = (currFen) => {
         const chess = new Chess(currFen)
-        if (chess.isCheckmate() === false) {
+        console.log("Inside of handleSubsequentMoves")
+        let moves = this.state.botMoves;
+        let nextMove = moves[this.state.botMoveIndex] + moves[this.state.botMoveIndex + 1];
+        console.log("nextMove: ", nextMove)
 
-            let moves = this.state.moves;
-            console.log(moves)
-            let nextMove = moves.split(' ')[2];
-            chess.load(currFen)
 
-            chess.move(nextMove)
 
-            setTimeout(() => {
-                this.setState({
-                    position: chess.fen()
-                })
-            }, 1000);
 
-        }
+        // if (chess.isCheckmate() === false) {
+
+        //     let moves = this.state.moves;
+        //     console.log(moves)
+        //     let nextMove = moves.split(' ')[2];
+        //     chess.load(currFen)
+
+        //     chess.move(nextMove)
+
+        //     setTimeout(() => {
+        //         this.setState({
+        //             position: chess.fen()
+        //         })
+        //     }, 1000);
+
+        // }
     }
 
     //Validates the users moves and updates the position
@@ -119,11 +138,13 @@ export default class ClassicalUI extends React.Component {
 
         //const moves = chess.moves({ square: sourceSquare });
 
-        const moves = this.state.moves.split(' ');
-        const correctMoves = moves.filter((move, index) => index % 2 === 1);
-        const correctMovesToString = correctMoves.toString();
-        const correctMove = correctMovesToString.split("-")[1];
-        console.log(correctMoves)
+        const allMoves = this.state.moves;
+        const splitAllMoves = allMoves.split(' ');
+        const filterUserMoves = splitAllMoves.filter((move, index) => index % 2 === 1);
+        const filteredMoves = filterUserMoves.map(move => move.split('-')[1]).filter(square => /[a-h][1-8]/.test(square));
+        const allUserMoves = filteredMoves.toString();
+        const correctMove = allUserMoves[this.state.userMoveIndex] + allUserMoves[this.state.userMoveIndex + 1];
+        const correctSequence = filterUserMoves.toString();
 
         if (targetSquare !== correctMove) {
             console.log("Not correct move")
@@ -132,13 +153,15 @@ export default class ClassicalUI extends React.Component {
         }
         else if (targetSquare === correctMove) {
             console.log("Correct Move")
-            chess.move(correctMovesToString)
+            chess.move(correctSequence)
             this.setState({
                 position: chess.fen(),
+                botMoveIndex: this.state.botMoveIndex + 1
             })
             if (chess.isCheckmate() === true) {
                 this.setState({
-                    ratings: this.state.ratings + 1
+                    ratings: this.state.ratings + 1,
+                    botMoveIndex: 0
                 })
                 console.log("Checkmate!")
                 setTimeout(() => {
