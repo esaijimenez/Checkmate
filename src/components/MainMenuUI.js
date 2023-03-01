@@ -17,7 +17,6 @@ export default class MainMenuUI extends React.Component {
 
     render() {
         return (
-            <div className = "all-content">
             <div className = "container">
                 <h1 className = "title">Checkmate</h1>
                 <p className = "motto">Find the checkmate!</p>
@@ -31,7 +30,6 @@ export default class MainMenuUI extends React.Component {
                 <Link to="/settings"><button class = "button">Settings</button></Link>
                 <Link to="/login"><button class = "button">Login</button></Link>
                 </div>
-            </div>
             </div>
         )
     }
