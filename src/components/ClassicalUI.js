@@ -89,6 +89,7 @@ export default class ClassicalUI extends React.Component {
         console.log("All Bot Moves: ", filterBotMoves)
 
         this.setState({
+            userSequenceIndex: 0,
             botMoves: filterBotMoves,
             moves: allMoves,
             position: currPosition,
@@ -156,7 +157,11 @@ export default class ClassicalUI extends React.Component {
     handleUserMoves = (sourceSquare, targetSquare) => {
         const chess = new Chess(this.state.position)
 
-        //const moves = chess.moves({ square: sourceSquare });
+
+        // const pieceSelected = chess.moves({ square: sourceSquare });
+        // const verifyPieceSelected = pieceSelected.map(move => move.split('-')[0]).filter(square => /[a-h][1-8]/.test(square))
+        // const verifyPieceSelectedToString = verifyPieceSelected.toString();
+        // const verifiedPiece = pieceSelected;
 
         const allMoves = this.state.moves;
         const splitAllMoves = allMoves.split(' ');
@@ -181,7 +186,8 @@ export default class ClassicalUI extends React.Component {
             this.setState({
                 botMoveIndex: 0,
                 userSequenceIndex: 0,
-                userMoveIndex: 0
+                userMoveIndex: 0,
+                ratings: this.state.ratings,
             })
             this.getIndex(this.state.ratings)
             this.handleBoardState()
@@ -210,8 +216,8 @@ export default class ClassicalUI extends React.Component {
 
             }
 
+            this.handleSubsequentMoves(this.state.position)
         }
-        this.handleSubsequentMoves(this.state.position)
     }
 
     handlePieceClick = (piece) => {
@@ -229,7 +235,6 @@ export default class ClassicalUI extends React.Component {
             return (
                 <div className='classical'>
                     <Navbar />
-                    <Link to="/"><button>Back</button></Link>
                     <h1>Classical Mate</h1>
                     <div className='classical--board'>
                         <button onClick={this.handleStartButton}>Start</button>
