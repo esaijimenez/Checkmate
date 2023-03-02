@@ -14,6 +14,8 @@ import LeaderboardUI from "./components/LeaderboardUI";
 import SettingsUI from "./components/SettingsUI";
 import CustomPuzzlesUI from "./components/CustomPuzzlesUI";
 import LoginUI from "./components/LoginUI";
+import PlayUI from "./components/PlayUI";
+import CreateUI from "./components/CreateUI";
 
 export default class Checkmate extends React.Component {
 
@@ -30,6 +32,8 @@ export default class Checkmate extends React.Component {
             <Route path="/leaderboard" component={LeaderboardUI} />
             <Route path="/settings" component={SettingsUI} />
             <Route path="/custom-puzzles" component={CustomPuzzlesUI} />
+            <Route path="/create" component={CreateUI} />
+            <Route path="/play" component={PlayUI} />
             <Route path="/login" component={LoginUI} />
             <Redirect to="/" />
           </Switch>

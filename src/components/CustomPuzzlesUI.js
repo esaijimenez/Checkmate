@@ -12,15 +12,15 @@ export default class CustomPuzzlesUI extends React.Component {
 
                 <div className = "customPuzzle-container">
                     <div className = "customPuzzle-item">
-                    <h1 class = "customPuzzle-title">Classical Mate</h1>
+                    <h1 class = "customPuzzle-title">Create</h1>
                     <p class = "customPuzzle-caption">Find the mates at your own pace.</p>
-                    <Link to="/classical"><button class = "customPuzzle-button">Classical</button></Link>
+                    <Link to="/create"><button class = "customPuzzle-button">Create</button></Link>
                     </div>
 
                     <div className = "customPuzzle-item">
-                    <h1 class = "customPuzzle-title">Bullet Mate</h1>
+                    <h1 class = "customPuzzle-title">Play</h1>
                     <p class = "customPuzzle-caption">Find the mates before time runs out.</p>
-                    <Link to="/bullet"><button class = "customPuzzle-button">Bullet</button></Link>
+                    <Link to="/play"><button class = "customPuzzle-button">Play</button></Link>
                     </div>
                 </div>
             </div>
