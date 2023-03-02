@@ -176,7 +176,8 @@ export default class ClassicalUI extends React.Component {
                     ratings: this.state.ratings + 1,
                     botMoveIndex: 0,
                     userSequenceIndex: 0,
-                    userMoveIndex: 0
+                    userMoveIndex: 0,
+                    score: this.state.score + 1
                 })
                 console.log("Checkmate!")
                 setTimeout(() => {
