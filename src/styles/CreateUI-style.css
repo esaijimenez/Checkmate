@@ -1,0 +1,36 @@
+.classical {
+    display: "flex";
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: "center"
+  }
+  
+  .classical--board {
+    margin: auto;
+    padding: 20px;
+    width: 650px;
+    height: 650px;
+  }
+  .classical--info {
+    flex-direction: row;
+  
+  }
+  
+  .bullet {
+    display: "flex";
+    text-align: center;
+    align-items: center;
+    justify-content: "center"
+  }
+  
+  .bullet--board {
+    margin: auto;
+    padding: 20px;
+    width: 800px;
+    height: 800px;
+  }
+  
+  .navbar {
+    justify-content: right;
+  }

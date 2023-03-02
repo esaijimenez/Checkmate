@@ -6,7 +6,7 @@ import { Chess } from "chess.js";
 import { Link } from "react-router-dom";
 import Navbar from './Navbar.js';
 
-import '../styles/Checkmate.css'
+import '../styles/PlayUI-style.css'
 
 export default class PlayUI extends React.Component {
     constructor(props) {
