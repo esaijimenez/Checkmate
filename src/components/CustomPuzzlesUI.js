@@ -24,7 +24,7 @@ export default class CustomPuzzlesUI extends React.Component {
 
           <div className="customPuzzle-item">
             <h1 class="customPuzzle-title">Play</h1>
-            <p class="customPuzzle-caption">Play other user created puzzles.</p>
+            <p class="customPuzzle-caption">Play user created puzzles.</p>
             <div className="customPuzzle-buttons-container">
               <Link to="/play">
                 <button class="customPuzzle-button">Play</button>
