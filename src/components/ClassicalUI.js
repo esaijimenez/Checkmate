@@ -211,7 +211,11 @@ export default class ClassicalUI extends React.Component {
                         <button onClick={this.handleStartButton}>Start</button>
                         
                         <div className='classical--info'>
+                            
                             <h1>{score}</h1>
+                            <button>Solution</button>
+                            <h1>Color to Move: null</h1>
+                            <h1>Lives left: 3</h1>
 
                             <Chessboard
                                 position={this.state.position}
