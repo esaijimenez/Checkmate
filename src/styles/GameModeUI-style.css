@@ -34,6 +34,14 @@
     margin: 20px;
 }
 
+.gameMode-back-button {
+    background-color: blueviolet;
+    font-size: 20px;
+    width: 150px;
+    padding: 10px;
+    margin: 20px;
+}
+
 .gameMode-caption {
     position: static;
     margin: auto;

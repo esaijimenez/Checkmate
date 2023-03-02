@@ -8,7 +8,7 @@ export default class GameModeUI extends React.Component {
     return (
       <div className="gameMode">
         <Link to="/">
-          <button>Back</button>
+          <button class = "gameMode-back-button">Back</button>
         </Link>
 
         <div className="gameMode-container">

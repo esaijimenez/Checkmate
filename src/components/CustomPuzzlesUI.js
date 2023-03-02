@@ -8,7 +8,7 @@ export default class CustomPuzzlesUI extends React.Component {
     return (
       <div className="customPuzzle">
         <Link to="/">
-          <button>Back</button>
+          <button class = "customPuzzle-back-button">Back</button>
         </Link>
 
         <div className="customPuzzle-container">
