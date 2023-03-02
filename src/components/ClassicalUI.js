@@ -201,9 +201,15 @@ export default class ClassicalUI extends React.Component {
         this.handleBoardState();
     }
 
+    handleSolutionButton = () => {
+        const chess = new Chess(this.state.position)
+
+    }
+
     render() {
         if (this.state.checkmates.length >= 1) {
             let score = this.state.score;
+            let rating = this.state.checkmates[this.state.indexes].rating;
             return (
                 <div className='classical'>
                     <Navbar />
@@ -213,9 +219,10 @@ export default class ClassicalUI extends React.Component {
                         
                         <div className='classical--info'>
                             
-                            <h1>{score}</h1>
-                            <button>Solution</button>
+                            <h1>{rating}</h1>
+                            <button onClick={this.handleSolutionButton}>Solution</button>
                             <h1>Color to Move: null</h1>
+                            <h1>{score}</h1>
                             <h1>Lives left: 3</h1>
 
                             <Chessboard
