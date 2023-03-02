@@ -37,10 +37,12 @@
     margin: 20px;
 }
 
-
 .gameMode-caption {
     position: static;
     margin: auto;
     font-size: 30px;
 }
 
+.gameMode-buttons-container {
+    padding: 250px 0px 0px;
+}
