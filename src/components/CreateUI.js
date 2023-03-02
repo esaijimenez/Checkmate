@@ -201,10 +201,10 @@ export default class CreateUI extends React.Component {
     render() {
         if (this.state.checkmates.length >= 1) {
             return (
-                <div className='classical'>
+                <div className='create'>
                     <Navbar />
-                    <h1>Classical Mate</h1>
-                    <div className='classical--board'>
+                    <h1>Create Puzzle</h1>
+                    <div className='create--board'>
                         <button onClick={this.handleStartButton}>Start</button>
                         <Chessboard
                             position={this.state.position}

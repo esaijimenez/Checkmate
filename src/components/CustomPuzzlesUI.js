@@ -19,8 +19,9 @@ export default class CustomPuzzlesUI extends React.Component {
               <Link to="/create">
                 <button class="customPuzzle-button">Create</button>
               </Link>
+                    </div>
+                </div>
             </div>
-          </div>
 
           <div className="customPuzzle-item">
             <h1 class="customPuzzle-title">Play</h1>
@@ -31,8 +32,7 @@ export default class CustomPuzzlesUI extends React.Component {
               </Link>
             </div>
           </div>
-        </div>
-      </div>
+          </div>
     );
   }
 }
