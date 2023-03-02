@@ -25,7 +25,8 @@ export default class ClassicalUI extends React.Component {
             userSequenceIndex: 0,
             moves: [],
             ratings: 5,
-            indexes: 0
+            indexes: 0,
+            score: 0
         };
     };
 
@@ -75,6 +76,7 @@ export default class ClassicalUI extends React.Component {
 
     //Aims to take care of the moves that need to be automatically done in each position
     handleBoardState = () => {
+        console.log("Rating: ", this.state.checkmates[this.state.indexes].rating)
         const currPosition = this.state.checkmates[this.state.indexes].fen;
         const chess = new Chess()
 
@@ -200,18 +202,24 @@ export default class ClassicalUI extends React.Component {
 
     render() {
         if (this.state.checkmates.length >= 1) {
+            let score = this.state.score;
             return (
                 <div className='classical'>
                     <Navbar />
                     <h1>Classical Mate</h1>
                     <div className='classical--board'>
                         <button onClick={this.handleStartButton}>Start</button>
-                        <Chessboard
-                            position={this.state.position}
-                            onPieceDrop={this.handleUserMoves}
-                            onPieceClick={this.handlePieceClick}
-                            animationDuration={500}
-                        />
+                        
+                        <div className='classical--info'>
+                            <h1>{score}</h1>
+
+                            <Chessboard
+                                position={this.state.position}
+                                onPieceDrop={this.handleUserMoves}
+                                onPieceClick={this.handlePieceClick}
+                                animationDuration={500}
+                            />
+                        </div>
                     </div>
                 </div>
             );
