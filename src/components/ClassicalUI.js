@@ -168,7 +168,7 @@ export default class ClassicalUI extends React.Component {
             this.setState({
                 position: chess.fen(),
                 botMoveIndex: this.state.botMoveIndex + 1,
-                userSequenceIndex: this.state.userSequenceIndex,
+                //userSequenceIndex: this.state.userSequenceIndex,
                 userMoveIndex: this.state.userMoveIndex + 3
             })
             if (chess.isCheckmate() === true) {
