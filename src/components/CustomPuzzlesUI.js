@@ -8,7 +8,7 @@ export default class CustomPuzzlesUI extends React.Component {
     return (
       <div className="customPuzzle">
         <Link to="/">
-          <button class = "customPuzzle-back-button">Back</button>
+          <button class="customPuzzle-back-button">Back</button>
         </Link>
 
         <div className="customPuzzle-container">
@@ -19,20 +19,20 @@ export default class CustomPuzzlesUI extends React.Component {
               <Link to="/create">
                 <button class="customPuzzle-button">Create</button>
               </Link>
-                    </div>
-                </div>
             </div>
+          </div>
 
-          <div className="customPuzzle-item">
-            <h1 class="customPuzzle-title">Play</h1>
-            <p class="customPuzzle-caption">Play user created puzzles.</p>
-            <div className="customPuzzle-buttons-container">
-              <Link to="/play">
-                <button class="customPuzzle-button">Play</button>
-              </Link>
-            </div>
+        <div className="customPuzzle-item">
+          <h1 class="customPuzzle-title">Play</h1>
+          <p class="customPuzzle-caption">Play user created puzzles.</p>
+          <div className="customPuzzle-buttons-container">
+            <Link to="/play">
+              <button class="customPuzzle-button">Play</button>
+            </Link>
           </div>
-          </div>
+        </div>
+      </div>
+      </div>
     );
   }
 }
