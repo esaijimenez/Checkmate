@@ -36,6 +36,11 @@
     margin: 20px;
 }
 
+.customPuzzle-button:hover, .customPuzzle-back-button:hover {
+    background-color: blue;
+    color:yellow;
+}
+
 .customPuzzle-caption {
     position: static;
     margin: auto;

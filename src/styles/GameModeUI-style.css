@@ -42,6 +42,11 @@
     margin: 20px;
 }
 
+.gameMode-button:hover, .gameMode-back-button:hover {
+    background-color: blue;
+    color:yellow;
+}
+
 .gameMode-caption {
     position: static;
     margin: auto;
