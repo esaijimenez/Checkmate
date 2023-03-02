@@ -1,0 +1,52 @@
+.customPuzzle-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 180px;
+}
+
+.customPuzzle-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.customPuzzle-title {
+    position: static;
+    padding: 70px 30px 0px 30px;
+    margin: auto;
+    font-weight: bold;
+    font-size: 100px;
+    letter-spacing: 2px;
+}
+
+.customPuzzle-button {
+    background-color: blueviolet;
+    font-size: 30px;
+    width: 300px;
+    padding: 10px;
+    margin: 20px;
+}
+
+.customPuzzle-back-button {
+    background-color: blueviolet;
+    font-size: 20px;
+    width: 150px;
+    padding: 10px;
+    margin: 20px;
+}
+
+.customPuzzle-button:hover, .customPuzzle-back-button:hover {
+    background-color: blue;
+    color:yellow;
+}
+
+.customPuzzle-caption {
+    position: static;
+    margin: auto;
+    font-size: 30px;
+}
+
+.customPuzzle-buttons-container {
+    padding: 250px 0px 0px;
+}
