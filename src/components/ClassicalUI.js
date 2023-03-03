@@ -5,6 +5,7 @@ import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
 import { Link } from "react-router-dom";
 import Navbar from './Navbar.js';
+import Popup from './Popup.js';
 
 import '../styles/ClassicalUI-style.css'
 
@@ -28,6 +29,9 @@ export default class ClassicalUI extends React.Component {
             ratings: 545,
             indexes: 0,
             solutionIndex: 1,
+            color: "White",
+            lives: 3,
+            showPopup: false,
             score: 0
         };
     };
@@ -79,42 +83,61 @@ export default class ClassicalUI extends React.Component {
 
     //Aims to take care of the moves that need to be automatically done in each position
     handleBoardState = () => {
-        console.log("Index: ", this.state.indexes)
-        console.log("Rating: ", this.state.checkmates[this.state.indexes].rating)
-        console.log("PuzzleID: ", this.state.checkmates[this.state.indexes].puzzleid)
+        if (this.state.lives !== -1) {
+            console.log("Index: ", this.state.indexes)
+            console.log("Rating: ", this.state.checkmates[this.state.indexes].rating)
+            console.log("PuzzleID: ", this.state.checkmates[this.state.indexes].puzzleid)
 
-        const currPosition = this.state.checkmates[this.state.indexes].fen;
-        const chess = new Chess()
+            const currPosition = this.state.checkmates[this.state.indexes].fen;
+            const chess = new Chess()
 
-        const allMoves = this.state.checkmates[this.state.indexes].moves
-        const allMovesToString = allMoves.toString();
-        const splitAllMoves = allMovesToString.split(' ');
-        const filterBotMoves = splitAllMoves.filter((move, index) => index % 2 === 0);
-        const allBotMoves = filterBotMoves.toString();
-        const botMoves = allBotMoves.split(' ')[this.state.botMoveIndex];
+            const allMoves = this.state.checkmates[this.state.indexes].moves
+            const allMovesToString = allMoves.toString();
+            const splitAllMoves = allMovesToString.split(' ');
+            const filterBotMoves = splitAllMoves.filter((move, index) => index % 2 === 0);
+            const allBotMoves = filterBotMoves.toString();
+            const botMoves = allBotMoves.split(' ')[this.state.botMoveIndex];
 
-        console.log("All Bot Moves: ", filterBotMoves)
+            console.log("All Bot Moves: ", filterBotMoves)
 
-        this.setState({
-            userSequenceIndex: 0,
-            botMoves: filterBotMoves,
-            moves: allMoves,
-            splitMoves: splitAllMoves,
-            position: currPosition,
-            checkmateIndex: this.state.indexes
-        });
-
-        console.log("botMoves: ", botMoves)
-
-        chess.load(currPosition)
-        chess.move(botMoves)
-
-        setTimeout(() => {
             this.setState({
-                position: chess.fen(),
-                solutionIndex: 1
+                userSequenceIndex: 0,
+                botMoves: filterBotMoves,
+                moves: allMoves,
+                splitMoves: splitAllMoves,
+                position: currPosition,
+                checkmateIndex: this.state.indexes
+            });
+
+
+            console.log("botMoves: ", botMoves)
+
+            chess.load(currPosition)
+            chess.move(botMoves)
+
+            let color = chess.turn();
+            if (color === 'b') {
+                color = "Black";
+            } else {
+                color = "White";
+            }
+            this.setState({
+                color: color
             })
-        }, 1000);
+
+            setTimeout(() => {
+                this.setState({
+                    position: chess.fen(),
+                    solutionIndex: 1
+                })
+            }, 1000);
+        }
+        else if (this.state.lives === -1) {
+            this.setState({
+                showPopup: true,
+                lives: 3
+            })
+        }
     }
 
     handleSubsequentMoves = (currFen) => {
@@ -162,6 +185,7 @@ export default class ClassicalUI extends React.Component {
         if (targetSquare !== correctMove) {
             console.log("Not correct move")
             this.setState({
+                lives: this.state.lives - 1,
                 botMoveIndex: 0,
                 userSequenceIndex: 0,
                 userMoveIndex: 0,
@@ -253,6 +277,8 @@ export default class ClassicalUI extends React.Component {
         if (this.state.checkmates.length >= 1) {
             let score = this.state.score;
             let rating = this.state.checkmates[this.state.indexes].rating;
+            let color = this.state.color;
+            let lives = this.state.lives;
             return (
                 <div className='classical'>
                     <Navbar />
@@ -261,13 +287,11 @@ export default class ClassicalUI extends React.Component {
                         <button onClick={this.handleStartButton}>Start</button>
 
                         <div className='classical--info'>
-
                             <h1>{rating}</h1>
                             <button onClick={this.handleSolutionButton}>Solution</button>
-                            <h1>Color to Move: null</h1>
+                            <h1>{color} to Move</h1>
                             <h1>{score}</h1>
-                            <h1>Lives left: 3</h1>
-
+                            <h1>Lives left: {lives}</h1>
                             <Chessboard
                                 position={this.state.position}
                                 onPieceDrop={this.handleUserMoves}
@@ -276,6 +300,7 @@ export default class ClassicalUI extends React.Component {
                             />
                         </div>
                     </div>
+                    {this.state.showPopup && (<Popup />)}
                 </div>
             );
         }
