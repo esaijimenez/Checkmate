@@ -7,12 +7,12 @@ export default class Navbar extends React.Component {
         return (
             <div className="navbar">
                 <Link to="/"></Link>
-                <Link to="/gamemode"><button type="button" class="button">Play</button></Link>
-                <Link to="/custom-puzzles"><button type="button" class="button">Custom Puzzles</button></Link>
-                <Link to="/leaderboard"><button type="button" class="button">Leaderboard</button></Link>
-                <Link to="/help-tutorial"><button type="button" class="button">Help</button></Link>
-                <Link to="/settings"><button type="button" class="button">Settings</button></Link>
-                <Link to="/login"><button type="button" class="button">Login</button></Link>
+                <Link to="/gamemode"><button type="button" className="button">Play</button></Link>
+                <Link to="/custom-puzzles"><button type="button" className="button">Custom Puzzles</button></Link>
+                <Link to="/leaderboard"><button type="button" className="button">Leaderboard</button></Link>
+                <Link to="/help-tutorial"><button type="button" className="button">Help</button></Link>
+                <Link to="/settings"><button type="button" className="button">Settings</button></Link>
+                <Link to="/login"><button type="button" className="button">Login</button></Link>
             </div>
         )
     }

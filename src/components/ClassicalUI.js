@@ -24,8 +24,10 @@ export default class ClassicalUI extends React.Component {
             userMoves: [],
             userSequenceIndex: 0,
             moves: [],
-            ratings: 5,
+            splitMoves: [],
+            ratings: 545,
             indexes: 0,
+            solutionIndex: 1,
             score: 0
         };
     };
@@ -36,6 +38,7 @@ export default class ClassicalUI extends React.Component {
         const mateRef = ref(db, '/checkmates');
         onValue(mateRef, (snapshot) => {
             const count = snapshot.size;
+            let randomIndex = Math.floor(Math.random() * 7)
             let newState = [];
             snapshot.forEach((checkmateSnapshot) => {
                 newState.push({
@@ -49,7 +52,8 @@ export default class ClassicalUI extends React.Component {
             //Sets some of the state
             this.setState({
                 numCheckmates: count,
-                checkmates: newState
+                checkmates: newState,
+                indexes: randomIndex
             })
         })
 
@@ -59,11 +63,10 @@ export default class ClassicalUI extends React.Component {
     //After each successful puzzle, the range increases by 50 difficulty.
     getIndex = (rating) => {
         let ratings = rating;
-        let multiplier = 100;
         let index = [];
 
         for (let i = 0; i < this.state.numCheckmates; i++) {
-            if (this.state.checkmates[i].rating > (ratings * multiplier) && (this.state.checkmates[i].rating < ((ratings + 1) * multiplier))) {
+            if (this.state.checkmates[i].rating >= (ratings) && (this.state.checkmates[i].rating < ((ratings + 50)))) {
                 index.push(i);
             }
         }
@@ -76,12 +79,16 @@ export default class ClassicalUI extends React.Component {
 
     //Aims to take care of the moves that need to be automatically done in each position
     handleBoardState = () => {
+        console.log("Index: ", this.state.indexes)
         console.log("Rating: ", this.state.checkmates[this.state.indexes].rating)
+        console.log("PuzzleID: ", this.state.checkmates[this.state.indexes].puzzleid)
+
         const currPosition = this.state.checkmates[this.state.indexes].fen;
         const chess = new Chess()
 
         const allMoves = this.state.checkmates[this.state.indexes].moves
-        const splitAllMoves = allMoves.split(' ');
+        const allMovesToString = allMoves.toString();
+        const splitAllMoves = allMovesToString.split(' ');
         const filterBotMoves = splitAllMoves.filter((move, index) => index % 2 === 0);
         const allBotMoves = filterBotMoves.toString();
         const botMoves = allBotMoves.split(' ')[this.state.botMoveIndex];
@@ -92,6 +99,7 @@ export default class ClassicalUI extends React.Component {
             userSequenceIndex: 0,
             botMoves: filterBotMoves,
             moves: allMoves,
+            splitMoves: splitAllMoves,
             position: currPosition,
             checkmateIndex: this.state.indexes
         });
@@ -103,7 +111,8 @@ export default class ClassicalUI extends React.Component {
 
         setTimeout(() => {
             this.setState({
-                position: chess.fen()
+                position: chess.fen(),
+                solutionIndex: 1
             })
         }, 1000);
     }
@@ -121,7 +130,8 @@ export default class ClassicalUI extends React.Component {
 
             this.setState({
                 position: chess.fen(),
-                userSequenceIndex: this.state.userSequenceIndex + 1
+                userSequenceIndex: this.state.userSequenceIndex + 1,
+                solutionIndex: this.state.solutionIndex + 1
 
             })
         }
@@ -168,16 +178,18 @@ export default class ClassicalUI extends React.Component {
             this.setState({
                 position: chess.fen(),
                 botMoveIndex: this.state.botMoveIndex + 1,
+                solutionIndex: this.state.solutionIndex + 1,
                 //userSequenceIndex: this.state.userSequenceIndex,
                 userMoveIndex: this.state.userMoveIndex + 3
             })
             if (chess.isCheckmate() === true) {
                 this.setState({
-                    ratings: this.state.ratings + 1,
+                    ratings: this.state.ratings + 50,
                     botMoveIndex: 0,
                     userSequenceIndex: 0,
                     userMoveIndex: 0,
-                    score: this.state.score + 1
+                    score: this.state.score + 1,
+
                 })
                 console.log("Checkmate!")
                 setTimeout(() => {
@@ -197,13 +209,44 @@ export default class ClassicalUI extends React.Component {
 
     //This function is only a placeholder, it was used to figure out how to move the pieces
     handleStartButton = () => {
-        this.getIndex(this.state.ratings)
+        //this.getIndex(this.state.ratings)
         this.handleBoardState();
     }
 
     handleSolutionButton = () => {
         const chess = new Chess(this.state.position)
+        const puzzleSolution = this.state.splitMoves
+        console.log("Puzzle Solution: ", puzzleSolution)
+        const solutionIndex = this.state.solutionIndex
 
+        setTimeout(() => {
+            const pieceMove = puzzleSolution[solutionIndex]
+            console.log("Piece Move: ", pieceMove)
+            console.log("Solution Index: ", solutionIndex)
+            chess.move(pieceMove)
+            this.setState({
+                position: chess.fen()
+            })
+            setTimeout(() => {
+                if (chess.isCheckmate() === true) {
+                    this.setState({
+                        solutionIndex: 1,
+                        botMoveIndex: 0,
+                        userSequenceIndex: 0,
+                        userMoveIndex: 0,
+                    })
+                    this.getIndex(this.state.ratings)
+                    this.handleBoardState();
+                }
+                else if (chess.isCheckmate() === false) {
+                    this.setState({
+                        position: chess.fen(),
+                        solutionIndex: solutionIndex + 1
+                    })
+                    this.handleSolutionButton()
+                }
+            }, 1000);
+        }, 1000);
     }
 
     render() {
@@ -216,9 +259,9 @@ export default class ClassicalUI extends React.Component {
                     <h1>Classical Mate</h1>
                     <div className='classical--board'>
                         <button onClick={this.handleStartButton}>Start</button>
-                        
+
                         <div className='classical--info'>
-                            
+
                             <h1>{rating}</h1>
                             <button onClick={this.handleSolutionButton}>Solution</button>
                             <h1>Color to Move: null</h1>
