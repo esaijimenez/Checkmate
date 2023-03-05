@@ -73,7 +73,7 @@ export default class ClassicalUI extends React.Component {
         //After a delay, it calls handleBoardState() that starts the game.
         setTimeout(() => {
             this.handleBoardState()
-        }, 1000);
+        }, 3000);
 
     };
 
@@ -100,9 +100,6 @@ export default class ClassicalUI extends React.Component {
     //The index obtained from getIndex() does not change until a puzzle is completed
     handleBoardState = () => {
         if (this.state.lives !== -1) {
-            console.log("Index: ", this.state.indexes)
-            console.log("Rating: ", this.state.checkmates[this.state.indexes].rating)
-            console.log("PuzzleID: ", this.state.checkmates[this.state.indexes].puzzleid)
 
             //Initializes the current position by pulling a FEN from the checkmates array at the specific index given by getIndex()
             //The checkmates array was created inside the componentDidMount() method.
