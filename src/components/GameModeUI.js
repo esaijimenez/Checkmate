@@ -16,6 +16,7 @@ export default class GameModeUI extends React.Component {
                         <h1 class="gameMode-title">Classical Mate</h1>
                         <p class="gameMode-caption">Find the mates at your own pace.</p>
                         <div className="gameMode-buttons-container">
+
                             <Link to="/classical">
                                 <button class="gameMode-button">Classical</button>
                             </Link>
@@ -33,6 +34,7 @@ export default class GameModeUI extends React.Component {
                     </div>
                 </div>
             </div>
+
         );
     }
 }

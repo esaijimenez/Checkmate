@@ -3,11 +3,12 @@ import { db } from "../firebase.js";
 import { ref, onValue } from 'firebase/database';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
-import { Link } from "react-router-dom";
 import Navbar from './Navbar.js';
-import Popup from './Popup.js';
 
 import '../styles/ClassicalUI-style.css'
+import GameOver from './GameOver.js';
+import GameOverLeaderboard from './GameOverLeaderboard.js';
+
 
 export default class ClassicalUI extends React.Component {
     constructor(props) {
@@ -32,11 +33,16 @@ export default class ClassicalUI extends React.Component {
             solutionIndex: 1,
             color: "White",
             lives: 3,
-            showPopup: false,
+            showGameOver: false,
+            confirmGameOver: false,
+            showGameOverLeaderboard: false,
+            confirmGameOverLeaderboard: true,
+            showDiv: false,
             score: 0
         };
     };
 
+    //componentDidMount() is the first method called when the component is rendered.
     componentDidMount() {
 
         //Pulls chess puzzles from database
@@ -44,6 +50,8 @@ export default class ClassicalUI extends React.Component {
         onValue(mateRef, (snapshot) => {
             const count = snapshot.size;
             let randomIndex = Math.floor(Math.random() * 7)
+
+            //Pushes all the puzzles from the database into an array
             let newState = [];
             snapshot.forEach((checkmateSnapshot) => {
                 newState.push({
@@ -54,13 +62,18 @@ export default class ClassicalUI extends React.Component {
                     themes: checkmateSnapshot.child("Themes").val()
                 })
             });
-            //Sets some of the state
+            //Sets some of the state variables
             this.setState({
                 numCheckmates: count,
                 checkmates: newState,
                 indexes: randomIndex
             })
         })
+
+        //After a delay, it calls handleBoardState() that starts the game.
+        setTimeout(() => {
+            this.handleBoardState()
+        }, 1000);
 
     };
 
@@ -82,16 +95,23 @@ export default class ClassicalUI extends React.Component {
         })
     }
 
-    //Aims to take care of the moves that need to be automatically done in each position
+    //Initializes each new chess position, pulls the index created from getIndex()
+    //The index is used to grab a puzzle stored in the database
+    //The index obtained from getIndex() does not change until a puzzle is completed
     handleBoardState = () => {
         if (this.state.lives !== -1) {
             console.log("Index: ", this.state.indexes)
             console.log("Rating: ", this.state.checkmates[this.state.indexes].rating)
             console.log("PuzzleID: ", this.state.checkmates[this.state.indexes].puzzleid)
 
+            //Initializes the current position by pulling a FEN from the checkmates array at the specific index given by getIndex()
+            //The checkmates array was created inside the componentDidMount() method.
             const currPosition = this.state.checkmates[this.state.indexes].fen;
-            const chess = new Chess()
 
+
+            //This block pulls the moves from the checkmates array at the specific index given by getIndex()
+            //The moves are manipulated to filter out everything to obtain only the botMoves.
+            //The botMoves are the moves that are not performed by the user.
             const allMoves = this.state.checkmates[this.state.indexes].moves
             const allMovesToString = allMoves.toString();
             const splitAllMoves = allMovesToString.split(' ');
@@ -101,6 +121,7 @@ export default class ClassicalUI extends React.Component {
 
             console.log("All Bot Moves: ", filterBotMoves)
 
+            //Updates many states to initialize the current position and different versions of "moves" arrays
             this.setState({
                 userSequenceIndex: 0,
                 botMoves: filterBotMoves,
@@ -110,22 +131,35 @@ export default class ClassicalUI extends React.Component {
                 checkmateIndex: this.state.indexes
             });
 
-
             console.log("botMoves: ", botMoves)
 
+            //Using Chess.js, this creates a new instance of the Chess class.
+            const chess = new Chess()
+
+            //The current position is loaded.
             chess.load(currPosition)
+
+            //The opponents move is executed automatically.
+            //The user does not see this move yet; chess.move() occurs behind the scenes. 
+            //When this occurs the FEN of the current position changes.
+            //The current position can now be obtained through calling chess.fen().
             chess.move(botMoves)
 
+            //The color the user has to move is initialized here.
             let color = chess.turn();
             if (color === 'b') {
                 color = "Black";
-            } else {
+            } else if (color === 'w') {
                 color = "White";
             }
+
+            //The color is updated.
             this.setState({
                 color: color
             })
 
+            //After a slight delay, the position that the user sees is updated to the new FEN generated by chess.move(botMoves)
+            //This is how the user will see the bots move.
             setTimeout(() => {
                 this.setState({
                     position: chess.fen(),
@@ -133,75 +167,73 @@ export default class ClassicalUI extends React.Component {
                 })
             }, 1000);
         }
+
+        //When the user runs out of lives, the game over pop-up will display or
+        //the leaderboard message will display.
         else if (this.state.lives === -1) {
             this.setState({
-                showPopup: true,
+                showGameOver: this.state.confirmGameOver,
+                showGameOverLeaderboard: this.state.confirmGameOverLeaderboard,
                 lives: 3
-            })
-        }
-    }
-
-    handleSubsequentMoves = (currFen) => {
-        const chess = new Chess(currFen)
-        if (chess.isCheckmate() === false) {
-            console.log("Inside of handleSubsequentMoves")
-            let moves = this.state.botMoves;
-            let nextMove = moves[this.state.botMoveIndex];
-            console.log("nextMove: ", nextMove)
-            console.log("moves: ", moves)
-
-            chess.move(nextMove)
-
-            this.setState({
-                position: chess.fen(),
-                userSequenceIndex: this.state.userSequenceIndex + 1,
-                solutionIndex: this.state.solutionIndex + 1
-
             })
         }
     }
 
     //Validates the users moves and updates the position
     handleUserMoves = (sourceSquare, targetSquare) => {
+
+        //Grabs the current position and initialized a new Chess instance
         const chess = new Chess(this.state.position)
         const pieceSelected = sourceSquare;
         console.log("Source square: ", pieceSelected)
 
+        //Stores all valid moves in the current position
         const validMoves = chess.moves({ verbose: true })
+
+        //Filters every valid move and finds the correct source square and target square that the user needs to find.
         const move = validMoves.find((move) => move.from === sourceSquare && move.to === targetSquare);
 
+        //This block pulls all the moves to solve the current position
+        //The moves are manipulated to filter out everything to obtain only the user moves.
         const allMoves = this.state.moves;
         const splitAllMoves = allMoves.split(' ');
         const filterUserMoves = splitAllMoves.filter((move, index) => index % 2 === 1);
         const filteredMoves = filterUserMoves.map(move => move.split('-')[1]).filter(square => /[a-h][1-8]/.test(square));
         const allUserMoves = filteredMoves.toString();
+
+        //Once the correct moves and sequences are stored, 
+        //they will be used later to validate whether the user made that move or not.
         const correctMove = allUserMoves[this.state.userMoveIndex] + allUserMoves[this.state.userMoveIndex + 1];
         const correctSequence = filterUserMoves.toString();
         const correctPieceMovement = filterUserMoves[this.state.userSequenceIndex]
-
-        const userPiece = filterUserMoves.map(move => move.split('-')[0]).filter(square => /[a-h][1-8]/.test(square));
-        const userPieceToString = userPiece.toString()
-        const userPieceSelected = userPieceToString[this.state.userPieceSelectedIndex] + userPieceToString[this.state.userPieceSelectedIndex + 1];
-
-        console.log("userPieceSelected: ", userPieceSelected)
-
-        console.log("Moves: ", allMoves)
-        console.log("splitAllMoves: ", splitAllMoves)
-        console.log("correctMove: ", correctMove)
-
         this.setState({
             userMoves: correctSequence
         })
 
-        console.log("filterUserMoves moves: ", filterUserMoves);
-        console.log("Correct moves: ", correctMove);
-        console.log("correctPieceMovement moves: ", correctPieceMovement);
-        console.log("userSequenceIndex: ", this.state.userSequenceIndex);
+        //These will be used to validate the proper source square was used by the user.
+        const userPiece = filterUserMoves.map(move => move.split('-')[0]).filter(square => /[a-h][1-8]/.test(square));
+        const userPieceToString = userPiece.toString()
+        const userPieceSelected = userPieceToString[this.state.userPieceSelectedIndex] +
+            userPieceToString[this.state.userPieceSelectedIndex + 1];
 
+        // console.log("userPieceSelected: ", userPieceSelected)
+        // console.log("Moves: ", allMoves)
+        // console.log("splitAllMoves: ", splitAllMoves)
+        // console.log("correctMove: ", correctMove)
+
+
+        // console.log("filterUserMoves moves: ", filterUserMoves);
+        // console.log("Correct moves: ", correctMove);
+        // console.log("correctPieceMovement moves: ", correctPieceMovement);
+        // console.log("userSequenceIndex: ", this.state.userSequenceIndex);
+
+        //Checks to see if the user made a legal move and selected the correct color
+        //If either of these are false, it reverts the piece back to the square it was on.
         if (move && move.color === chess.turn()) {
 
+            //If the target square is incorrect but the source square was correct,
+            //then the user moves on to the next puzzle and they lose a life.
             if (targetSquare !== correctMove && sourceSquare === userPieceSelected) {
-                console.log("Not correct move")
                 this.setState({
                     lives: this.state.lives - 1,
                     botMoveIndex: 0,
@@ -210,14 +242,18 @@ export default class ClassicalUI extends React.Component {
                     userPieceSelectedIndex: 0,
                     ratings: this.state.ratings,
                 })
+
+                //When the user fails a puzzle, the rating stays around the same difficulty
+                //and they are taken to a new board state.
                 setTimeout(() => {
                     this.getIndex(this.state.ratings)
                     this.handleBoardState()
                 }, 500);
             }
 
+            //If both the target square and the source square are incorrect,
+            //then the user moves on to the next puzzle and they lose a life.
             else if (targetSquare !== correctMove && sourceSquare !== userPieceSelected) {
-                console.log("Not correct move")
                 this.setState({
                     lives: this.state.lives - 1,
                     botMoveIndex: 0,
@@ -226,11 +262,18 @@ export default class ClassicalUI extends React.Component {
                     userPieceSelectedIndex: 0,
                     ratings: this.state.ratings,
                 })
+
+                //When the user fails a puzzle, the rating stays around the same difficulty
+                //and they are taken to a new board state.
                 setTimeout(() => {
                     this.getIndex(this.state.ratings)
                     this.handleBoardState()
                 }, 500);
             }
+
+            //If both the target square and the source square are correct,
+            //then the piece that was moved by the user is successfully made
+            //and the position is updated to reflect that.
             else if (targetSquare === correctMove && sourceSquare === userPieceSelected) {
                 console.log("Correct Move")
                 chess.move(correctPieceMovement)
@@ -238,10 +281,12 @@ export default class ClassicalUI extends React.Component {
                     position: chess.fen(),
                     botMoveIndex: this.state.botMoveIndex + 1,
                     solutionIndex: this.state.solutionIndex + 1,
-                    //userSequenceIndex: this.state.userSequenceIndex,
                     userMoveIndex: this.state.userMoveIndex + 3,
                     userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3
                 })
+
+                //If the current position is checkmate, then the rating difficulty is increased
+                //and there score is increased by 1 point.
                 if (chess.isCheckmate() === true) {
                     this.setState({
                         ratings: this.state.ratings + 50,
@@ -253,35 +298,81 @@ export default class ClassicalUI extends React.Component {
 
                     })
                     console.log("Checkmate!")
+
+                    //When the user successfully completes a puzzle, the slightly increased rating is
+                    //used to obtain the new index for the next puzzle.
+                    //Then the new board state is initialized using that new puzzle.
                     setTimeout(() => {
                         this.getIndex(this.state.ratings)
                         this.handleBoardState()
                     }, 1000);
-
                 }
 
+                //If the users move was successful, but its not checkmate,
+                //then handleSubsequentMoves() is called and passes the current position to it.
                 this.handleSubsequentMoves(this.state.position)
             }
-            // }
         }
     }
 
-    handlePieceClick = (piece) => {
-        console.log(`You clicked on piece ${piece}`);
+    //Takes care of the next bot move that has to be executed when the user makes a successful move
+    handleSubsequentMoves = (currFen) => {
+
+        //Creates a new Chess instance at the current position passed in from handleUserMoves()
+        const chess = new Chess(currFen)
+
+        if (chess.isCheckmate() === false) {
+            //Pulls all the bot moves in order to obtain the next move that needs to be executed automatically.
+            let moves = this.state.botMoves;
+            let nextMove = moves[this.state.botMoveIndex];
+            console.log("nextMove: ", nextMove)
+            console.log("moves: ", moves)
+
+            chess.move(nextMove)
+
+            //The position is updated so the user can see the move that was made.
+            //The two indexes are being updated by 1 so the handleUserMoves() can correctly
+            //validate the users next move is correct.
+            this.setState({
+                position: chess.fen(),
+                userSequenceIndex: this.state.userSequenceIndex + 1,
+                solutionIndex: this.state.solutionIndex + 1
+            })
+        }
     }
 
-    //This function is only a placeholder, it was used to figure out how to move the pieces
-    handleStartButton = () => {
-        //this.getIndex(this.state.ratings)
-        this.handleBoardState();
-    }
-
-    handleSolutionButton = () => {
+    handlePieceClick = (sourceSquare) => {
         const chess = new Chess(this.state.position)
+        const validMoves = chess.moves({ verbose: true })
+        const move = validMoves.find((d) => d.from === sourceSquare)
+
+        console.log("Source Square Clicked: ", sourceSquare)
+
+        if (move) {
+            console.log("Valid Move Found: ", move)
+
+        } else {
+            console.log("No Valid Moves Found")
+
+        }
+    }
+
+    //The logic for the solution button
+    handleSolutionButton = () => {
+
+        //Creates a new Chess instance at the current position
+        const chess = new Chess(this.state.position)
+
+        //Stores all the moves to solve the puzzle
         const puzzleSolution = this.state.splitMoves
-        console.log("Puzzle Solution: ", puzzleSolution)
+
+        //Stores the current solution index
+        //The solution index changes based on how many moves the 
+        //user made before clicking the solution button
         const solutionIndex = this.state.solutionIndex
 
+        //All the moves will be executed recursively until the end of the solution.
+        //Then the next puzzle will be displayed.
         setTimeout(() => {
             const pieceMove = puzzleSolution[solutionIndex]
             console.log("Piece Move: ", pieceMove)
@@ -291,31 +382,41 @@ export default class ClassicalUI extends React.Component {
                 position: chess.fen()
             })
             setTimeout(() => {
+                //If checkmate, then the user is taken to the next puzzle around the same rating difficulty
                 if (chess.isCheckmate() === true) {
                     this.setState({
                         solutionIndex: 1,
                         botMoveIndex: 0,
                         userSequenceIndex: 0,
                         userMoveIndex: 0,
+                        userPieceSelectedIndex: 0,
+                        confirmGameOver: true,
+                        confirmGameOverLeaderboard: false,
                     })
                     this.getIndex(this.state.ratings)
                     this.handleBoardState();
                 }
+                //If not checkmate, then update the board position and solution index, then recursively
+                //call handleSolutionButton() until puzzle is solved
                 else if (chess.isCheckmate() === false) {
                     this.setState({
                         position: chess.fen(),
-                        solutionIndex: solutionIndex + 1
+                        solutionIndex: solutionIndex + 1,
                     })
+
                     this.handleSolutionButton()
                 }
             }, 1000);
         }, 1000);
     }
 
+    //render() returns a JSX element that allows us to write HTML in React.
+    //Handles what the user sees and interacts with on their screen. 
     render() {
         if (this.state.checkmates.length >= 1) {
             let score = this.state.score;
             let rating = this.state.checkmates[this.state.indexes].rating;
+            let theme = this.state.botMoves.length;
             let color = this.state.color;
             let lives = this.state.lives;
             return (
@@ -323,11 +424,11 @@ export default class ClassicalUI extends React.Component {
                     <Navbar />
                     <h1>Classical Mate</h1>
                     <div className='classical--chessboard'>
-                        <button onClick={this.handleStartButton}>Start</button>
 
                         <div className='classical--info'>
                             <h1>Rating: {rating}</h1>
                             <h1>{color} to Move</h1>
+                            <h1>Mate in {theme}</h1>
                             <h1>Score: {score}</h1>
                             <h1>Lives left: {lives}</h1>
                             <button onClick={this.handleSolutionButton}>Solution</button>
@@ -339,7 +440,9 @@ export default class ClassicalUI extends React.Component {
                             />
                         </div>
                     </div>
-                    {this.state.showPopup && (<Popup />)}
+                    {this.state.showGameOver && (<GameOver />)}
+                    {this.state.showGameOverLeaderboard && (<GameOverLeaderboard />)}
+
                 </div>
             );
         }

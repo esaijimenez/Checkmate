@@ -5,7 +5,7 @@ import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
 import { Link } from "react-router-dom";
 import Navbar from './Navbar.js';
-import Popup from './Popup.js';
+import GameOver from './GameOver';
 
 import '../styles/BulletUI-style.css'
 
@@ -167,8 +167,8 @@ export default class BulletUI extends React.Component {
         const pieceSelected = sourceSquare;
         console.log("Source square: ", pieceSelected)
 
-        const validMoves = chess.moves({ square: pieceSelected })
-        console.log("Valid moves: ", validMoves)
+        const validMoves = chess.moves({ verbose: true })
+        const move = validMoves.find((move) => move.from === sourceSquare && move.to === targetSquare);
 
         const allMoves = this.state.moves;
         const splitAllMoves = allMoves.split(' ');
@@ -198,66 +198,72 @@ export default class BulletUI extends React.Component {
         console.log("correctPieceMovement moves: ", correctPieceMovement);
         console.log("userSequenceIndex: ", this.state.userSequenceIndex);
 
-        let color = "";
-        let currColor = chess.turn();
-        if (currColor == 'b') {
-            color = 'b'
-        }
-        else if (currColor == 'w') {
-            color = 'w'
-        }
+        if (move && move.color === chess.turn()) {
 
-        console.log("COLOR: ", chess.turn())
-
-        //if (color === currColor) {
-
-        if (targetSquare !== correctMove && sourceSquare !== userPieceSelected) {
-            console.log("Not correct move")
-            this.setState({
-                lives: this.state.lives - 1,
-                botMoveIndex: 0,
-                userSequenceIndex: 0,
-                userMoveIndex: 0,
-                userPieceSelectedIndex: 0,
-                ratings: this.state.ratings,
-            })
-            setTimeout(() => {
-                this.getIndex(this.state.ratings)
-                this.handleBoardState()
-            }, 500);
-        }
-        else if (targetSquare === correctMove && sourceSquare === userPieceSelected) {
-            console.log("Correct Move")
-            chess.move(correctPieceMovement)
-            this.setState({
-                position: chess.fen(),
-                botMoveIndex: this.state.botMoveIndex + 1,
-                solutionIndex: this.state.solutionIndex + 1,
-                //userSequenceIndex: this.state.userSequenceIndex,
-                userMoveIndex: this.state.userMoveIndex + 3,
-                userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3
-            })
-            if (chess.isCheckmate() === true) {
+            if (targetSquare !== correctMove && sourceSquare === userPieceSelected) {
+                console.log("Not correct move")
                 this.setState({
-                    ratings: this.state.ratings + 50,
+                    lives: this.state.lives - 1,
                     botMoveIndex: 0,
                     userSequenceIndex: 0,
                     userMoveIndex: 0,
                     userPieceSelectedIndex: 0,
-                    score: this.state.score + 1,
-
+                    ratings: this.state.ratings,
                 })
-                console.log("Checkmate!")
                 setTimeout(() => {
                     this.getIndex(this.state.ratings)
                     this.handleBoardState()
-                }, 1000);
-
+                }, 500);
             }
 
-            this.handleSubsequentMoves(this.state.position)
+            else if (targetSquare !== correctMove && sourceSquare !== userPieceSelected) {
+                console.log("Not correct move")
+                this.setState({
+                    lives: this.state.lives - 1,
+                    botMoveIndex: 0,
+                    userSequenceIndex: 0,
+                    userMoveIndex: 0,
+                    userPieceSelectedIndex: 0,
+                    ratings: this.state.ratings,
+                })
+                setTimeout(() => {
+                    this.getIndex(this.state.ratings)
+                    this.handleBoardState()
+                }, 500);
+            }
+            else if (targetSquare === correctMove && sourceSquare === userPieceSelected) {
+                console.log("Correct Move")
+                chess.move(correctPieceMovement)
+                this.setState({
+                    position: chess.fen(),
+                    botMoveIndex: this.state.botMoveIndex + 1,
+                    solutionIndex: this.state.solutionIndex + 1,
+                    //userSequenceIndex: this.state.userSequenceIndex,
+                    userMoveIndex: this.state.userMoveIndex + 3,
+                    userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3
+                })
+                if (chess.isCheckmate() === true) {
+                    this.setState({
+                        ratings: this.state.ratings + 50,
+                        botMoveIndex: 0,
+                        userSequenceIndex: 0,
+                        userMoveIndex: 0,
+                        userPieceSelectedIndex: 0,
+                        score: this.state.score + 1,
+
+                    })
+                    console.log("Checkmate!")
+                    setTimeout(() => {
+                        this.getIndex(this.state.ratings)
+                        this.handleBoardState()
+                    }, 1000);
+
+                }
+
+                this.handleSubsequentMoves(this.state.position)
+            }
+            // }
         }
-        // }
     }
 
     handlePieceClick = (piece) => {
@@ -291,6 +297,7 @@ export default class BulletUI extends React.Component {
                         botMoveIndex: 0,
                         userSequenceIndex: 0,
                         userMoveIndex: 0,
+                        userPieceSelectedIndex: 0,
                     })
                     this.getIndex(this.state.ratings)
                     this.handleBoardState();
@@ -333,7 +340,7 @@ export default class BulletUI extends React.Component {
                             />
                         </div>
                     </div>
-                    {this.state.showPopup && (<Popup />)}
+                    {this.state.showPopup && (<GameOver />)}
                 </div>
             );
         }

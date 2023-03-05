@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../styles/Popup.css";
+import "../styles/GameOver.css";
 
-const Popup = ({ restartGame, goToHomeScreen }) => {
+const GameOverLeaderboard = () => {
     return (
         <div className="popup">
             <div className="popup-content">
-                <h2>Game Over!</h2>
-                <p>You have lost all three lives.</p>
+                <h2>Top 10!</h2>
+                <p>You made it on the leaderboard!.</p>
                 <div className="popup-buttons">
                     <Link to="/gamemode"><button>Restart</button></Link>
                     <Link to="/"><button>Return Home</button></Link>
@@ -17,4 +17,4 @@ const Popup = ({ restartGame, goToHomeScreen }) => {
     );
 };
 
-export default Popup;
+export default GameOverLeaderboard;
