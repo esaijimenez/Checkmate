@@ -38,7 +38,10 @@ export default class BulletUI extends React.Component {
             showGameOverLeaderboard: false,
             confirmGameOverLeaderboard: true,
             showDiv: false,
-            score: 0
+            score: 0,
+            minutes: 2,
+            seconds: 0,
+            timer: 1
         };
     };
 
@@ -72,6 +75,7 @@ export default class BulletUI extends React.Component {
 
         //After a delay, it calls handleBoardState() that starts the game.
         setTimeout(() => {
+            this.timer()
             this.handleBoardState()
         }, 1000);
 
@@ -231,6 +235,25 @@ export default class BulletUI extends React.Component {
         //If either of these are false, it reverts the piece back to the square it was on.
         if (move && move.color === chess.turn()) {
 
+            //If the target square is correct but the source square was incorrect,
+            //then the user moves on to the next puzzle and they lose a life.
+            if (targetSquare === correctMove && sourceSquare !== userPieceSelected) {
+                this.setState({
+                    lives: this.state.lives - 1,
+                    botMoveIndex: 0,
+                    userSequenceIndex: 0,
+                    userMoveIndex: 0,
+                    userPieceSelectedIndex: 0,
+                    ratings: this.state.ratings,
+                })
+
+                //When the user fails a puzzle, the rating stays around the same difficulty
+                //and they are taken to a new board state.
+                setTimeout(() => {
+                    this.getIndex(this.state.ratings)
+                    this.handleBoardState()
+                }, 500);
+            }
             //If the target square is incorrect but the source square was correct,
             //then the user moves on to the next puzzle and they lose a life.
             if (targetSquare !== correctMove && sourceSquare === userPieceSelected) {
@@ -288,6 +311,7 @@ export default class BulletUI extends React.Component {
                 //If the current position is checkmate, then the rating difficulty is increased
                 //and there score is increased by 1 point.
                 if (chess.isCheckmate() === true) {
+
                     this.setState({
                         ratings: this.state.ratings + 50,
                         botMoveIndex: 0,
@@ -295,8 +319,15 @@ export default class BulletUI extends React.Component {
                         userMoveIndex: 0,
                         userPieceSelectedIndex: 0,
                         score: this.state.score + 1,
-
+                        seconds: this.state.seconds + 20
                     })
+                    if (this.state.seconds > 60) {
+                        this.setState({
+                            seconds: this.state.seconds - 60,
+                            minutes: this.state.minutes + 1
+                        });
+                    }
+
                     console.log("Checkmate!")
 
                     //When the user successfully completes a puzzle, the slightly increased rating is
@@ -410,6 +441,35 @@ export default class BulletUI extends React.Component {
         }, 1000);
     }
 
+    timer = () => {
+        this.interval = setInterval(() => {
+            let minutes = this.state.minutes
+            let seconds = this.state.seconds
+
+            if (seconds > 0) {
+                this.setState({
+                    seconds: seconds - 1
+                });
+            }
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    console.log("Timer is up")
+                    this.setState({
+                        showGameOver: this.state.confirmGameOver,
+                        showGameOverLeaderboard: this.state.confirmGameOverLeaderboard,
+                    })
+                    clearInterval(this.interval);
+
+                } else {
+                    this.setState({
+                        minutes: minutes - 1,
+                        seconds: 59
+                    });
+                }
+            }
+        }, 1000);
+    }
+
     //render() returns a JSX element that allows us to write HTML in React.
     //Handles what the user sees and interacts with on their screen. 
     render() {
@@ -419,6 +479,8 @@ export default class BulletUI extends React.Component {
             let theme = this.state.botMoves.length;
             let color = this.state.color;
             let lives = this.state.lives;
+            let minutes = this.state.minutes;
+            let seconds = this.state.seconds;
             return (
                 <div className='bullet'>
                     <Navbar />
@@ -426,6 +488,7 @@ export default class BulletUI extends React.Component {
                     <div className='bullet--chessboard'>
 
                         <div className='bullet--info'>
+                            <h1>Timer: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
                             <h1>Rating: {rating}</h1>
                             <h1>{color} to Move</h1>
                             <h1>Mate in {theme}</h1>

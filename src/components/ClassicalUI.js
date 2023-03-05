@@ -231,6 +231,25 @@ export default class ClassicalUI extends React.Component {
         //If either of these are false, it reverts the piece back to the square it was on.
         if (move && move.color === chess.turn()) {
 
+            //If the target square is correct but the source square was incorrect,
+            //then the user moves on to the next puzzle and they lose a life.
+            if (targetSquare === correctMove && sourceSquare !== userPieceSelected) {
+                this.setState({
+                    lives: this.state.lives - 1,
+                    botMoveIndex: 0,
+                    userSequenceIndex: 0,
+                    userMoveIndex: 0,
+                    userPieceSelectedIndex: 0,
+                    ratings: this.state.ratings,
+                })
+
+                //When the user fails a puzzle, the rating stays around the same difficulty
+                //and they are taken to a new board state.
+                setTimeout(() => {
+                    this.getIndex(this.state.ratings)
+                    this.handleBoardState()
+                }, 500);
+            }
             //If the target square is incorrect but the source square was correct,
             //then the user moves on to the next puzzle and they lose a life.
             if (targetSquare !== correctMove && sourceSquare === userPieceSelected) {
