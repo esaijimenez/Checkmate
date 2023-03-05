@@ -1,14 +1,18 @@
- .bullet {
-    display: "flex";
-    text-align: center;
-    align-items: center;
-    justify-content: "center"
-  }
-  
-  .bullet--board {
-    margin: auto;
-    padding: 20px;
-    width: 800px;
-    height: 800px;
-  }
-  
+.bullet {
+  display: "flex";
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: "center"
+}
+
+.bullet--chessboard {
+  margin: auto;
+  padding: 20px;
+  width: 650px;
+  height: 650px;
+}
+
+.bullet--info {
+  flex-direction: row;
+}

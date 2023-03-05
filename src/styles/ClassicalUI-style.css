@@ -6,12 +6,13 @@
   justify-content: "center"
 }
 
-.classical--board {
+.classical--chessboard {
   margin: auto;
   padding: 20px;
   width: 650px;
   height: 650px;
 }
+
 .classical--info {
   flex-direction: row;
 }
