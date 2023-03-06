@@ -31,7 +31,7 @@ export default class ClassicalUI extends React.Component {
             ratings: 545,
             indexes: 0,
             solutionIndex: 1,
-            color: "White",
+            color: "white",
             lives: 3,
             showGameOver: false,
             confirmGameOver: false,
@@ -145,9 +145,9 @@ export default class ClassicalUI extends React.Component {
             //The color the user has to move is initialized here.
             let color = chess.turn();
             if (color === 'b') {
-                color = "Black";
+                color = "black";
             } else if (color === 'w') {
-                color = "White";
+                color = "white";
             }
 
             //The color is updated.
@@ -433,8 +433,15 @@ export default class ClassicalUI extends React.Component {
             let score = this.state.score;
             let rating = this.state.checkmates[this.state.indexes].rating;
             let theme = this.state.botMoves.length;
-            let color = this.state.color;
             let lives = this.state.lives;
+            let color;
+            if (this.state.color === 'black') {
+                color = "Black";
+            }
+            else if (this.state.color === 'white') {
+                color = "White";
+            }
+
             return (
                 <div className='classical'>
                     <Navbar />
@@ -453,6 +460,7 @@ export default class ClassicalUI extends React.Component {
                                 onPieceDrop={this.handleUserMoves}
                                 onPieceClick={this.handlePieceClick}
                                 animationDuration={500}
+                                boardOrientation={this.state.color}
                             />
                         </div>
                     </div>
