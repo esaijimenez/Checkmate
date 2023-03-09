@@ -22,6 +22,7 @@ export default class ClassicalUI extends React.Component {
             position: "start",
             botMoveIndex: 0,
             userMoveIndex: 0,
+            userMoveIndexQ: 0,
             userPieceSelectedIndex: 0,
             botMoves: [],
             userMoves: [],
@@ -203,9 +204,21 @@ export default class ClassicalUI extends React.Component {
         const correctMove = allUserMoves[this.state.userMoveIndex] + allUserMoves[this.state.userMoveIndex + 1];
         const correctSequence = filterUserMoves.toString();
         const correctPieceMovement = filterUserMoves[this.state.userSequenceIndex]
+
+        let correctMoveQ = filteredMoves[this.state.userMoveIndexQ];
+
+        if (correctMoveQ !== correctMove) {
+            targetSquare = correctMoveQ
+        }
+
+        console.log("correctMove: ", correctMove)
+        console.log("correctMoveQ: ", correctMoveQ)
+        console.log("targetSquare: ", targetSquare)
+
         this.setState({
             userMoves: correctSequence
         })
+
 
         //These will be used to validate the proper source square was used by the user.
         const userPiece = filterUserMoves.map(move => move.split('-')[0]).filter(square => /[a-h][1-8]/.test(square));
@@ -213,16 +226,6 @@ export default class ClassicalUI extends React.Component {
         const userPieceSelected = userPieceToString[this.state.userPieceSelectedIndex] +
             userPieceToString[this.state.userPieceSelectedIndex + 1];
 
-        // console.log("userPieceSelected: ", userPieceSelected)
-        // console.log("Moves: ", allMoves)
-        // console.log("splitAllMoves: ", splitAllMoves)
-        // console.log("correctMove: ", correctMove)
-
-
-        // console.log("filterUserMoves moves: ", filterUserMoves);
-        // console.log("Correct moves: ", correctMove);
-        // console.log("correctPieceMovement moves: ", correctPieceMovement);
-        // console.log("userSequenceIndex: ", this.state.userSequenceIndex);
 
         //Checks to see if the user made a legal move and selected the correct color
         //If either of these are false, it reverts the piece back to the square it was on.
@@ -230,31 +233,56 @@ export default class ClassicalUI extends React.Component {
 
             //If the target square is correct but the source square was incorrect,
             //then the user moves on to the next puzzle and they lose a life.
-            if (targetSquare === correctMove && sourceSquare !== userPieceSelected) {
-                this.setState({
-                    lives: this.state.lives - 1,
-                    botMoveIndex: 0,
-                    userSequenceIndex: 0,
-                    userMoveIndex: 0,
-                    userPieceSelectedIndex: 0,
-                    ratings: this.state.ratings,
-                })
+            if (targetSquare === correctMoveQ && sourceSquare !== userPieceSelected) {
+                if (chess.isCheckmate() === true) {
+                    this.setState({
+                        ratings: this.state.ratings + 50,
+                        botMoveIndex: 0,
+                        userSequenceIndex: 0,
+                        userMoveIndex: 0,
+                        userMoveIndexQ: 0,
+                        userPieceSelectedIndex: 0,
+                        score: this.state.score + 1,
 
-                //When the user fails a puzzle, the rating stays around the same difficulty
-                //and they are taken to a new board state.
-                setTimeout(() => {
-                    this.getIndex(this.state.ratings)
-                    this.handleBoardState()
-                }, 500);
+                    })
+                    console.log("Checkmate!")
+
+                    //When the user successfully completes a puzzle, the slightly increased rating is
+                    //used to obtain the new index for the next puzzle.
+                    //Then the new board state is initialized using that new puzzle.
+                    setTimeout(() => {
+                        this.getIndex(this.state.ratings)
+                        this.handleBoardState()
+                    }, 1000);
+                }
+                else if (chess.isCheckmate() === false) {
+                    this.setState({
+                        lives: this.state.lives - 1,
+                        botMoveIndex: 0,
+                        userSequenceIndex: 0,
+                        userMoveIndex: 0,
+                        userMoveIndexQ: 0,
+                        userPieceSelectedIndex: 0,
+                        ratings: this.state.ratings,
+                    })
+
+                    //When the user fails a puzzle, the rating stays around the same difficulty
+                    //and they are taken to a new board state.
+                    setTimeout(() => {
+                        this.getIndex(this.state.ratings)
+                        this.handleBoardState()
+                    }, 500);
+                }
             }
             //If the target square is incorrect but the source square was correct,
             //then the user moves on to the next puzzle and they lose a life.
-            if (targetSquare !== correctMove && sourceSquare === userPieceSelected) {
+            if (targetSquare !== correctMoveQ && sourceSquare === userPieceSelected) {
                 this.setState({
                     lives: this.state.lives - 1,
                     botMoveIndex: 0,
                     userSequenceIndex: 0,
                     userMoveIndex: 0,
+                    userMoveIndexQ: 0,
                     userPieceSelectedIndex: 0,
                     ratings: this.state.ratings,
                 })
@@ -269,14 +297,15 @@ export default class ClassicalUI extends React.Component {
 
             //If both the target square and the source square are incorrect,
             //then the user moves on to the next puzzle and they lose a life.
-            else if (targetSquare !== correctMove && sourceSquare !== userPieceSelected) {
+            else if (targetSquare !== correctMoveQ && sourceSquare !== userPieceSelected) {
                 this.setState({
                     lives: this.state.lives - 1,
                     botMoveIndex: 0,
                     userSequenceIndex: 0,
                     userMoveIndex: 0,
+                    userMoveIndexQ: 0,
                     userPieceSelectedIndex: 0,
-                    ratings: this.state.ratings,
+                    ratings: this.state.ratings
                 })
 
                 //When the user fails a puzzle, the rating stays around the same difficulty
@@ -290,7 +319,7 @@ export default class ClassicalUI extends React.Component {
             //If both the target square and the source square are correct,
             //then the piece that was moved by the user is successfully made
             //and the position is updated to reflect that.
-            else if (targetSquare === correctMove && sourceSquare === userPieceSelected) {
+            else if (targetSquare === correctMoveQ && sourceSquare === userPieceSelected) {
                 console.log("Correct Move")
                 chess.move(correctPieceMovement)
                 this.setState({
@@ -298,6 +327,7 @@ export default class ClassicalUI extends React.Component {
                     botMoveIndex: this.state.botMoveIndex + 1,
                     solutionIndex: this.state.solutionIndex + 1,
                     userMoveIndex: this.state.userMoveIndex + 3,
+                    userMoveIndexQ: this.state.userMoveIndexQ + 1,
                     userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3
                 })
 
@@ -309,6 +339,7 @@ export default class ClassicalUI extends React.Component {
                         botMoveIndex: 0,
                         userSequenceIndex: 0,
                         userMoveIndex: 0,
+                        userMoveIndexQ: 0,
                         userPieceSelectedIndex: 0,
                         score: this.state.score + 1,
 

@@ -22,6 +22,7 @@ export default class PlayUI extends React.Component {
             position: "start",
             botMoveIndex: 0,
             userMoveIndex: 0,
+            userMoveIndexQ: 0,
             userPieceSelectedIndex: 0,
             botMoves: [],
             userMoves: [],
@@ -31,7 +32,7 @@ export default class PlayUI extends React.Component {
             ratings: 545,
             indexes: 0,
             solutionIndex: 1,
-            color: "White",
+            color: "white",
             lives: 3,
             showGameOver: false,
             confirmGameOver: false,
@@ -73,7 +74,7 @@ export default class PlayUI extends React.Component {
         //After a delay, it calls handleBoardState() that starts the game.
         setTimeout(() => {
             this.handleBoardState()
-        }, 1000);
+        }, 3000);
 
     };
 
@@ -100,19 +101,22 @@ export default class PlayUI extends React.Component {
     //The index obtained from getIndex() does not change until a puzzle is completed
     handleBoardState = () => {
         if (this.state.lives !== -1) {
-            console.log("Index: ", this.state.indexes)
-            console.log("Rating: ", this.state.checkmates[this.state.indexes].rating)
-            console.log("PuzzleID: ", this.state.checkmates[this.state.indexes].puzzleid)
 
             //Initializes the current position by pulling a FEN from the checkmates array at the specific index given by getIndex()
             //The checkmates array was created inside the componentDidMount() method.
-            const currPosition = this.state.checkmates[this.state.indexes].fen;
 
+            //240
+            //8860
+            //106
+            //156
+            //25461
+            //70288
+            const currPosition = this.state.checkmates[70288].fen;
 
             //This block pulls the moves from the checkmates array at the specific index given by getIndex()
             //The moves are manipulated to filter out everything to obtain only the botMoves.
             //The botMoves are the moves that are not performed by the user.
-            const allMoves = this.state.checkmates[this.state.indexes].moves
+            const allMoves = this.state.checkmates[70288].moves
             const allMovesToString = allMoves.toString();
             const splitAllMoves = allMovesToString.split(' ');
             const filterBotMoves = splitAllMoves.filter((move, index) => index % 2 === 0);
@@ -148,9 +152,9 @@ export default class PlayUI extends React.Component {
             //The color the user has to move is initialized here.
             let color = chess.turn();
             if (color === 'b') {
-                color = "Black";
+                color = "black";
             } else if (color === 'w') {
-                color = "White";
+                color = "white";
             }
 
             //The color is updated.
@@ -166,6 +170,8 @@ export default class PlayUI extends React.Component {
                     solutionIndex: 1
                 })
             }, 1000);
+
+            console.log("The position: ", this.state.position)
         }
 
         //When the user runs out of lives, the game over pop-up will display or
@@ -178,6 +184,8 @@ export default class PlayUI extends React.Component {
             })
         }
     }
+
+
 
     //Validates the users moves and updates the position
     handleUserMoves = (sourceSquare, targetSquare) => {
@@ -203,12 +211,32 @@ export default class PlayUI extends React.Component {
 
         //Once the correct moves and sequences are stored, 
         //they will be used later to validate whether the user made that move or not.
-        const correctMove = allUserMoves[this.state.userMoveIndex] + allUserMoves[this.state.userMoveIndex + 1];
+        let correctMove = allUserMoves[this.state.userMoveIndex] + allUserMoves[this.state.userMoveIndex + 1];
+        let correctMoveQ = filteredMoves[this.state.userMoveIndexQ];
+
+        if (correctMoveQ !== correctMove) {
+            targetSquare = correctMoveQ
+        }
+
+        console.log("correctMove: ", correctMove)
+        console.log("correctMoveQ: ", correctMoveQ)
+        console.log("targetSquare: ", targetSquare)
+
         const correctSequence = filterUserMoves.toString();
         const correctPieceMovement = filterUserMoves[this.state.userSequenceIndex]
+
         this.setState({
             userMoves: correctSequence
         })
+
+        console.log("Correct Sequence: ", correctSequence)
+        console.log("correctPieceMovement: ", correctPieceMovement)
+        console.log("correctMove: ", correctMoveQ)
+        console.log("Split Moves: ", splitAllMoves[1])
+        console.log("filterUserMoves: ", filterUserMoves)
+        console.log("filteredMoves: ", filteredMoves[1])
+        console.log("allUserMoves: ", allUserMoves)
+        console.log("allUserMoves[1]: ", allUserMoves[1])
 
         //These will be used to validate the proper source square was used by the user.
         const userPiece = filterUserMoves.map(move => move.split('-')[0]).filter(square => /[a-h][1-8]/.test(square));
@@ -216,10 +244,13 @@ export default class PlayUI extends React.Component {
         const userPieceSelected = userPieceToString[this.state.userPieceSelectedIndex] +
             userPieceToString[this.state.userPieceSelectedIndex + 1];
 
+        const specialCaseUserMove = sourceSquare + '-' + targetSquare
+
         // console.log("userPieceSelected: ", userPieceSelected)
         // console.log("Moves: ", allMoves)
         // console.log("splitAllMoves: ", splitAllMoves)
-        // console.log("correctMove: ", correctMove)
+        console.log("specialCaseUserMove: ", specialCaseUserMove)
+        console.log("correctPieceMovement: ", correctPieceMovement)
 
 
         // console.log("filterUserMoves moves: ", filterUserMoves);
@@ -233,31 +264,65 @@ export default class PlayUI extends React.Component {
 
             //If the target square is correct but the source square was incorrect,
             //then the user moves on to the next puzzle and they lose a life.
-            if (targetSquare === correctMove && sourceSquare !== userPieceSelected) {
-                this.setState({
-                    lives: this.state.lives - 1,
-                    botMoveIndex: 0,
-                    userSequenceIndex: 0,
-                    userMoveIndex: 0,
-                    userPieceSelectedIndex: 0,
-                    ratings: this.state.ratings,
-                })
+            if (targetSquare === correctMoveQ && sourceSquare !== userPieceSelected) {
+                console.log("Inside of correct target but wrong source!")
+                console.log("1")
+                chess.move(specialCaseUserMove)
+                console.log("Is Checkmate? ", chess.isCheckmate())
 
-                //When the user fails a puzzle, the rating stays around the same difficulty
-                //and they are taken to a new board state.
-                setTimeout(() => {
-                    this.getIndex(this.state.ratings)
-                    this.handleBoardState()
-                }, 500);
+                if (chess.isCheckmate() === true) {
+                    this.setState({
+                        ratings: this.state.ratings + 50,
+                        botMoveIndex: 0,
+                        userSequenceIndex: 0,
+                        userMoveIndex: 0,
+                        userMoveIndexQ: 0,
+                        userPieceSelectedIndex: 0,
+                        score: this.state.score + 1,
+
+                    })
+                    console.log("Checkmate!")
+
+                    //When the user successfully completes a puzzle, the slightly increased rating is
+                    //used to obtain the new index for the next puzzle.
+                    //Then the new board state is initialized using that new puzzle.
+                    setTimeout(() => {
+                        this.getIndex(this.state.ratings)
+                        this.handleBoardState()
+                    }, 1000);
+                }
+                else if (chess.isCheckmate() === false) {
+                    this.setState({
+                        lives: this.state.lives - 1,
+                        botMoveIndex: 0,
+                        userSequenceIndex: 0,
+                        userMoveIndex: 0,
+                        userMoveIndexQ: 0,
+                        userPieceSelectedIndex: 0,
+                        ratings: this.state.ratings,
+                    })
+
+                    //When the user fails a puzzle, the rating stays around the same difficulty
+                    //and they are taken to a new board state.
+                    setTimeout(() => {
+                        this.getIndex(this.state.ratings)
+                        this.handleBoardState()
+                    }, 500);
+                }
             }
             //If the target square is incorrect but the source square was correct,
             //then the user moves on to the next puzzle and they lose a life.
-            if (targetSquare !== correctMove && sourceSquare === userPieceSelected) {
+            if (targetSquare !== correctMoveQ && sourceSquare === userPieceSelected) {
+                console.log("2")
+                console.log("target square: ", targetSquare)
+                console.log("correctMove: ", correctMoveQ)
+
                 this.setState({
                     lives: this.state.lives - 1,
                     botMoveIndex: 0,
                     userSequenceIndex: 0,
                     userMoveIndex: 0,
+                    userMoveIndexQ: 0,
                     userPieceSelectedIndex: 0,
                     ratings: this.state.ratings,
                 })
@@ -272,14 +337,16 @@ export default class PlayUI extends React.Component {
 
             //If both the target square and the source square are incorrect,
             //then the user moves on to the next puzzle and they lose a life.
-            else if (targetSquare !== correctMove && sourceSquare !== userPieceSelected) {
+            else if (targetSquare !== correctMoveQ && sourceSquare !== userPieceSelected) {
+                console.log("3")
                 this.setState({
                     lives: this.state.lives - 1,
                     botMoveIndex: 0,
                     userSequenceIndex: 0,
                     userMoveIndex: 0,
+                    userMoveIndexQ: 0,
                     userPieceSelectedIndex: 0,
-                    ratings: this.state.ratings,
+                    ratings: this.state.ratings
                 })
 
                 //When the user fails a puzzle, the rating stays around the same difficulty
@@ -293,7 +360,8 @@ export default class PlayUI extends React.Component {
             //If both the target square and the source square are correct,
             //then the piece that was moved by the user is successfully made
             //and the position is updated to reflect that.
-            else if (targetSquare === correctMove && sourceSquare === userPieceSelected) {
+            else if (targetSquare === correctMoveQ && sourceSquare === userPieceSelected) {
+                console.log("4")
                 console.log("Correct Move")
                 chess.move(correctPieceMovement)
                 this.setState({
@@ -301,6 +369,7 @@ export default class PlayUI extends React.Component {
                     botMoveIndex: this.state.botMoveIndex + 1,
                     solutionIndex: this.state.solutionIndex + 1,
                     userMoveIndex: this.state.userMoveIndex + 3,
+                    userMoveIndexQ: this.state.userMoveIndexQ + 1,
                     userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3
                 })
 
@@ -312,6 +381,7 @@ export default class PlayUI extends React.Component {
                         botMoveIndex: 0,
                         userSequenceIndex: 0,
                         userMoveIndex: 0,
+                        userMoveIndexQ: 0,
                         userPieceSelectedIndex: 0,
                         score: this.state.score + 1,
 
@@ -436,8 +506,15 @@ export default class PlayUI extends React.Component {
             let score = this.state.score;
             let rating = this.state.checkmates[this.state.indexes].rating;
             let theme = this.state.botMoves.length;
-            let color = this.state.color;
             let lives = this.state.lives;
+            let color;
+            if (this.state.color === 'black') {
+                color = "Black";
+            }
+            else if (this.state.color === 'white') {
+                color = "White";
+            }
+
             return (
                 <div className='play'>
                     <Navbar />
@@ -456,6 +533,7 @@ export default class PlayUI extends React.Component {
                                 onPieceDrop={this.handleUserMoves}
                                 onPieceClick={this.handlePieceClick}
                                 animationDuration={500}
+                                boardOrientation={this.state.color}
                             />
                         </div>
                     </div>

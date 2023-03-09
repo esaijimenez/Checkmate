@@ -16,3 +16,11 @@
 .create--info {
   flex-direction: row;
 }
+
+.spare-pieces {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+}

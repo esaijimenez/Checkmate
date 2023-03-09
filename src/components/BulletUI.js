@@ -22,6 +22,7 @@ export default class BulletUI extends React.Component {
             position: "start",
             botMoveIndex: 0,
             userMoveIndex: 0,
+            userMoveIndexQ: 0,
             userPieceSelectedIndex: 0,
             botMoves: [],
             userMoves: [],
@@ -31,7 +32,7 @@ export default class BulletUI extends React.Component {
             ratings: 545,
             indexes: 0,
             solutionIndex: 1,
-            color: "White",
+            color: "white",
             lives: 3,
             showGameOver: false,
             confirmGameOver: false,
@@ -39,7 +40,7 @@ export default class BulletUI extends React.Component {
             confirmGameOverLeaderboard: true,
             showDiv: false,
             score: 0,
-            minutes: 2,
+            minutes: 1,
             seconds: 0,
             timer: 1
         };
@@ -149,9 +150,9 @@ export default class BulletUI extends React.Component {
             //The color the user has to move is initialized here.
             let color = chess.turn();
             if (color === 'b') {
-                color = "Black";
+                color = "black";
             } else if (color === 'w') {
-                color = "White";
+                color = "white";
             }
 
             //The color is updated.
@@ -207,6 +208,17 @@ export default class BulletUI extends React.Component {
         const correctMove = allUserMoves[this.state.userMoveIndex] + allUserMoves[this.state.userMoveIndex + 1];
         const correctSequence = filterUserMoves.toString();
         const correctPieceMovement = filterUserMoves[this.state.userSequenceIndex]
+
+        let correctMoveQ = filteredMoves[this.state.userMoveIndexQ];
+
+        if (correctMoveQ !== correctMove) {
+            targetSquare = correctMoveQ
+        }
+
+        console.log("correctMove: ", correctMove)
+        console.log("correctMoveQ: ", correctMoveQ)
+        console.log("targetSquare: ", targetSquare)
+
         this.setState({
             userMoves: correctSequence
         })
@@ -217,29 +229,19 @@ export default class BulletUI extends React.Component {
         const userPieceSelected = userPieceToString[this.state.userPieceSelectedIndex] +
             userPieceToString[this.state.userPieceSelectedIndex + 1];
 
-        // console.log("userPieceSelected: ", userPieceSelected)
-        // console.log("Moves: ", allMoves)
-        // console.log("splitAllMoves: ", splitAllMoves)
-        // console.log("correctMove: ", correctMove)
-
-
-        // console.log("filterUserMoves moves: ", filterUserMoves);
-        // console.log("Correct moves: ", correctMove);
-        // console.log("correctPieceMovement moves: ", correctPieceMovement);
-        // console.log("userSequenceIndex: ", this.state.userSequenceIndex);
-
         //Checks to see if the user made a legal move and selected the correct color
         //If either of these are false, it reverts the piece back to the square it was on.
         if (move && move.color === chess.turn()) {
 
             //If the target square is correct but the source square was incorrect,
             //then the user moves on to the next puzzle and they lose a life.
-            if (targetSquare === correctMove && sourceSquare !== userPieceSelected) {
+            if (targetSquare === correctMoveQ && sourceSquare !== userPieceSelected) {
                 this.setState({
                     lives: this.state.lives - 1,
                     botMoveIndex: 0,
                     userSequenceIndex: 0,
                     userMoveIndex: 0,
+                    userMoveIndexQ: 0,
                     userPieceSelectedIndex: 0,
                     ratings: this.state.ratings,
                 })
@@ -253,12 +255,13 @@ export default class BulletUI extends React.Component {
             }
             //If the target square is incorrect but the source square was correct,
             //then the user moves on to the next puzzle and they lose a life.
-            if (targetSquare !== correctMove && sourceSquare === userPieceSelected) {
+            if (targetSquare !== correctMoveQ && sourceSquare === userPieceSelected) {
                 this.setState({
                     lives: this.state.lives - 1,
                     botMoveIndex: 0,
                     userSequenceIndex: 0,
                     userMoveIndex: 0,
+                    userMoveIndexQ: 0,
                     userPieceSelectedIndex: 0,
                     ratings: this.state.ratings,
                 })
@@ -273,12 +276,13 @@ export default class BulletUI extends React.Component {
 
             //If both the target square and the source square are incorrect,
             //then the user moves on to the next puzzle and they lose a life.
-            else if (targetSquare !== correctMove && sourceSquare !== userPieceSelected) {
+            else if (targetSquare !== correctMoveQ && sourceSquare !== userPieceSelected) {
                 this.setState({
                     lives: this.state.lives - 1,
                     botMoveIndex: 0,
                     userSequenceIndex: 0,
                     userMoveIndex: 0,
+                    userMoveIndexQ: 0,
                     userPieceSelectedIndex: 0,
                     ratings: this.state.ratings,
                 })
@@ -294,7 +298,7 @@ export default class BulletUI extends React.Component {
             //If both the target square and the source square are correct,
             //then the piece that was moved by the user is successfully made
             //and the position is updated to reflect that.
-            else if (targetSquare === correctMove && sourceSquare === userPieceSelected) {
+            else if (targetSquare === correctMoveQ && sourceSquare === userPieceSelected) {
                 console.log("Correct Move")
                 chess.move(correctPieceMovement)
                 this.setState({
@@ -302,6 +306,7 @@ export default class BulletUI extends React.Component {
                     botMoveIndex: this.state.botMoveIndex + 1,
                     solutionIndex: this.state.solutionIndex + 1,
                     userMoveIndex: this.state.userMoveIndex + 3,
+                    userMoveIndexQ: this.state.userMoveIndexQ + 1,
                     userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3
                 })
 
@@ -314,6 +319,7 @@ export default class BulletUI extends React.Component {
                         botMoveIndex: 0,
                         userSequenceIndex: 0,
                         userMoveIndex: 0,
+                        userMoveIndexQ: 0,
                         userPieceSelectedIndex: 0,
                         score: this.state.score + 1,
                         seconds: this.state.seconds + 20
@@ -474,7 +480,13 @@ export default class BulletUI extends React.Component {
             let score = this.state.score;
             let rating = this.state.checkmates[this.state.indexes].rating;
             let theme = this.state.botMoves.length;
-            let color = this.state.color;
+            let color;
+            if (this.state.color === 'black') {
+                color = "Black";
+            }
+            else if (this.state.color === 'white') {
+                color = "White";
+            }
             let lives = this.state.lives;
             let minutes = this.state.minutes;
             let seconds = this.state.seconds;
@@ -497,6 +509,7 @@ export default class BulletUI extends React.Component {
                                 onPieceDrop={this.handleUserMoves}
                                 onPieceClick={this.handlePieceClick}
                                 animationDuration={500}
+                                boardOrientation={this.state.color}
                             />
                         </div>
                     </div>
