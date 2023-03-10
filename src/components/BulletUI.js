@@ -38,7 +38,7 @@ export default class BulletUI extends React.Component {
             confirmGameOver: false,
             showGameOverLeaderboard: false,
             confirmGameOverLeaderboard: true,
-            showDiv: false,
+            showStartButton: true,
             score: 0,
             minutes: 1,
             seconds: 0,
@@ -74,11 +74,11 @@ export default class BulletUI extends React.Component {
             })
         })
 
-        //After a delay, it calls handleBoardState() that starts the game.
-        setTimeout(() => {
-            this.timer()
-            this.handleBoardState()
-        }, 3000);
+        // //After a delay, it calls handleBoardState() that starts the game.
+        // setTimeout(() => {
+        //     this.timer()
+        //     this.handleBoardState()
+        // }, 3000);
 
     };
 
@@ -473,6 +473,12 @@ export default class BulletUI extends React.Component {
         }, 1000);
     }
 
+    handleStartButtonClick = () => {
+        this.handleBoardState();
+        this.timer()
+        this.setState({ showStartButton: false })
+    }
+
     //render() returns a JSX element that allows us to write HTML in React.
     //Handles what the user sees and interacts with on their screen. 
     render() {
@@ -497,6 +503,9 @@ export default class BulletUI extends React.Component {
                     <div className='bullet--chessboard'>
 
                         <div className='bullet--info'>
+                            {this.state.showStartButton && (
+                                <button onClick={this.handleStartButtonClick}>Start</button>
+                            )}
                             <h1>Timer: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
                             <h1>Rating: {rating}</h1>
                             <h1>{color} to Move</h1>
@@ -515,7 +524,6 @@ export default class BulletUI extends React.Component {
                     </div>
                     {this.state.showGameOver && (<GameOver />)}
                     {this.state.showGameOverLeaderboard && (<GameOverLeaderboard />)}
-
                 </div>
             );
         }

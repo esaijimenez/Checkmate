@@ -38,7 +38,7 @@ export default class ClassicalUI extends React.Component {
             confirmGameOver: false,
             showGameOverLeaderboard: false,
             confirmGameOverLeaderboard: true,
-            showDiv: false,
+            showStartButton: true,
             score: 0
         };
     };
@@ -71,10 +71,10 @@ export default class ClassicalUI extends React.Component {
             })
         })
 
-        //After a delay, it calls handleBoardState() that starts the game.
-        setTimeout(() => {
-            this.handleBoardState()
-        }, 3000);
+        // //After a delay, it calls handleBoardState() that starts the game.
+        // setTimeout(() => {
+        //     this.handleBoardState()
+        // }, 1000);
 
     };
 
@@ -458,6 +458,11 @@ export default class ClassicalUI extends React.Component {
         }, 1000);
     }
 
+    handleStartButtonClick = () => {
+        this.handleBoardState();
+        this.setState({ showStartButton: false })
+    }
+
     //render() returns a JSX element that allows us to write HTML in React.
     //Handles what the user sees and interacts with on their screen. 
     render() {
@@ -481,6 +486,9 @@ export default class ClassicalUI extends React.Component {
                     <div className='classical--chessboard'>
 
                         <div className='classical--info'>
+                            {this.state.showStartButton && (
+                                <button onClick={this.handleStartButtonClick}>Start</button>
+                            )}
                             <h1>Rating: {rating}</h1>
                             <h1>{color} to Move</h1>
                             <h1>Mate in {theme}</h1>
