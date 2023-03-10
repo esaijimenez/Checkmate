@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from "react";
 import { db } from "../firebase.js";
 import { ref, onValue } from 'firebase/database';
 import { Chessboard } from 'react-chessboard';
-//import { Piece } from "react-chessboard";
+import { Piece } from "react-chessboard";
 
 
 import { Chess } from "chess.js";
@@ -19,7 +19,8 @@ export default class CreateUI extends React.Component {
 
         //State variables that continuously update
         this.state = {
-            position: "start",
+            position: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+            sparePieces: [],
             whitePawn: "wP",
             whiteRook: "wR",
             whiteKnight: "wN",
@@ -38,11 +39,32 @@ export default class CreateUI extends React.Component {
 
     //componentDidMount() is the first method called when the component is rendered.
     componentDidMount() {
-
+        console.log("componentDidMount")
     };
 
+    handleDrop = (sourceSquare, targetSquare) => {
+        console.log("source: ", sourceSquare)
+        console.log("target: ", targetSquare)
 
+        const chess = new Chess(this.state.position)
 
+        chess.move({
+            from: sourceSquare,
+            to: targetSquare,
+            promotion: "q"
+        });
+
+        this.setState({
+            position: chess.fen()
+        });
+
+        console.log("Position: ", chess.fen())
+
+    }
+
+    handlePieceClick = (sourceSquare) => {
+        console.log("handlePieceClick: ", sourceSquare)
+    }
 
 
     //render() returns a JSX element that allows us to write HTML in React.
@@ -53,14 +75,14 @@ export default class CreateUI extends React.Component {
                 <Navbar />
                 <h1>Create Mate</h1>
                 <div className='create--chessboard'>
-                    <div className="spare-pieces">
 
-                    </div>
 
                     <div className='create--info'>
+                        <button onClick={this.removeSparePiece}>Remove</button>
                         <Chessboard
                             position={this.state.position}
-                            sparePieces={true}
+                            onPieceDrop={this.handleDrop}
+                            onPieceClick={this.handlePieceClick}
                         />
                     </div>
                 </div>

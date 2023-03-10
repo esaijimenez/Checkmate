@@ -78,6 +78,7 @@ export default class ClassicalUI extends React.Component {
 
     };
 
+
     //Gets the initial index of the puzzle by grabbing a random rating within a particular rating range.
     //After each successful puzzle, the range increases by 50 difficulty.
     getIndex = (rating) => {
