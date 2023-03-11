@@ -15,6 +15,7 @@ export default class HelpTutorialMenuUI extends React.Component {
 
     render() {
         return (
+            <body>
             <div classname = "help">
                 <Link to="/">
                         <button>Back</button>
@@ -23,7 +24,6 @@ export default class HelpTutorialMenuUI extends React.Component {
 
                 <h1>Piece movement and capturing</h1>
                 <p>Pawn: Pawns can move forward one space and can only capture diagonally forward one space. If a pawn has not moved yet, it is able to move forward two spaces instead of one.</p>
-
                 <p>Knight: The knight can move horizontally for 2 spaces followed by vertically 1 space, or vertically 2 spaces followed by horizontally 1 space unless its destination is taken by a friendly piece (think of an “L” shape). The knight is allowed to “jump” other pieces therefore its movement cannot be blocked. It can capture any opposing piece where it lands.</p>
                 <p>Bishop: Bishops can move diagonally in any direction until they hit another piece. They can capture the first opposing piece in their path. Bishops are unique because a bishop on a light square can never move onto a dark square and vice versa.</p>
                 <p>Rook: Bishops can move laterally in any direction until they hit another piece. They can capture the first opposing piece in their path.</p>
@@ -41,6 +41,7 @@ export default class HelpTutorialMenuUI extends React.Component {
                 <h1>About Us</h1>
                 <p>Checkmate is a website for practicing chess puzzles made for our Senior Capstone projects while pursuing our bachelor’s degree. This website was made by Esai Jimenez, Autumn Hale, and Trentin Barnhart during the spring semester of 2023.</p>
             </div>
+            </body>
         );
     }
 }
