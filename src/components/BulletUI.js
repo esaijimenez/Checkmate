@@ -42,7 +42,8 @@ export default class BulletUI extends React.Component {
             score: 0,
             minutes: 1,
             seconds: 0,
-            timer: 1
+            timer: 1,
+            squareStyles: null
         };
     };
 
@@ -236,22 +237,47 @@ export default class BulletUI extends React.Component {
             //If the target square is correct but the source square was incorrect,
             //then the user moves on to the next puzzle and they lose a life.
             if (targetSquare === correctMoveQ && sourceSquare !== userPieceSelected) {
-                this.setState({
-                    lives: this.state.lives - 1,
-                    botMoveIndex: 0,
-                    userSequenceIndex: 0,
-                    userMoveIndex: 0,
-                    userMoveIndexQ: 0,
-                    userPieceSelectedIndex: 0,
-                    ratings: this.state.ratings,
-                })
+                if (chess.isCheckmate() === true) {
+                    this.setState({
+                        ratings: this.state.ratings + 50,
+                        botMoveIndex: 0,
+                        userSequenceIndex: 0,
+                        userMoveIndex: 0,
+                        userMoveIndexQ: 0,
+                        userPieceSelectedIndex: 0,
+                        score: this.state.score + 1,
+                        squareStyles: {}
 
-                //When the user fails a puzzle, the rating stays around the same difficulty
-                //and they are taken to a new board state.
-                setTimeout(() => {
-                    this.getIndex(this.state.ratings)
-                    this.handleBoardState()
-                }, 500);
+                    })
+                    console.log("Checkmate!")
+
+                    //When the user successfully completes a puzzle, the slightly increased rating is
+                    //used to obtain the new index for the next puzzle.
+                    //Then the new board state is initialized using that new puzzle.
+                    setTimeout(() => {
+                        this.getIndex(this.state.ratings)
+                        this.handleBoardState()
+                    }, 1000);
+                }
+                else if (chess.isCheckmate() === false) {
+                    this.setState({
+                        lives: this.state.lives - 1,
+                        botMoveIndex: 0,
+                        userSequenceIndex: 0,
+                        userMoveIndex: 0,
+                        userMoveIndexQ: 0,
+                        userPieceSelectedIndex: 0,
+                        ratings: this.state.ratings,
+                        squareStyles: {}
+                    })
+
+                    //When the user fails a puzzle, the rating stays around the same difficulty
+                    //and they are taken to a new board state.
+                    setTimeout(() => {
+                        this.getIndex(this.state.ratings)
+                        this.handleBoardState()
+                    }, 500);
+                }
             }
             //If the target square is incorrect but the source square was correct,
             //then the user moves on to the next puzzle and they lose a life.
@@ -264,6 +290,7 @@ export default class BulletUI extends React.Component {
                     userMoveIndexQ: 0,
                     userPieceSelectedIndex: 0,
                     ratings: this.state.ratings,
+                    squareStyles: {}
                 })
 
                 //When the user fails a puzzle, the rating stays around the same difficulty
@@ -285,6 +312,7 @@ export default class BulletUI extends React.Component {
                     userMoveIndexQ: 0,
                     userPieceSelectedIndex: 0,
                     ratings: this.state.ratings,
+                    squareStyles: {}
                 })
 
                 //When the user fails a puzzle, the rating stays around the same difficulty
@@ -307,7 +335,8 @@ export default class BulletUI extends React.Component {
                     solutionIndex: this.state.solutionIndex + 1,
                     userMoveIndex: this.state.userMoveIndex + 3,
                     userMoveIndexQ: this.state.userMoveIndexQ + 1,
-                    userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3
+                    userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3,
+                    squareStyles: {}
                 })
 
                 //If the current position is checkmate, then the rating difficulty is increased
@@ -322,12 +351,14 @@ export default class BulletUI extends React.Component {
                         userMoveIndexQ: 0,
                         userPieceSelectedIndex: 0,
                         score: this.state.score + 1,
-                        seconds: this.state.seconds + 20
+                        seconds: this.state.seconds + 20,
+                        squareStyles: {}
                     })
                     if (this.state.seconds > 60) {
                         this.setState({
                             seconds: this.state.seconds - 60,
-                            minutes: this.state.minutes + 1
+                            minutes: this.state.minutes + 1,
+                            squareStyles: {}
                         });
                     }
 
@@ -370,26 +401,13 @@ export default class BulletUI extends React.Component {
             this.setState({
                 position: chess.fen(),
                 userSequenceIndex: this.state.userSequenceIndex + 1,
-                solutionIndex: this.state.solutionIndex + 1
+                solutionIndex: this.state.solutionIndex + 1,
+                squareStyles: {}
             })
         }
     }
 
-    handlePieceClick = (sourceSquare) => {
-        const chess = new Chess(this.state.position)
-        const validMoves = chess.moves({ verbose: true })
-        const move = validMoves.find((d) => d.from === sourceSquare)
 
-        console.log("Source Square Clicked: ", sourceSquare)
-
-        if (move) {
-            console.log("Valid Move Found: ", move)
-
-        } else {
-            console.log("No Valid Moves Found")
-
-        }
-    }
 
     //The logic for the solution button
     handleSolutionButton = () => {
@@ -473,6 +491,62 @@ export default class BulletUI extends React.Component {
         }, 1000);
     }
 
+    handlePieceClick = (sourceSquare) => {
+        setTimeout(() => {
+
+            console.log("sourceSquare: ", sourceSquare)
+            const color = sourceSquare.charAt(0);
+            const piece = sourceSquare.charAt(1).toLowerCase();
+
+            const chess = new Chess(this.state.position)
+            const possibleMoves = chess.moves({ verbose: true })
+
+            const move = possibleMoves.filter((move) => move.from === this.state.from && move.color === color && move.piece === piece)
+
+            let to = [];
+
+            for (let i = 0; i < move.length; i++) {
+                to.push(move[i].to)
+            }
+
+            this.setState({
+                to: to,
+                validMoves: move
+            })
+
+            //console.log("validMoves: ", validMoves)
+            console.log("Piece: ", piece)
+            console.log("Color: ", color)
+            console.log("possibleMoves: ", possibleMoves)
+            console.log("Moves: ", move)
+            console.log("To: ", this.state.to)
+            console.log("-------------------------------------------")
+
+            const squareStyles = {};
+
+            move.map((move) => {
+                squareStyles[move.to] = {
+                    background:
+                        chess.get(move.to) && chess.get(move.to).color !== chess.get(sourceSquare).color
+                            ? "radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)"
+                            : "radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)",
+                    borderRadius: "50%",
+                };
+            })
+
+            console.log("squareStyles: ", squareStyles);
+
+            this.setState({ squareStyles: squareStyles })
+
+        }, 200);
+    }
+
+    handleSquareClick = (sourceSquare) => {
+        console.log("sourceSquare: ", sourceSquare)
+
+        this.setState({ from: sourceSquare })
+    }
+
     handleStartButtonClick = () => {
         this.handleBoardState();
         this.timer()
@@ -515,8 +589,10 @@ export default class BulletUI extends React.Component {
                             <button onClick={this.handleSolutionButton}>Solution</button>
                             <Chessboard
                                 position={this.state.position}
+                                onSquareClick={this.handleSquareClick}
                                 onPieceDrop={this.handleUserMoves}
                                 onPieceClick={this.handlePieceClick}
+                                customSquareStyles={this.state.squareStyles}
                                 animationDuration={500}
                                 boardOrientation={this.state.color}
                             />

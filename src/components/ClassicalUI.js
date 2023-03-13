@@ -33,13 +33,17 @@ export default class ClassicalUI extends React.Component {
             indexes: 0,
             solutionIndex: 1,
             color: "white",
+            from: "",
+            to: [],
+            validMoves: [],
             lives: 3,
             showGameOver: false,
             confirmGameOver: false,
             showGameOverLeaderboard: false,
             confirmGameOverLeaderboard: true,
             showStartButton: true,
-            score: 0
+            score: 0,
+            squareStyles: null
         };
     };
 
@@ -70,11 +74,6 @@ export default class ClassicalUI extends React.Component {
                 indexes: randomIndex
             })
         })
-
-        // //After a delay, it calls handleBoardState() that starts the game.
-        // setTimeout(() => {
-        //     this.handleBoardState()
-        // }, 1000);
 
     };
 
@@ -227,7 +226,6 @@ export default class ClassicalUI extends React.Component {
         const userPieceSelected = userPieceToString[this.state.userPieceSelectedIndex] +
             userPieceToString[this.state.userPieceSelectedIndex + 1];
 
-
         //Checks to see if the user made a legal move and selected the correct color
         //If either of these are false, it reverts the piece back to the square it was on.
         if (move && move.color === chess.turn()) {
@@ -244,6 +242,7 @@ export default class ClassicalUI extends React.Component {
                         userMoveIndexQ: 0,
                         userPieceSelectedIndex: 0,
                         score: this.state.score + 1,
+                        squareStyles: {}
 
                     })
                     console.log("Checkmate!")
@@ -265,6 +264,7 @@ export default class ClassicalUI extends React.Component {
                         userMoveIndexQ: 0,
                         userPieceSelectedIndex: 0,
                         ratings: this.state.ratings,
+                        squareStyles: {}
                     })
 
                     //When the user fails a puzzle, the rating stays around the same difficulty
@@ -286,6 +286,7 @@ export default class ClassicalUI extends React.Component {
                     userMoveIndexQ: 0,
                     userPieceSelectedIndex: 0,
                     ratings: this.state.ratings,
+                    squareStyles: {}
                 })
 
                 //When the user fails a puzzle, the rating stays around the same difficulty
@@ -306,7 +307,8 @@ export default class ClassicalUI extends React.Component {
                     userMoveIndex: 0,
                     userMoveIndexQ: 0,
                     userPieceSelectedIndex: 0,
-                    ratings: this.state.ratings
+                    ratings: this.state.ratings,
+                    squareStyles: {}
                 })
 
                 //When the user fails a puzzle, the rating stays around the same difficulty
@@ -329,7 +331,8 @@ export default class ClassicalUI extends React.Component {
                     solutionIndex: this.state.solutionIndex + 1,
                     userMoveIndex: this.state.userMoveIndex + 3,
                     userMoveIndexQ: this.state.userMoveIndexQ + 1,
-                    userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3
+                    userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3,
+                    squareStyles: {}
                 })
 
                 //If the current position is checkmate, then the rating difficulty is increased
@@ -343,6 +346,7 @@ export default class ClassicalUI extends React.Component {
                         userMoveIndexQ: 0,
                         userPieceSelectedIndex: 0,
                         score: this.state.score + 1,
+                        squareStyles: {}
 
                     })
                     console.log("Checkmate!")
@@ -384,26 +388,12 @@ export default class ClassicalUI extends React.Component {
             this.setState({
                 position: chess.fen(),
                 userSequenceIndex: this.state.userSequenceIndex + 1,
-                solutionIndex: this.state.solutionIndex + 1
+                solutionIndex: this.state.solutionIndex + 1,
+                squareStyles: {}
             })
         }
     }
 
-    handlePieceClick = (sourceSquare) => {
-        const chess = new Chess(this.state.position)
-        const validMoves = chess.moves({ verbose: true })
-        const move = validMoves.find((d) => d.from === sourceSquare)
-
-        console.log("Source Square Clicked: ", sourceSquare)
-
-        if (move) {
-            console.log("Valid Move Found: ", move)
-
-        } else {
-            console.log("No Valid Moves Found")
-
-        }
-    }
 
     //The logic for the solution button
     handleSolutionButton = () => {
@@ -458,6 +448,63 @@ export default class ClassicalUI extends React.Component {
         }, 1000);
     }
 
+    handlePieceClick = (sourceSquare) => {
+        setTimeout(() => {
+
+            console.log("sourceSquare: ", sourceSquare)
+            const color = sourceSquare.charAt(0);
+            const piece = sourceSquare.charAt(1).toLowerCase();
+
+            const chess = new Chess(this.state.position)
+            const possibleMoves = chess.moves({ verbose: true })
+
+            const move = possibleMoves.filter((move) => move.from === this.state.from && move.color === color && move.piece === piece)
+
+            let to = [];
+
+            for (let i = 0; i < move.length; i++) {
+                to.push(move[i].to)
+            }
+
+            this.setState({
+                to: to,
+                validMoves: move
+            })
+
+            //console.log("validMoves: ", validMoves)
+            console.log("Piece: ", piece)
+            console.log("Color: ", color)
+            console.log("possibleMoves: ", possibleMoves)
+            console.log("Moves: ", move)
+            console.log("To: ", this.state.to)
+            console.log("-------------------------------------------")
+
+            const squareStyles = {};
+
+            move.map((move) => {
+                squareStyles[move.to] = {
+                    background:
+                        chess.get(move.to) && chess.get(move.to).color !== chess.get(sourceSquare).color
+                            ? "radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)"
+                            : "radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)",
+                    borderRadius: "50%",
+                };
+            })
+
+            console.log("squareStyles: ", squareStyles);
+
+            this.setState({ squareStyles: squareStyles })
+
+        }, 200);
+    }
+
+    handleSquareClick = (sourceSquare) => {
+        console.log("sourceSquare: ", sourceSquare)
+
+        this.setState({ from: sourceSquare })
+    }
+
+
     handleStartButtonClick = () => {
         this.handleBoardState();
         this.setState({ showStartButton: false })
@@ -467,6 +514,7 @@ export default class ClassicalUI extends React.Component {
     //Handles what the user sees and interacts with on their screen. 
     render() {
         if (this.state.checkmates.length >= 1) {
+
             let score = this.state.score;
             let rating = this.state.checkmates[this.state.indexes].rating;
             let theme = this.state.botMoves.length;
@@ -497,8 +545,10 @@ export default class ClassicalUI extends React.Component {
                             <button onClick={this.handleSolutionButton}>Solution</button>
                             <Chessboard
                                 position={this.state.position}
+                                onSquareClick={this.handleSquareClick}
                                 onPieceDrop={this.handleUserMoves}
                                 onPieceClick={this.handlePieceClick}
+                                customSquareStyles={this.state.squareStyles}
                                 animationDuration={500}
                                 boardOrientation={this.state.color}
                             />

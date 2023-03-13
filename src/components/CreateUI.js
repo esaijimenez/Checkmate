@@ -59,6 +59,9 @@ export default class CreateUI extends React.Component {
         });
 
         console.log("Position: ", chess.fen())
+    }
+
+    saveUserPosition = () => {
 
     }
 
@@ -66,6 +69,7 @@ export default class CreateUI extends React.Component {
         console.log("handlePieceClick: ", sourceSquare)
     }
 
+    //onPieceDrop={this.handleDrop}
 
     //render() returns a JSX element that allows us to write HTML in React.
     //Handles what the user sees and interacts with on their screen. 
@@ -81,8 +85,8 @@ export default class CreateUI extends React.Component {
                         <button onClick={this.removeSparePiece}>Remove</button>
                         <Chessboard
                             position={this.state.position}
-                            onPieceDrop={this.handleDrop}
                             onPieceClick={this.handlePieceClick}
+                            dropOffBoardAction={"trash"}
                         />
                     </div>
                 </div>
