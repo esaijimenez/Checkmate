@@ -106,6 +106,7 @@ export default class PlayUI extends React.Component {
     //The index obtained from getIndex() does not change until a puzzle is completed
     handleBoardState = () => {
         if (this.state.lives !== -1) {
+            console.log("HANDLE BOARD STATE CALLED")
 
             //Initializes the current position by pulling a FEN from the checkmates array at the specific index given by getIndex()
             //The checkmates array was created inside the componentDidMount() method.
@@ -435,6 +436,7 @@ export default class PlayUI extends React.Component {
                         userPieceSelectedIndex: 0,
                         confirmGameOver: true,
                         confirmGameOverLeaderboard: false,
+                        squareStyles: {}
                     })
                     this.getIndex(this.state.ratings)
                     this.handleBoardState();
@@ -445,6 +447,7 @@ export default class PlayUI extends React.Component {
                     this.setState({
                         position: chess.fen(),
                         solutionIndex: solutionIndex + 1,
+                        squareStyles: {}
                     })
 
                     this.handleSolutionButton()
@@ -464,6 +467,7 @@ export default class PlayUI extends React.Component {
             const possibleMoves = chess.moves({ verbose: true })
 
             const move = possibleMoves.filter((move) => move.from === this.state.from && move.color === color && move.piece === piece)
+
 
             let to = [];
 
@@ -501,12 +505,91 @@ export default class PlayUI extends React.Component {
             this.setState({ squareStyles: squareStyles })
 
         }, 200);
+
+
     }
 
     handleSquareClick = (sourceSquare) => {
         console.log("sourceSquare: ", sourceSquare)
 
+        const chess = new Chess(this.state.position)
+
         this.setState({ from: sourceSquare })
+
+        const userMove = chess.move({
+            from: this.state.from,
+            to: sourceSquare,
+            promotion: "q",
+        })
+
+        this.setState({
+            position: chess.fen()
+        })
+
+        console.log("userMove: ", userMove)
+        console.log("correctMove: ", this.state.userMoves)
+
+        //This block pulls all the moves to solve the current position
+        //The moves are manipulated to filter out everything to obtain only the user moves.
+        const allMoves = this.state.moves;
+        const splitAllMoves = allMoves.split(' ');
+        const filterUserMoves = splitAllMoves.filter((move, index) => index % 2 === 1);
+        const filteredMoves = filterUserMoves.map(move => move.split('-')[1]).filter(square => /[a-h][1-8]/.test(square));
+        const allUserMoves = filteredMoves.toString();
+
+        //Once the correct moves and sequences are stored, 
+        //they will be used later to validate whether the user made that move or not.
+        const correctMove = allUserMoves[this.state.userMoveIndex] + allUserMoves[this.state.userMoveIndex + 1];
+        const correctSequence = filterUserMoves.toString();
+        const correctPieceMovement = filterUserMoves[this.state.userSequenceIndex]
+
+        console.log("correctMove: ", correctMove)
+
+        setTimeout(() => {
+            if (chess.isCheckmate() === true) {
+                this.setState({
+                    ratings: this.state.ratings + 50,
+                    botMoveIndex: 0,
+                    userSequenceIndex: 0,
+                    userMoveIndex: 0,
+                    userMoveIndexQ: 0,
+                    userPieceSelectedIndex: 0,
+                    score: this.state.score + 1,
+                    squareStyles: {}
+                })
+                this.getIndex(this.state.ratings);
+                this.handleBoardState();
+            }
+
+            if (chess.isCheckmate() === false) {
+                if (sourceSquare === correctMove) {
+                    this.setState({
+                        botMoveIndex: this.state.botMoveIndex + 1,
+                        solutionIndex: this.state.solutionIndex + 1,
+                        userMoveIndex: this.state.userMoveIndex + 3,
+                        userMoveIndexQ: this.state.userMoveIndexQ + 1,
+                        userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3,
+                        squareStyles: {}
+                    })
+                    this.handleSubsequentMoves(this.state.position)
+                }
+
+                if (sourceSquare !== correctMove) {
+                    this.setState({
+                        lives: this.state.lives - 1,
+                        botMoveIndex: 0,
+                        userSequenceIndex: 0,
+                        userMoveIndex: 0,
+                        userMoveIndexQ: 0,
+                        userPieceSelectedIndex: 0,
+                        ratings: this.state.ratings,
+                        squareStyles: {}
+                    })
+                    this.getIndex(this.state.ratings);
+                    this.handleBoardState();
+                }
+            }
+        }, 1000);
     }
 
 

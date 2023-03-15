@@ -239,6 +239,7 @@ export default class BulletUI extends React.Component {
             if (targetSquare === correctMoveQ && sourceSquare !== userPieceSelected) {
                 if (chess.isCheckmate() === true) {
                     this.setState({
+                        position: chess.fen(),
                         ratings: this.state.ratings + 50,
                         botMoveIndex: 0,
                         userSequenceIndex: 0,
@@ -544,7 +545,92 @@ export default class BulletUI extends React.Component {
     handleSquareClick = (sourceSquare) => {
         console.log("sourceSquare: ", sourceSquare)
 
+        const chess = new Chess(this.state.position)
+
         this.setState({ from: sourceSquare })
+
+        const userMove = chess.move({
+            from: this.state.from,
+            to: sourceSquare,
+            promotion: "q",
+        })
+
+        this.setState({
+            position: chess.fen()
+        })
+
+        console.log("userMove: ", userMove)
+        console.log("correctMove: ", this.state.userMoves)
+
+        //This block pulls all the moves to solve the current position
+        //The moves are manipulated to filter out everything to obtain only the user moves.
+        const allMoves = this.state.moves;
+        const splitAllMoves = allMoves.split(' ');
+        const filterUserMoves = splitAllMoves.filter((move, index) => index % 2 === 1);
+        const filteredMoves = filterUserMoves.map(move => move.split('-')[1]).filter(square => /[a-h][1-8]/.test(square));
+        const allUserMoves = filteredMoves.toString();
+
+        //Once the correct moves and sequences are stored, 
+        //they will be used later to validate whether the user made that move or not.
+        const correctMove = allUserMoves[this.state.userMoveIndex] + allUserMoves[this.state.userMoveIndex + 1];
+        const correctSequence = filterUserMoves.toString();
+        const correctPieceMovement = filterUserMoves[this.state.userSequenceIndex]
+
+        console.log("correctMove: ", correctMove)
+
+        setTimeout(() => {
+            if (chess.isCheckmate() === true) {
+                this.setState({
+                    ratings: this.state.ratings + 50,
+                    botMoveIndex: 0,
+                    userSequenceIndex: 0,
+                    userMoveIndex: 0,
+                    userMoveIndexQ: 0,
+                    userPieceSelectedIndex: 0,
+                    score: this.state.score + 1,
+                    seconds: this.state.seconds + 20,
+                    squareStyles: {}
+                })
+                if (this.state.seconds > 60) {
+                    this.setState({
+                        seconds: this.state.seconds - 60,
+                        minutes: this.state.minutes + 1,
+                        squareStyles: {}
+                    });
+                }
+                this.getIndex(this.state.ratings);
+                this.handleBoardState();
+            }
+
+            if (chess.isCheckmate() === false) {
+                if (sourceSquare === correctMove) {
+                    this.setState({
+                        botMoveIndex: this.state.botMoveIndex + 1,
+                        solutionIndex: this.state.solutionIndex + 1,
+                        userMoveIndex: this.state.userMoveIndex + 3,
+                        userMoveIndexQ: this.state.userMoveIndexQ + 1,
+                        userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3,
+                        squareStyles: {}
+                    })
+                    this.handleSubsequentMoves(this.state.position)
+                }
+
+                if (sourceSquare !== correctMove) {
+                    this.setState({
+                        lives: this.state.lives - 1,
+                        botMoveIndex: 0,
+                        userSequenceIndex: 0,
+                        userMoveIndex: 0,
+                        userMoveIndexQ: 0,
+                        userPieceSelectedIndex: 0,
+                        ratings: this.state.ratings,
+                        squareStyles: {}
+                    })
+                    this.getIndex(this.state.ratings);
+                    this.handleBoardState();
+                }
+            }
+        }, 1000);
     }
 
     handleStartButtonClick = () => {
