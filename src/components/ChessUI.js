@@ -50,7 +50,6 @@ export default class ChessUI extends React.Component {
         })
     };
 
-
     //This function is only a placeholder, it was used to figure out how to move the pieces
     handleNewPositionClick = () => {
         const newRandomIndex = Math.floor(Math.random() * this.state.numCheckmates) + 1;
@@ -80,43 +79,9 @@ export default class ChessUI extends React.Component {
         });
     };
 
-
-
     render() {
         console.log("Random index generated: " + this.state.randomCheckmateIndex);
         console.log("gameMode: " + this.state.gameMode);
-
-        // if (this.state.checkmates.length >= 1) {
-        //     if (this.state.gameMode === "classical") {
-        //         return (
-        //             <div>
-        //                 <Navbar />
-        //                 <Link to="/"><button>Back</button></Link>
-        //                 <h1>Classical</h1>
-        //                 <div className='Chess'>
-        //                     <button onClick={this.handleNewPositionClick}>Generate Position</button>
-        //                     <Chessboard position={this.state.position} />
-        //                 </div>
-        //             </div >
-        //         );
-        //     }
-
-        //     else if (this.state.gameMode === "bullet") {
-        //         return (
-        //             <div>
-        //                 <Navbar />
-        //                 <Link to="/"><button>Back</button></Link>
-        //                 <h1>Bullet</h1>
-        //                 <div className='Chess'>
-        //                     <button onClick={this.handleNewPositionClick}>Generate Position</button>
-        //                     <Chessboard position={this.state.position} />
-        //                 </div>
-        //             </div >
-        //         );
-        //     }
-        // }
-
-
 
         if (this.state.checkmates.length >= 1) {
             return (

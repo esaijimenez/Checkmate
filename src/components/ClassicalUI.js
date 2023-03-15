@@ -438,6 +438,7 @@ export default class ClassicalUI extends React.Component {
                         userPieceSelectedIndex: 0,
                         confirmGameOver: true,
                         confirmGameOverLeaderboard: false,
+                        solutionActive: false,
                         squareStyles: {}
                     })
                     this.getIndex(this.state.ratings)
