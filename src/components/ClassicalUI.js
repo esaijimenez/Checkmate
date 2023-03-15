@@ -628,11 +628,10 @@ export default class ClassicalUI extends React.Component {
                         <div className='classical--info--container'>
                             
                             <div className = 'classical--info--1'>
-                            <h1>Rating: {rating}</h1>
-                            <button onClick={this.handleSolutionButton}>Solution</button>
-                            <h1>Mate in {theme}</h1>
+                            <div className = 'classical--item1'><h1>Rating: {rating}</h1></div>
+                            <div className = 'classical--item2'><button class = 'classical--solution--button' onClick={this.handleSolutionButton}>Solution</button></div>
+                            <div className = 'classical--item3'><h1>Mate in {theme}</h1></div>
                             </div>
-
 
                             <div className='classical--chessboard'>
                             <Chessboard
@@ -647,9 +646,9 @@ export default class ClassicalUI extends React.Component {
                             </div>
 
                             <div className = 'classical--info--2'>
-                            <div><h1>{color} to Move</h1></div>
-                            <h1>Score: {score}</h1>
-                            <h1>Lives left: {lives}</h1>
+                            <div className = 'classical--item4'><h1>{color} to Move</h1></div>
+                            <div className = 'classical--item5'><h1>Score: {score}</h1></div>
+                            <div className = 'classical--item6'><h1>Lives left: {lives}</h1></div>
                             </div>
                        
                     </div>

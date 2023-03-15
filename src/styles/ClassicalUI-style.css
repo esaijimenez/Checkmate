@@ -32,6 +32,7 @@
   border: 2px solid purple;
   display: flex;
   flex-direction: column;
+  
 }
 
 .classical--container {
@@ -39,4 +40,42 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.classical--item1 {
+  border: 2px solid black;
+  padding: 10px;
+  margin: 10px;
+}
+
+.classical--item2 {
+  padding: 10px;
+  margin: 10px;
+}
+
+.classical--item3 {
+  border: 2px solid black;
+  padding: 10px;
+  margin: 10px;
+}
+
+.classical--item4 {
+  border: 2px solid black;
+  padding: 10px;
+  margin: 10px;
+}
+
+.classical--item5, .classical--item6 {
+  border: 2px solid black;
+  padding: 10px;
+  margin: 10px;
+}
+
+.classical--solution--button {
+  background-color: blueviolet;
+  width: 200px;
+  padding: 10px;
+  margin: 20px;
+  font-size: 35px;
+  font-weight: 500;
 }
