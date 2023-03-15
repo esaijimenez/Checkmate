@@ -620,18 +620,21 @@ export default class ClassicalUI extends React.Component {
                 <div className='classical'>
                     <Navbar />
                     <h1>Classical Mate</h1>
-                    <div className='classical--chessboard'>
-
-                        <div className='classical--info'>
-                            {this.state.showStartButton && (
+                    {this.state.showStartButton && (
                                 <button onClick={this.handleStartButtonClick}>Start</button>
                             )}
+                    <div className = 'classical--container'>
+
+                        <div className='classical--info--container'>
+                            
+                            <div className = 'classical--info--1'>
                             <h1>Rating: {rating}</h1>
-                            <h1>{color} to Move</h1>
-                            <h1>Mate in {theme}</h1>
-                            <h1>Score: {score}</h1>
-                            <h1>Lives left: {lives}</h1>
                             <button onClick={this.handleSolutionButton}>Solution</button>
+                            <h1>Mate in {theme}</h1>
+                            </div>
+
+
+                            <div className='classical--chessboard'>
                             <Chessboard
                                 position={this.state.position}
                                 onSquareClick={this.handleSquareClick}
@@ -641,11 +644,18 @@ export default class ClassicalUI extends React.Component {
                                 animationDuration={500}
                                 boardOrientation={this.state.color}
                             />
-                        </div>
+                            </div>
+
+                            <div className = 'classical--info--2'>
+                            <div><h1>{color} to Move</h1></div>
+                            <h1>Score: {score}</h1>
+                            <h1>Lives left: {lives}</h1>
+                            </div>
+                       
                     </div>
                     {this.state.showGameOver && (<GameOver />)}
                     {this.state.showGameOverLeaderboard && (<GameOverLeaderboard />)}
-
+                    </div>
                 </div>
             );
         }
