@@ -43,6 +43,7 @@ export default class PlayUI extends React.Component {
             confirmGameOverLeaderboard: true,
             showStartButton: true,
             score: 0,
+            solutionActive: false,
             squareStyles: null
         };
     };
@@ -75,11 +76,6 @@ export default class PlayUI extends React.Component {
             })
         })
 
-        // //After a delay, it calls handleBoardState() that starts the game.
-        // setTimeout(() => {
-        //     this.handleBoardState()
-        // }, 1000);
-
     };
 
 
@@ -106,7 +102,6 @@ export default class PlayUI extends React.Component {
     //The index obtained from getIndex() does not change until a puzzle is completed
     handleBoardState = () => {
         if (this.state.lives !== -1) {
-            console.log("HANDLE BOARD STATE CALLED")
 
             //Initializes the current position by pulling a FEN from the checkmates array at the specific index given by getIndex()
             //The checkmates array was created inside the componentDidMount() method.
@@ -186,82 +181,107 @@ export default class PlayUI extends React.Component {
     //Validates the users moves and updates the position
     handleUserMoves = (sourceSquare, targetSquare) => {
 
-        //Grabs the current position and initialized a new Chess instance
-        const chess = new Chess(this.state.position)
-        const pieceSelected = sourceSquare;
-        console.log("Source square: ", pieceSelected)
+        if (!this.state.solutionActive) {
 
-        //Stores all valid moves in the current position
-        const validMoves = chess.moves({ verbose: true })
+            //Grabs the current position and initialized a new Chess instance
+            const chess = new Chess(this.state.position)
+            const pieceSelected = sourceSquare;
+            console.log("Source square: ", pieceSelected)
 
-        //Filters every valid move and finds the correct source square and target square that the user needs to find.
-        const move = validMoves.find((move) => move.from === sourceSquare && move.to === targetSquare);
+            //Stores all valid moves in the current position
+            const validMoves = chess.moves({ verbose: true })
 
-        //This block pulls all the moves to solve the current position
-        //The moves are manipulated to filter out everything to obtain only the user moves.
-        const allMoves = this.state.moves;
-        const splitAllMoves = allMoves.split(' ');
-        const filterUserMoves = splitAllMoves.filter((move, index) => index % 2 === 1);
-        const filteredMoves = filterUserMoves.map(move => move.split('-')[1]).filter(square => /[a-h][1-8]/.test(square));
-        const allUserMoves = filteredMoves.toString();
+            //Filters every valid move and finds the correct source square and target square that the user needs to find.
+            const move = validMoves.find((move) => move.from === sourceSquare && move.to === targetSquare);
 
-        //Once the correct moves and sequences are stored, 
-        //they will be used later to validate whether the user made that move or not.
-        const correctMove = allUserMoves[this.state.userMoveIndex] + allUserMoves[this.state.userMoveIndex + 1];
-        const correctSequence = filterUserMoves.toString();
-        const correctPieceMovement = filterUserMoves[this.state.userSequenceIndex]
+            //This block pulls all the moves to solve the current position
+            //The moves are manipulated to filter out everything to obtain only the user moves.
+            const allMoves = this.state.moves;
+            const splitAllMoves = allMoves.split(' ');
+            const filterUserMoves = splitAllMoves.filter((move, index) => index % 2 === 1);
+            const filteredMoves = filterUserMoves.map(move => move.split('-')[1]).filter(square => /[a-h][1-8]/.test(square));
+            const allUserMoves = filteredMoves.toString();
 
-        let correctMoveQ = filteredMoves[this.state.userMoveIndexQ];
+            //Once the correct moves and sequences are stored, 
+            //they will be used later to validate whether the user made that move or not.
+            const correctMove = allUserMoves[this.state.userMoveIndex] + allUserMoves[this.state.userMoveIndex + 1];
+            const correctSequence = filterUserMoves.toString();
+            const correctPieceMovement = filterUserMoves[this.state.userSequenceIndex]
 
-        if (correctMoveQ !== correctMove) {
-            targetSquare = correctMoveQ
-        }
+            let correctMoveQ = filteredMoves[this.state.userMoveIndexQ];
 
-        console.log("correctMove: ", correctMove)
-        console.log("correctMoveQ: ", correctMoveQ)
-        console.log("targetSquare: ", targetSquare)
+            if (correctMoveQ !== correctMove) {
+                targetSquare = correctMoveQ
+            }
 
-        this.setState({
-            userMoves: correctSequence
-        })
+            console.log("correctMove: ", correctMove)
+            console.log("correctMoveQ: ", correctMoveQ)
+            console.log("targetSquare: ", targetSquare)
+
+            this.setState({
+                userMoves: correctSequence
+            })
 
 
-        //These will be used to validate the proper source square was used by the user.
-        const userPiece = filterUserMoves.map(move => move.split('-')[0]).filter(square => /[a-h][1-8]/.test(square));
-        const userPieceToString = userPiece.toString()
-        const userPieceSelected = userPieceToString[this.state.userPieceSelectedIndex] +
-            userPieceToString[this.state.userPieceSelectedIndex + 1];
+            //These will be used to validate the proper source square was used by the user.
+            const userPiece = filterUserMoves.map(move => move.split('-')[0]).filter(square => /[a-h][1-8]/.test(square));
+            const userPieceToString = userPiece.toString()
+            const userPieceSelected = userPieceToString[this.state.userPieceSelectedIndex] +
+                userPieceToString[this.state.userPieceSelectedIndex + 1];
 
-        //Checks to see if the user made a legal move and selected the correct color
-        //If either of these are false, it reverts the piece back to the square it was on.
-        if (move && move.color === chess.turn()) {
+            //Checks to see if the user made a legal move and selected the correct color
+            //If either of these are false, it reverts the piece back to the square it was on.
+            if (move && move.color === chess.turn()) {
 
-            //If the target square is correct but the source square was incorrect,
-            //then the user moves on to the next puzzle and they lose a life.
-            if (targetSquare === correctMoveQ && sourceSquare !== userPieceSelected) {
-                if (chess.isCheckmate() === true) {
-                    this.setState({
-                        ratings: this.state.ratings + 50,
-                        botMoveIndex: 0,
-                        userSequenceIndex: 0,
-                        userMoveIndex: 0,
-                        userMoveIndexQ: 0,
-                        userPieceSelectedIndex: 0,
-                        score: this.state.score + 1,
-                        squareStyles: {}
+                //If the target square is correct but the source square was incorrect,
+                //then the user moves on to the next puzzle and they lose a life.
+                if (targetSquare === correctMoveQ && sourceSquare !== userPieceSelected) {
+                    if (chess.isCheckmate() === true) {
+                        this.setState({
+                            position: chess.fen(),
+                            ratings: this.state.ratings + 50,
+                            botMoveIndex: 0,
+                            userSequenceIndex: 0,
+                            userMoveIndex: 0,
+                            userMoveIndexQ: 0,
+                            userPieceSelectedIndex: 0,
+                            score: this.state.score + 1,
+                            squareStyles: {}
 
-                    })
-                    console.log("Checkmate!")
+                        })
+                        console.log("Checkmate!")
 
-                    //When the user successfully completes a puzzle, the slightly increased rating is
-                    //used to obtain the new index for the next puzzle.
-                    //Then the new board state is initialized using that new puzzle.
-                    setTimeout(() => {
-                        this.getIndex(this.state.ratings)
-                        this.handleBoardState()
-                    }, 1000);
+                        //When the user successfully completes a puzzle, the slightly increased rating is
+                        //used to obtain the new index for the next puzzle.
+                        //Then the new board state is initialized using that new puzzle.
+                        setTimeout(() => {
+                            this.getIndex(this.state.ratings)
+                            this.handleBoardState()
+                        }, 1000);
+                    }
+                    else if (chess.isCheckmate() === false) {
+                        this.setState({
+                            lives: this.state.lives - 1,
+                            botMoveIndex: 0,
+                            userSequenceIndex: 0,
+                            userMoveIndex: 0,
+                            userMoveIndexQ: 0,
+                            userPieceSelectedIndex: 0,
+                            ratings: this.state.ratings,
+                            squareStyles: {}
+                        })
+
+                        //When the user fails a puzzle, the rating stays around the same difficulty
+                        //and they are taken to a new board state.
+                        setTimeout(() => {
+                            this.getIndex(this.state.ratings)
+                            this.handleBoardState()
+                        }, 500);
+                    }
                 }
-                else if (chess.isCheckmate() === false) {
+                //If the target square is incorrect but the source square was correct,
+                //then the user moves on to the next puzzle and they lose a life.
+                if (targetSquare !== correctMoveQ && sourceSquare === userPieceSelected) {
                     this.setState({
                         lives: this.state.lives - 1,
                         botMoveIndex: 0,
@@ -280,95 +300,74 @@ export default class PlayUI extends React.Component {
                         this.handleBoardState()
                     }, 500);
                 }
-            }
-            //If the target square is incorrect but the source square was correct,
-            //then the user moves on to the next puzzle and they lose a life.
-            if (targetSquare !== correctMoveQ && sourceSquare === userPieceSelected) {
-                this.setState({
-                    lives: this.state.lives - 1,
-                    botMoveIndex: 0,
-                    userSequenceIndex: 0,
-                    userMoveIndex: 0,
-                    userMoveIndexQ: 0,
-                    userPieceSelectedIndex: 0,
-                    ratings: this.state.ratings,
-                    squareStyles: {}
-                })
 
-                //When the user fails a puzzle, the rating stays around the same difficulty
-                //and they are taken to a new board state.
-                setTimeout(() => {
-                    this.getIndex(this.state.ratings)
-                    this.handleBoardState()
-                }, 500);
-            }
-
-            //If both the target square and the source square are incorrect,
-            //then the user moves on to the next puzzle and they lose a life.
-            else if (targetSquare !== correctMoveQ && sourceSquare !== userPieceSelected) {
-                this.setState({
-                    lives: this.state.lives - 1,
-                    botMoveIndex: 0,
-                    userSequenceIndex: 0,
-                    userMoveIndex: 0,
-                    userMoveIndexQ: 0,
-                    userPieceSelectedIndex: 0,
-                    ratings: this.state.ratings,
-                    squareStyles: {}
-                })
-
-                //When the user fails a puzzle, the rating stays around the same difficulty
-                //and they are taken to a new board state.
-                setTimeout(() => {
-                    this.getIndex(this.state.ratings)
-                    this.handleBoardState()
-                }, 500);
-            }
-
-            //If both the target square and the source square are correct,
-            //then the piece that was moved by the user is successfully made
-            //and the position is updated to reflect that.
-            else if (targetSquare === correctMoveQ && sourceSquare === userPieceSelected) {
-                console.log("Correct Move")
-                chess.move(correctPieceMovement)
-                this.setState({
-                    position: chess.fen(),
-                    botMoveIndex: this.state.botMoveIndex + 1,
-                    solutionIndex: this.state.solutionIndex + 1,
-                    userMoveIndex: this.state.userMoveIndex + 3,
-                    userMoveIndexQ: this.state.userMoveIndexQ + 1,
-                    userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3,
-                    squareStyles: {}
-                })
-
-                //If the current position is checkmate, then the rating difficulty is increased
-                //and there score is increased by 1 point.
-                if (chess.isCheckmate() === true) {
+                //If both the target square and the source square are incorrect,
+                //then the user moves on to the next puzzle and they lose a life.
+                else if (targetSquare !== correctMoveQ && sourceSquare !== userPieceSelected) {
                     this.setState({
-                        ratings: this.state.ratings + 50,
+                        lives: this.state.lives - 1,
                         botMoveIndex: 0,
                         userSequenceIndex: 0,
                         userMoveIndex: 0,
                         userMoveIndexQ: 0,
                         userPieceSelectedIndex: 0,
-                        score: this.state.score + 1,
+                        ratings: this.state.ratings,
                         squareStyles: {}
-
                     })
-                    console.log("Checkmate!")
 
-                    //When the user successfully completes a puzzle, the slightly increased rating is
-                    //used to obtain the new index for the next puzzle.
-                    //Then the new board state is initialized using that new puzzle.
+                    //When the user fails a puzzle, the rating stays around the same difficulty
+                    //and they are taken to a new board state.
                     setTimeout(() => {
                         this.getIndex(this.state.ratings)
                         this.handleBoardState()
-                    }, 1000);
+                    }, 500);
                 }
 
-                //If the users move was successful, but its not checkmate,
-                //then handleSubsequentMoves() is called and passes the current position to it.
-                this.handleSubsequentMoves(this.state.position)
+                //If both the target square and the source square are correct,
+                //then the piece that was moved by the user is successfully made
+                //and the position is updated to reflect that.
+                else if (targetSquare === correctMoveQ && sourceSquare === userPieceSelected) {
+                    console.log("Correct Move")
+                    chess.move(correctPieceMovement)
+                    this.setState({
+                        position: chess.fen(),
+                        botMoveIndex: this.state.botMoveIndex + 1,
+                        solutionIndex: this.state.solutionIndex + 1,
+                        userMoveIndex: this.state.userMoveIndex + 3,
+                        userMoveIndexQ: this.state.userMoveIndexQ + 1,
+                        userPieceSelectedIndex: this.state.userPieceSelectedIndex + 3,
+                        squareStyles: {}
+                    })
+
+                    //If the current position is a checkmate, then the rating difficulty is increased
+                    //and there score is increased by 1 point.
+                    if (chess.isCheckmate() === true) {
+                        this.setState({
+                            ratings: this.state.ratings + 50,
+                            botMoveIndex: 0,
+                            userSequenceIndex: 0,
+                            userMoveIndex: 0,
+                            userMoveIndexQ: 0,
+                            userPieceSelectedIndex: 0,
+                            score: this.state.score + 1,
+                            squareStyles: {}
+
+                        })
+                        console.log("Checkmate!")
+
+                        //When the user successfully completes a puzzle, the slightly increased rating is
+                        //used to obtain the new index for the next puzzle.
+                        //Then the new board state is initialized using that new puzzle.
+                        setTimeout(() => {
+                            this.getIndex(this.state.ratings)
+                            this.handleBoardState()
+                        }, 1000);
+                    }
+
+                    //If the users move was successful, but its not checkmate,
+                    //then handleSubsequentMoves() is called and passes the current position to it.
+                    this.handleSubsequentMoves(this.state.position)
+                }
             }
         }
     }
@@ -404,6 +403,9 @@ export default class PlayUI extends React.Component {
     //The logic for the solution button
     handleSolutionButton = () => {
 
+        this.setState({
+            solutionActive: true
+        })
         //Creates a new Chess instance at the current position
         const chess = new Chess(this.state.position)
 
@@ -436,6 +438,7 @@ export default class PlayUI extends React.Component {
                         userPieceSelectedIndex: 0,
                         confirmGameOver: true,
                         confirmGameOverLeaderboard: false,
+                        solutionActive: false,
                         squareStyles: {}
                     })
                     this.getIndex(this.state.ratings)
@@ -467,7 +470,6 @@ export default class PlayUI extends React.Component {
             const possibleMoves = chess.moves({ verbose: true })
 
             const move = possibleMoves.filter((move) => move.from === this.state.from && move.color === color && move.piece === piece)
-
 
             let to = [];
 
@@ -505,7 +507,6 @@ export default class PlayUI extends React.Component {
             this.setState({ squareStyles: squareStyles })
 
         }, 200);
-
 
     }
 
