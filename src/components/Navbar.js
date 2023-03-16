@@ -5,10 +5,8 @@ import '../styles/Navbar.css'
 export default class Navbar extends React.Component {
     render() {
         return (
-
-        <div className="navbar--container">
-            <ul>
-                <li class = "navbar--link"><a href= '/'>Home</a></li>
+            <ul class = 'links--ul'>
+                <li class = "navbar--link--home"><a href= '/'>Checkmate</a></li>
                 <li class = "navbar--link"><a href= '/gamemode'>Play</a></li>
                 <li class = "navbar--link"><a href= '/custom-puzzles'>Custom Puzzles</a></li>
                 <li class = "navbar--link"><a href= '/leaderboard'>Leaderboard</a></li>
@@ -16,7 +14,6 @@ export default class Navbar extends React.Component {
                 <li class = "navbar--link"><a href= '/settings'>Settings</a></li>
                 <li class = "navbar--link"><a href= '/login'>Login</a></li>
             </ul>
-        </div>
             
         )
     }
