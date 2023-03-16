@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { db } from "../firebase.js";
 import { ref, onValue } from 'firebase/database';
-import { Chessboard } from 'react-chessboard';
+//import { Chessboard } from 'react-chessboard';
+import  Chessboard  from 'chessboardjsx';
 import { Piece } from "react-chessboard";
 
 
@@ -19,7 +20,7 @@ export default class CreateUI extends React.Component {
 
         //State variables that continuously update
         this.state = {
-            position: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+            position: "",
             sparePieces: [],
             whitePawn: "wP",
             whiteRook: "wR",
@@ -61,8 +62,8 @@ export default class CreateUI extends React.Component {
         console.log("Position: ", chess.fen())
     }
 
-    saveUserPosition = () => {
-
+    handleConfirmPositionButton = () => {
+        console.log("handleConfirmPositionButton")
     }
 
     handlePieceClick = (sourceSquare) => {
@@ -83,10 +84,11 @@ export default class CreateUI extends React.Component {
 
                     <div className='create--info'>
                         <button onClick={this.removeSparePiece}>Remove</button>
+                        <button onClick={this.handleConfirmPositionButton}>Confirm Puzzle</button>
                         <Chessboard
                             position={this.state.position}
                             onPieceClick={this.handlePieceClick}
-                            dropOffBoardAction={"trash"}
+                            sparePieces={true}
                         />
                     </div>
                 </div>
