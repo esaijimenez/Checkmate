@@ -1,9 +1,9 @@
 .classical {
-  display: "flex";
+  display: flex;
   flex-direction: column;
   text-align: center;
   align-items: center;
-  justify-content: "center"
+  justify-content: center;
 }
 
 .classical--chessboard {
@@ -46,6 +46,7 @@
   border: 2px solid black;
   padding: 10px;
   margin: 10px;
+  background-color: white;
 }
 
 .classical--item2 {
@@ -57,25 +58,27 @@
   border: 2px solid black;
   padding: 10px;
   margin: 10px;
+  background-color: white;
 }
 
 .classical--item4 {
   border: 2px solid black;
   padding: 10px;
   margin: 10px;
+  background-color: white;
 }
 
 .classical--item5, .classical--item6 {
   border: 2px solid black;
   padding: 10px;
   margin: 10px;
+  background-color: white;
 }
 
 .classical--solution--button {
   background-color: blueviolet;
-  width: 200px;
+  width: 280px;
   padding: 10px;
-  margin: 20px;
-  font-size: 35px;
+  font-size: 40px;
   font-weight: 500;
 }
