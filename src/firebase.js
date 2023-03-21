@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-    apiKey: "",
+    apiKey: "AIzaSyACnX0C3bIJ4qQodTeuCIjhjq5Dz5AA3UQ",
     authDomain: "checkmate-a504d.firebaseapp.com",
     databaseURL: "https://checkmate-a504d-default-rtdb.firebaseio.com",
     projectId: "checkmate-a504d",

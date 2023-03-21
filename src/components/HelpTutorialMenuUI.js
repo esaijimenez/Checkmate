@@ -20,7 +20,7 @@ export default class HelpTutorialMenuUI extends React.Component {
                     <Link to="/">
                         <button>Back</button>
                     </Link>
-                    <h1 class="title">Help and About us</h1>
+                    <h1 class = "title">Help and About us</h1>
 
                     <h1>Piece movement and capturing</h1>
                     <p>Pawn: Pawns can move forward one space and can only capture diagonally forward one space. If a pawn has not moved yet, it is able to move forward two spaces instead of one.</p>
