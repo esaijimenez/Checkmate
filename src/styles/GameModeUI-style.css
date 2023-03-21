@@ -8,23 +8,20 @@
     flex-direction: column;
     align-items: center;
     margin: auto;
+    margin-left: auto;
 }
 
 .bullet-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: auto;
+    margin-right: auto;
 }
 
 .gameMode-title {
-    position: static;
-    padding: 70px 30px 0px 30px;
     margin: auto;
     font-size: 100px;
     position: static;
-    padding: 40px 0px 0px 0px;
-    margin: auto;
     font-weight: bold;
     letter-spacing: 2px;
     font-size: 80px;
