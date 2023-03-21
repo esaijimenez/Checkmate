@@ -1,20 +1,20 @@
 .gameMode-container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    gap: 20px;
 }
 
 .classical-item {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: auto;
 }
 
 .bullet-item {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: auto;
 }
 
 .gameMode-title {
@@ -62,7 +62,6 @@
     font-size: 30px;
     font-weight: 100;
     padding: 10px;
-    margin: 20px;
     -webkit-box-shadow: 1px 1px 20px 0 #000000;
     -moz-box-shadow: 1px 1px 20px 0 #000000;
     box-shadow: 1px 1px 20px 0 #000000;
@@ -124,6 +123,6 @@
     text-shadow: 1px 1px 0px #e63946;
 }
 
-.gameMode-buttons-container {
-    padding: 250px 0px 0px;
+.gameMode--page--img {
+font-size: 200px;
 }

@@ -15,8 +15,8 @@ export default class GameModeUI extends React.Component {
                     <div className="classical-item">
                         <h1 class="gameMode-title">Classical</h1>
                         <p class="gameMode-caption">Find the mates at your own pace.</p>
+                        <p class = 'gameMode--page--img'>&#9819;</p>
                         <div className="gameMode-buttons-container">
-
                             <Link to="/classical">
                                 <button class="gameMode-button">Classical</button>
                             </Link>
@@ -26,7 +26,8 @@ export default class GameModeUI extends React.Component {
                     <div className="bullet-item">
                         <h1 class="gameMode-title">Bullet</h1>
                         <p class="gameMode-caption">Find the mates before time runs out.</p>
-                        <div className="gameMode-buttons-container">
+                        <p class = 'gameMode--page--img'>&#9818;</p>
+                        <div className ="gameMode-buttons-container">
                             <Link to="/bullet">
                                 <button class="gameMode-button">Bullet</button>
                             </Link>
