@@ -20,7 +20,6 @@ export default class MainMenuUI extends React.Component {
             <div className = "container">
                 <h1 class = "title">Checkmate</h1>
                 <p class = "caption">Find the checkmate!</p>
-                <br />
                 <div className = "buttons-container">
                 <Link to="/"></Link>
                 <Link to="/gamemode"><button class = "mainmenu--button">Play</button></Link>
