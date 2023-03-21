@@ -24,10 +24,10 @@ export default class MainMenuUI extends React.Component {
                 <Link to="/"></Link>
                 <Link to="/gamemode"><button class = "mainmenu--button">Play</button></Link>
                 <Link to="/custom-puzzles"><button class = "mainmenu--button">Custom Puzzles</button></Link>
-                <Link to="/leaderboard"><button class = "mainmenu--button">Leaderboard</button></Link>
-                <Link to="/help-tutorial"><button class = "mainmenu--button">Help</button></Link>
-                <Link to="/settings"><button class = "mainmenu--button">Settings</button></Link>
                 <Link to="/login"><button class = "mainmenu--button">Login</button></Link>
+                <Link to="/leaderboard"><button class = "mainmenu--button">Leaderboard</button></Link>
+                <Link to="/settings"><button class = "mainmenu--button">Settings</button></Link>
+                <Link to="/help-tutorial"><button class = "mainmenu--button">Help</button></Link>
                 </div>
             </div>
         )
