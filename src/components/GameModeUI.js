@@ -13,7 +13,7 @@ export default class GameModeUI extends React.Component {
 
                 <div className="gameMode-container">
                     <div className="classical-item">
-                        <h1 class="gameMode-title">Classical Mate</h1>
+                        <h1 class="gameMode-title">Classical</h1>
                         <p class="gameMode-caption">Find the mates at your own pace.</p>
                         <div className="gameMode-buttons-container">
 
@@ -24,7 +24,7 @@ export default class GameModeUI extends React.Component {
                     </div>
 
                     <div className="bullet-item">
-                        <h1 class="gameMode-title">Bullet Mate</h1>
+                        <h1 class="gameMode-title">Bullet</h1>
                         <p class="gameMode-caption">Find the mates before time runs out.</p>
                         <div className="gameMode-buttons-container">
                             <Link to="/bullet">

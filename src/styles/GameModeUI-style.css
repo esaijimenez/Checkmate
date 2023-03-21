@@ -21,36 +21,107 @@
     position: static;
     padding: 70px 30px 0px 30px;
     margin: auto;
-    font-weight: bold;
     font-size: 100px;
+    position: static;
+    padding: 40px 0px 0px 0px;
+    margin: auto;
+    font-weight: bold;
     letter-spacing: 2px;
+    font-size: 80px;
+    font-weight: 600;
+    font-family: 'Roboto', sans-serif;
+    color: #f1faee;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0px #e63946,
+                 1px 2px 0px #e63946,
+                 1px 3px 0px #e63946,
+                 1px 4px 0px #a8dadc,
+                 1px 5px 0px #a8dadc,
+                 1px 6px 0px #a8dadc,
+                 1px 10px 5px rgba(16, 16, 16, 0.5),
+                 1px 15px 10px rgba(16, 16, 16, 0.4),
+                 1px 20px 30px rgba(16, 16, 16, 0.3),
+                 1px 25px 50px rgba(16, 16, 16, 0.2);
 }
 
 .gameMode-button {
-    background-color: blueviolet;
-    font-size: 30px;
+    background: #1D3557;
+    background-image: -webkit-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -moz-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -ms-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -o-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -webkit-gradient(to bottom, #1D3557, #0F4A9E);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    height: 80px;
+    line-height: 50px;
+    color: #F1FAEE;
+    font-family: Georgia;
     width: 300px;
+    font-size: 30px;
+    font-weight: 100;
     padding: 10px;
     margin: 20px;
+    -webkit-box-shadow: 1px 1px 20px 0 #000000;
+    -moz-box-shadow: 1px 1px 20px 0 #000000;
+    box-shadow: 1px 1px 20px 0 #000000;
+    border: outset #0059a0 10px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
 }
 
 .gameMode-back-button {
-    background-color: blueviolet;
+    background: #1D3557;
+    background-image: -webkit-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -moz-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -ms-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -o-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -webkit-gradient(to bottom, #1D3557, #0F4A9E);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    height: 50px;
+    color: #F1FAEE;
+    font-family: Georgia;
+    width: 120px;
     font-size: 20px;
-    width: 150px;
-    padding: 10px;
+    font-weight: 100;
     margin: 20px;
+    -webkit-box-shadow: 1px 1px 20px 0 #000000;
+    -moz-box-shadow: 1px 1px 20px 0 #000000;
+    box-shadow: 1px 1px 20px 0 #000000;
+    border: outset #0059a0 10px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
 }
 
 .gameMode-button:hover, .gameMode-back-button:hover {
-    background-color: blue;
-    color:yellow;
+    border: inset #A8DADC 10px;
+    background: #0F4A9E;
+    background-image: -webkit-linear-gradient(top, #0F4A9E, #1D3557);
+    background-image: -moz-linear-gradient(top, #0F4A9E, #1D3557);
+    background-image: -ms-linear-gradient(top, #0F4A9E, #1D3557);
+    background-image: -o-linear-gradient(top, #0F4A9E, #1D3557);
+    background-image: -webkit-gradient(to bottom, #0F4A9E, #1D3557);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    text-decoration: none;
 }
 
 .gameMode-caption {
     position: static;
     margin: auto;
     font-size: 30px;
+    font-weight: 400;
+    font-family: Georgia;
+    color: #f1faee;
+    text-shadow: 1px 1px 0px #e63946;
 }
 
 .gameMode-buttons-container {
