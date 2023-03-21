@@ -2,7 +2,7 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
-    background-color: #052f37;
+    background-color: #1d3557;
     width: 100%;
 }
 
@@ -15,36 +15,36 @@
     font-size: 30px;
     cursor: pointer;
     padding: 10px 30px 10px 30px;
+    font-family: Georgia;
 }
 
 .navbar--link--home {
     float: left;
-    color: whitesmoke;
+    color: #f1faee;
     border: none;
     text-align: center;
     text-decoration: none;
     font-size: 30px;
-    font-weight: 900;
+    font-weight: 700;
     cursor: pointer;
     padding: 10px;
     margin-left: 110px;
     margin-right: 150px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0px #e63946;
 }
 
-a, a:link, a:visited {
-    color: #FFFAFA;
+a:link, a:visited {
+    color: #f1faee;
     text-decoration: none;
     display: block;
 }
 .navbar--link:hover {
-    background-color: #196d7b;
-    text-decoration: none;
-    color: white;
+    background-color: #e63946;
 }
 
 .navbar--link:active {
-    color: white;
-    text-decoration: none;
-    background-color: #052f37;
+    color: #f1faee;
+    background-color: #a8dadc;
 }
