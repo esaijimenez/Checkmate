@@ -7,7 +7,7 @@
 }
 
 .navbar--link {
-    float: left;
+    float: right;
     color: whitesmoke;
     border: none;
     text-align: center;
@@ -16,6 +16,7 @@
     cursor: pointer;
     padding: 10px 30px 10px 30px;
     font-family: Georgia;
+    margin: auto;
 }
 
 .navbar--link--home {
@@ -24,12 +25,13 @@
     border: none;
     text-align: center;
     text-decoration: none;
-    font-size: 30px;
+    font-size: 40px;
     font-weight: 700;
     cursor: pointer;
-    padding: 10px;
-    margin-left: 110px;
-    margin-right: 150px;
+    padding: 5px;
+    margin: auto;
+    margin-left: 3em;
+    letter-spacing: 2px;
     font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
     text-shadow: 1px 1px 0px #e63946;

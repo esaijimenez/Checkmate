@@ -12,6 +12,7 @@
   padding: 10px 10px 0px 10px;
   height: 650px;
   width: 650px;
+  margin: auto;
 }
 
 .classical--info--container {
@@ -52,7 +53,7 @@
   height: 70px;
   width: 300px;
   background-color: #e63946;
-  border-radius: 25px;
+  border-radius: 10px;
 }
 
 .classical--container {
@@ -66,7 +67,6 @@
   margin: auto;
   font-family: Georgia;
 }
-
 
 .classical--solution--button {
   width: 280px;
@@ -87,6 +87,7 @@
     font-family: Georgia;
     font-weight: 100;
     margin: 20px;
+    margin-top: -50px;
     -webkit-box-shadow: 1px 1px 20px 0 #000000;
     -moz-box-shadow: 1px 1px 20px 0 #000000;
     box-shadow: 1px 1px 20px 0 #000000;
@@ -99,7 +100,7 @@
 
 .classical--solution--button:hover {
   border: inset #A8DADC 10px;
-  background: #0F4A9E;
+  background: #e63946;
   background-image: -webkit-linear-gradient(top, #0F4A9E, #1D3557);
   background-image: -moz-linear-gradient(top, #0F4A9E, #1D3557);
   background-image: -ms-linear-gradient(top, #0F4A9E, #1D3557);
@@ -109,7 +110,6 @@
   -moz-border-radius: 10px;
   border-radius: 10px;
   text-decoration: none;
-  color: #e63946;
 }
 
 .classical--start--button {
