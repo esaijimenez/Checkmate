@@ -624,9 +624,6 @@ export default class ClassicalUI extends React.Component {
                     <div className = 'classical--container'>
 
                         <div className='classical--info--container'>
-
-                        
-                            
                             <div className = 'classical--info--1'>
                             <h1 class = 'classical--title'>Classical Mate</h1>
                             {this.state.showStartButton && (
@@ -651,10 +648,10 @@ export default class ClassicalUI extends React.Component {
 
                             <div className = 'classical--info--2'>
                             <div className = 'classical--item4'><h1>{color} to Move</h1></div>
+                            <div className = 'classical--item5'><h1>Score: {score}</h1></div>
                             
                             <div className = 'classical--info--3'>
-                            <div className = 'classical--item5'><h1>Score: {score}</h1></div>
-                            <div className = 'classical--item6'><h1>Lives left: {lives}</h1></div>
+                            <div className = 'classical--item6'><h1>{lives} lives left</h1></div>
                             </div>
                             </div>
                        
