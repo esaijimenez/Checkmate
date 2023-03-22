@@ -629,7 +629,7 @@ export default class ClassicalUI extends React.Component {
                             {this.state.showStartButton && (
                                 <button onClick={this.handleStartButtonClick} class = 'classical--start--button'>Start</button>
                             )}
-                            <div className = 'classical--item3'><h1>Mate in {theme}</h1></div>
+                            <div className = 'classical--item3'><h1>Mate in {theme} moves</h1></div>
                             <div className = 'classical--item2'><button class = 'classical--solution--button' onClick={this.handleSolutionButton}>Solution</button></div>
                             </div>
 
