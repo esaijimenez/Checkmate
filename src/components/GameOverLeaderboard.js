@@ -6,11 +6,11 @@ const GameOverLeaderboard = () => {
     return (
         <div className="popup">
             <div className="popup-content">
-                <h2>Top 10!</h2>
-                <p>You made it on the leaderboard!.</p>
+                <h2 class = "popup-message-main">Top 10 Score</h2>
+                <p class = "popup-message-sub">You made it on the leaderboard!</p>
                 <div className="popup-buttons">
-                    <Link to="/gamemode"><button>Restart</button></Link>
-                    <Link to="/"><button>Return Home</button></Link>
+                    <Link to="/gamemode"><button class = 'popup-button-1'>Restart Game</button></Link>
+                    <Link to="/"><button class = 'popup-button-2'>Return Home</button></Link>
                 </div>
             </div>
         </div>
