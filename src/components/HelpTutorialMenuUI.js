@@ -20,9 +20,14 @@ export default class HelpTutorialMenuUI extends React.Component {
             <body classname>
                 <div classname="help">
                     <Link to="/">
-                        <button>Back</button>
+                        <button class = "help--button">Back</button>
                     </Link>
                     <h1 class = "help--title">Help and About us</h1>
+
+                    <h1 class = "help--subtitle">About Us</h1>
+                    <p class = "help--paragraph">Checkmate is a website for practicing chess puzzles made for our Senior Capstone projects while pursuing our bachelor’s degree. This website was made by Esai Jimenez, Autumn Hale, and Trentin Barnhart during the spring semester of 2023.</p>
+                    <br/>
+                    <br/>
 
                     <h1 class = "help--subtitle">Piece movement and capturing</h1>
                     <p class = "help--paragraph">Pawn: Pawns can move forward one space and can only capture diagonally forward one space. If a pawn has not moved yet, it is able to move forward two spaces instead of one.</p>
@@ -83,8 +88,7 @@ export default class HelpTutorialMenuUI extends React.Component {
                     <img src = "images\tutorial\EnPassant2.PNG" alt = "enPassant2"/>
                     <img src = "images\tutorial\EnPassant3.PNG" alt = "enPassant3"/>
 
-                    <h1 class = "help--subtitle">About Us</h1>
-                    <p class = "help--paragraph">Checkmate is a website for practicing chess puzzles made for our Senior Capstone projects while pursuing our bachelor’s degree. This website was made by Esai Jimenez, Autumn Hale, and Trentin Barnhart during the spring semester of 2023.</p>
+                    <br/>
                 </div>
             </body>
         );
