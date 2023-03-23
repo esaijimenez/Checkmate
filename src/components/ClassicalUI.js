@@ -619,8 +619,6 @@ export default class ClassicalUI extends React.Component {
             return (
                 <div className='classical'>
                     <Navbar />
-                    
-                    
                     <div className = 'classical--container'>
 
                         <div className='classical--info--container'>
