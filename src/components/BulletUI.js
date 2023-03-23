@@ -667,23 +667,24 @@ export default class BulletUI extends React.Component {
             let lives = this.state.lives;
             let minutes = this.state.minutes;
             let seconds = this.state.seconds;
+
+
             return (
                 <div className='bullet'>
                     <Navbar />
-                    <h1>Bullet Mate</h1>
-                    <div className='bullet--chessboard'>
+                    <div className = 'bullet--container'>
 
-                        <div className='bullet--info'>
+                        <div className='bullet--info--container'>
+                            <div className = 'bullet--info--1'>
+                            <h1 class = 'bullet--title'>Bullet Mate</h1>
                             {this.state.showStartButton && (
-                                <button onClick={this.handleStartButtonClick}>Start</button>
+                                <button onClick={this.handleStartButtonClick} class = 'bullet--start--button'>Start</button>
                             )}
-                            <h1>Timer: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
-                            <h1>Rating: {rating}</h1>
-                            <h1>{color} to Move</h1>
-                            <h1>Mate in {theme}</h1>
-                            <h1>Score: {score}</h1>
-                            <h1>Lives left: {lives}</h1>
-                            <button onClick={this.handleSolutionButton}>Solution</button>
+                            <div className = 'bullet--item3'><h1>Mate in {theme} moves</h1></div>
+                            <div className = 'bullet--item2'><button class = 'bullet--solution--button' onClick={this.handleSolutionButton}>Solution</button></div>
+                            </div>
+
+                            <div className='bullet--chessboard'>
                             <Chessboard
                                 position={this.state.position}
                                 onSquareClick={this.handleSquareClick}
@@ -693,10 +694,25 @@ export default class BulletUI extends React.Component {
                                 animationDuration={500}
                                 boardOrientation={this.state.color}
                             />
-                        </div>
+                            </div>
+
+                            <div className = 'bullet--info--2'>
+                            <div className = 'bullet--item4'><h1>{color} to Move</h1></div>
+                            <div className = 'bullet--item1'><h1>Rating: {rating}</h1></div>
+                            <div className = 'bullet--item5'><h1>Score: {score}</h1></div>
+                            
+                            <div className = 'bullet--info--3'>
+                            <div className = 'bullet--item6'><h1>{lives} lives left</h1></div>
+                            </div>
+                            <div className = 'bullet--item7'>
+                            <h1>Timer: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
+                            </div>
+                            </div>
+                       
                     </div>
                     {this.state.showGameOver && (<GameOver />)}
                     {this.state.showGameOverLeaderboard && (<GameOverLeaderboard />)}
+                    </div>
                 </div>
             );
         }
