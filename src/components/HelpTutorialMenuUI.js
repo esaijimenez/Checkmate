@@ -76,6 +76,10 @@ export default class HelpTutorialMenuUI extends React.Component {
                     <img src = "images\tutorial\Castling2.PNG" alt = "castling2"/>
                     
                     <p>En Passant: When an opposing pawn moves two spaces forward, and you have a pawn that is directly beside it, you can move your piece diagonally behind the opposing pawn, capturing it as if it had only moved forward one space instead of two.</p>
+                    <p>Even though the opponent moves their pawn forward two spaces, light side is able to capture the pawn as if it had moved one space</p>
+                    <img src = "images\tutorial\EnPassant1.PNG" alt = "enPassant1"/>
+                    <img src = "images\tutorial\EnPassant2.PNG" alt = "enPassant2"/>
+                    <img src = "images\tutorial\EnPassant3.PNG" alt = "enPassant3"/>
 
                     <h1>About Us</h1>
                     <p>Checkmate is a website for practicing chess puzzles made for our Senior Capstone projects while pursuing our bachelor’s degree. This website was made by Esai Jimenez, Autumn Hale, and Trentin Barnhart during the spring semester of 2023.</p>
