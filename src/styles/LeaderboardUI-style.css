@@ -24,3 +24,8 @@
     cursor: pointer;
     text-align: center;
 }
+
+table{
+    margin-left: 5%;
+    width: 40%;
+}
