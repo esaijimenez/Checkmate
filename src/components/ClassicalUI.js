@@ -8,6 +8,7 @@ import Navbar from './Navbar.js';
 import '../styles/ClassicalUI-style.css'
 import GameOver from './GameOver.js';
 import GameOverLeaderboard from './GameOverLeaderboard.js';
+import LeaderboardUI from './LeaderboardUI.js';
 
 
 export default class ClassicalUI extends React.Component {
@@ -620,6 +621,7 @@ export default class ClassicalUI extends React.Component {
                 <div className='classical'>
                     <Navbar />
                     
+                    {<LeaderboardUI score={score}/>}
                     
                     <div className = 'classical--container'>
 

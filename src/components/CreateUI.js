@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { db } from "../firebase.js";
 import { ref, onValue } from 'firebase/database';
-//import { Chessboard } from 'react-chessboard';
-import  Chessboard  from 'chessboardjsx';
+// import{ Chessboard } from 'react-chessboard';
+import Chessboard from 'chessboardjsx';
 import { Piece } from "react-chessboard";
 
 
@@ -20,7 +20,7 @@ export default class CreateUI extends React.Component {
 
         //State variables that continuously update
         this.state = {
-            position: "",
+            position: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
             sparePieces: [],
             whitePawn: "wP",
             whiteRook: "wR",
@@ -34,7 +34,7 @@ export default class CreateUI extends React.Component {
             blackBishop: "bB",
             blackQueen: "bQ",
             blackKing: "bK",
-
+            offBoard: "snapback"
         };
     };
 
@@ -48,18 +48,24 @@ export default class CreateUI extends React.Component {
         console.log("target: ", targetSquare)
 
         const chess = new Chess(this.state.position)
+        
+        // try{
+        //     chess.move({
+        //         from: sourceSquare,
+        //         to: targetSquare,
+        //         promotion: "q"
+        //     });
+        // } 
+        // catch {
+        //     console.log("Not valid")
+        // }
 
-        chess.move({
-            from: sourceSquare,
-            to: targetSquare,
-            promotion: "q"
-        });
+        console.log("Position: ", chess.fen())
 
         this.setState({
             position: chess.fen()
         });
 
-        console.log("Position: ", chess.fen())
     }
 
     handleConfirmPositionButton = () => {
@@ -69,6 +75,16 @@ export default class CreateUI extends React.Component {
     handlePieceClick = (sourceSquare) => {
         console.log("handlePieceClick: ", sourceSquare)
     }
+    
+    handleDropOffBoard  = () => {
+        console.log("Dropped Off Board!!!!: ")
+        this.setState({
+            offBoard: "trash"
+        })
+        
+        console.log("offBoard: ", this.state.offBoard)
+    }
+    
 
     //onPieceDrop={this.handleDrop}
 
@@ -81,9 +97,8 @@ export default class CreateUI extends React.Component {
                 <h1>Create Mate</h1>
                 <div className='create--chessboard'>
 
-
                     <div className='create--info'>
-                        <button onClick={this.removeSparePiece}>Remove</button>
+                        <button onClick={this.handleDropOffBoard}>Remove</button>
                         <button onClick={this.handleConfirmPositionButton}>Confirm Puzzle</button>
                         <Chessboard
                             position={this.state.position}
