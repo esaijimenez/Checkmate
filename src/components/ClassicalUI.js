@@ -621,7 +621,7 @@ export default class ClassicalUI extends React.Component {
                 <div className='classical'>
                     <Navbar />
                     
-                    {<LeaderboardUI score={score}/>}
+                    {false && <LeaderboardUI score={score}/>}
                     
                     <div className = 'classical--container'>
 
