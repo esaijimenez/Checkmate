@@ -28,7 +28,8 @@
 .tutorial--img{
     height: 200px;
     width: 200px;
-    margin: 30px 60px 90px;
+    margin: 30px 20px 90px;
+    justify-content: flex-end;
 }
 
 .help--title{
@@ -83,6 +84,16 @@
     font-weight: 400;
     font-family: Georgia;
     color: #1d3557;
+    border: 2px solid red;
+}
+
+.img-caption {
+    text-align: center;
+    font-size: 25px;
+    font-weight: 400;
+    font-family: Georgia;
+    color: #1d3557;
+    border: 2px solid green;
 }
 
 .about--container {
@@ -103,7 +114,8 @@
 
 .tutorial--container {
     background-color: #a8dadc;
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
     margin: auto;
     margin-top: 30px;
     margin-bottom: 30px;
@@ -115,4 +127,12 @@
     box-shadow: 4px 26px 58px 1px rgb(0, 0, 0),
     0px 5px 14px 0px rgba(0,0,0,0.18);
     align-items: start;
+    flex-wrap: wrap;
+}
+
+.help--item--1 {
+    display: flex;
+    justify-content: center;
+    border: 2px solid blue;
+    flex-direction: column;
 }
