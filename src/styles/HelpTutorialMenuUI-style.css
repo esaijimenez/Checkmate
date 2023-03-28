@@ -26,10 +26,10 @@
 }
 
 .tutorial--img{
-    height: 200px;
-    width: 200px;
-    margin: 30px 20px 90px;
-    justify-content: flex-end;
+    height: 300px;
+    width: 300px;
+    margin: 30px;
+    flex-direction: row;
 }
 
 .help--title{
@@ -132,7 +132,6 @@
 
 .help--item--1 {
     display: flex;
-    justify-content: center;
     border: 2px solid blue;
     flex-direction: column;
 }
