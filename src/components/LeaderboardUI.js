@@ -57,9 +57,7 @@ export default class LeaderboardUI extends React.Component {
         return (
             <div>
                 <Link to="/"><button class = "leaderboard--back">Back</button></Link>
-<<<<<<< Updated upstream
-              
-=======
+                
                 <h1>Leaderboards</h1>
                 <div>
                     <h2>Bullet Mate</h2>
@@ -111,8 +109,6 @@ export default class LeaderboardUI extends React.Component {
                     <div>3</div>
                 </div>
 
-
->>>>>>> Stashed changes
             </div>
         );
     }
