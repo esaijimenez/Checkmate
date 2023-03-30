@@ -57,7 +57,62 @@ export default class LeaderboardUI extends React.Component {
         return (
             <div>
                 <Link to="/"><button class = "leaderboard--back">Back</button></Link>
+<<<<<<< Updated upstream
               
+=======
+                <h1>Leaderboards</h1>
+                <div>
+                    <h2>Bullet Mate</h2>
+                    <h2>Classical Mate</h2>
+                </div>
+                <div class = " bullet--leaderboard--wrapper">
+                    <div class = "bullet--name--title">name</div>
+                    <div class = "bullet--score--title">score</div>
+                    <div class = "bullet--time--title">time</div>
+
+                    <div>paul</div>
+                    <div>24</div>
+                    <div>3</div>
+
+                    <div>paul</div>
+                    <div>24</div>
+                    <div>3</div>
+
+                    <div>paul</div>
+                    <div>24</div>
+                    <div>3</div>
+
+                    <div>paul</div>
+                    <div>24</div>
+                    <div>3</div>
+
+                    <div>paul</div>
+                    <div>24</div>
+                    <div>3</div>
+
+                    <div>paul</div>
+                    <div>24</div>
+                    <div>3</div>
+
+                    <div>paul</div>
+                    <div>24</div>
+                    <div>3</div>
+
+                    <div>paul</div>
+                    <div>24</div>
+                    <div>3</div>
+
+                    <div>paul</div>
+                    <div>24</div>
+                    <div>3</div>
+
+                    <div>paul</div>
+                    <div>24</div>
+                    <div>3</div>
+                </div>
+
+
+>>>>>>> Stashed changes
             </div>
         );
     }
