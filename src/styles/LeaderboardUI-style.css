@@ -25,7 +25,24 @@
     text-align: center;
 }
 
-table{
-    margin-left: 5%;
-    width: 40%;
+.bullet--leaderboard--wrapper{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 50px;
+    gap: 10px;
+    width: 50%;
+    margin: 20px;
+}
+
+.bullet--name--title{
+    grid-column: 1;
+    grid-row: 1;
+}
+.bullet--score--title{
+    grid-column: 2;
+    grid-row: 1;
+}
+.bullet--time--title{
+    grid-column: 3;
+    grid-row: 1;
 }
