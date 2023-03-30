@@ -25,16 +25,16 @@
     text-align: center;
 }
 
-img{
-    height: "200";
-    width: "200";
-    margin: 30px 60px 90px;
+.tutorial--img{
+    height: 300px;
+    width: 300px;
+    margin: 30px;
+    flex-direction: row;
 }
 
 .help--title{
     text-align: center;
     position: static;
-    padding: 40px 0px 0px 0px;
     margin: auto;
     font-weight: bold;
     letter-spacing: 2px;
@@ -57,23 +57,81 @@ img{
 
 .help--subtitle{
     text-align: center;
-    position: static;
-    margin: auto;
     font-size: 35px;
     font-weight: 400;
     font-family: Georgia;
     color: #f1faee;
-    text-shadow: 1px 1px 0px #e63946;
+    font-weight: 500;
+    font-family: Georgia;
+    margin: auto;
+    background-color: #e63946;
+    border: 2px solid #F1FAEE;
+    border-radius: 4px;
+    padding: 4px;
 }
 
-.help--paragraph{
+.about--paragraph{
     text-align: center;
-    position: static;
-    margin: auto;
     font-size: 25px;
     font-weight: 400;
     font-family: Georgia;
     color: #f1faee;
 }
 
+.help--paragraph{
+    text-align: center;
+    font-size: 25px;
+    font-weight: 400;
+    font-family: Georgia;
+    color: #1d3557;
+    border: 2px solid red;
+}
 
+.img-caption {
+    text-align: center;
+    font-size: 25px;
+    font-weight: 400;
+    font-family: Georgia;
+    color: #1d3557;
+    border: 2px solid green;
+}
+
+.about--container {
+    background-color: #1d3557;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: 3px solid #f1faee;
+    height: 200px;
+    width: 80%;
+    padding: 20px;
+    justify-content: center;
+    box-shadow: 4px 26px 58px 1px rgb(0, 0, 0),
+    0px 5px 14px 0px rgba(0,0,0,0.18);
+}
+
+.tutorial--container {
+    background-color: #a8dadc;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: 3px solid #1d3557;
+    height: 80%;
+    width: 80%;
+    padding: 20px;
+    justify-content: center;
+    box-shadow: 4px 26px 58px 1px rgb(0, 0, 0),
+    0px 5px 14px 0px rgba(0,0,0,0.18);
+    align-items: start;
+    flex-wrap: wrap;
+}
+
+.help--item--1 {
+    display: flex;
+    border: 2px solid blue;
+    flex-direction: column;
+}
