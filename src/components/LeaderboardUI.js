@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import ClassicalUI from "./ClassicalUI";
 import { db } from "../firebase.js";
 import { ref, onValue, set } from 'firebase/database';
+import Navbar from './Navbar.js';
 
 import '../styles/LeaderboardUI-style.css'
 
@@ -55,15 +56,16 @@ export default class LeaderboardUI extends React.Component {
     
     render() {
         return (
-            <div>
-                <Link to="/"><button class = "leaderboard--back">Back</button></Link>
+            <div className='leaderboard'>
+
+                <Navbar/>
                 
-                <h1>Leaderboards</h1>
+                <h1 className = "leaderboard--title">Leaderboard</h1>
                 <div>
                     <h2>Bullet Mate</h2>
                     <h2>Classical Mate</h2>
                 </div>
-                <div class = " bullet--leaderboard--wrapper">
+                <div class = "bullet--leaderboard--wrapper">
                     <div class = "bullet--name--title">name</div>
                     <div class = "bullet--score--title">score</div>
                     <div class = "bullet--time--title">time</div>
