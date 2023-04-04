@@ -208,7 +208,7 @@ export default class HelpTutorialMenuUI extends React.Component {
           <h1 class="help--subtitle">How to check and checkmate</h1>
 
           <p class="help--paragraph">
-            Check is the term used to describe a situation where unless
+            'Check' is the term used to describe a situation where unless
             the checked player responds immediately their king will be taken,
             losing them the game. A player who has been checked must spend their
             next move either moving their king out of check, blocking check with
