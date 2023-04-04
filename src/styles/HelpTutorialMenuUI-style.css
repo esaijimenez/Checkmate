@@ -9,15 +9,29 @@
 .tutorial--img{
     height: 300px;
     width: 300px;
-    margin: 30px;
-    flex-direction: row;
-}
-
-.pawn--img{
-    height: 300px;
-    width: 300px;
     padding: 10px;
     margin: auto;
+}
+
+.large--img {
+    margin: auto;
+    padding: 10px;
+    height: 400px;
+    width: 400px;
+}
+
+.med--img {
+    margin: auto;
+    padding: 10px;
+    height: 340px;
+    width: 380px;
+}
+
+.small--img {
+    margin: auto;
+    padding: 10px;
+    height: 270px;
+    width: 270px;
 }
 
 .help--title{
@@ -82,11 +96,13 @@
 }
 
 .help--paragraph{
-    text-align: center;
+    text-align: left;
     font-size: 25px;
     font-weight: 400;
     font-family: Georgia;
     color: #1d3557;
+    margin: auto;
+    padding: 10px;
 }
 
 .img-caption {
@@ -96,6 +112,8 @@
     font-family: Georgia;
     color: #f1faee;
     margin: auto;
+    width: 80%;
+    padding-bottom: 10px;
 }
 
 .about--container {
@@ -132,15 +150,12 @@
     flex-wrap: wrap;
 }
 
-.help--item--1, .help--item--2, .help--item--3 {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
 
 .help--block {
     background-color: #1d3557;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    margin-top: 20px;
     border-radius: 10px;
     width: 100%;
+    height: auto;
 }
