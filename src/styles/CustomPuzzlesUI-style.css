@@ -96,7 +96,7 @@
     text-align: center;
 }
 
-.customPuzzle-back-button:hover, .customPuzzle-back-button:hover {
+.customPuzzle-button:hover, .customPuzzle-back-button:hover {
     border: inset #A8DADC 10px;
     background: #0F4A9E;
     background-image: -webkit-linear-gradient(top, #0F4A9E, #1D3557);
@@ -123,3 +123,4 @@
 .gameMode--page--img {
 font-size: 200px;
 }
+

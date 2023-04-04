@@ -21,7 +21,7 @@ export default class HelpTutorialMenuUI extends React.Component {
         <h1 class="help--title">Help and About us</h1>
         
         <div className="about--container">
-          <h1 class="help--subtitle">About Us</h1>
+          <h1 class="about--subtitle">About Us</h1>
           <p class="about--paragraph">
             Checkmate is a website for practicing chess puzzles, creating
             puzzles, playing other's puzzles, and competing to earn a spot on a
@@ -35,48 +35,63 @@ export default class HelpTutorialMenuUI extends React.Component {
         
           <h1 class="help--subtitle">Piece movement and capturing</h1>
           <p class="help--paragraph">
-            Pawn: Pawns can move forward one space and can only capture
+            Pawns can move forward one space and can only capture
             diagonally forward one space. If a pawn has not moved yet, it is
             able to move forward two spaces instead of one.
           </p>
+
+          <div className = "help--block">
+          <p class="img-caption">Standard pawn movement.</p>
           <div className = 'help--item--1'>
-          <p class="img-caption">Standard Pawn Movement:</p>
           <img
             src="images\tutorial\Pawn1.PNG"
             alt="pawn1"
-            class="tutorial--img"
+            class="pawn--img"
           />
           <img
             src="images\tutorial\Pawn2.PNG"
             alt="pawn2"
-            class="tutorial--img"
+            class="pawn--img"
           />
+          </div>
+          </div>
+
+          <div className = "help--block">
           <p class="img-caption">
-            A pawn that has not moved yet moves two spaces:
+            A pawn that has not moved yet moves two spaces.
           </p>
+          <div className = 'help--item--2'>
+          
           <img
             src="images\tutorial\Pawn3.PNG"
             alt="pawn3"
-            class="tutorial--img"
+            class="pawn--img"
           />
           <img
             src="images\tutorial\Pawn4.PNG"
             alt="pawn4"
-            class="tutorial--img"
+            class="pawn--img"
           />
+          </div>
+          </div>
+
+          <div className = "help--block">
           <p class="img-caption">
-            A pawn capturing an enemy pawn diagnally
+            A pawn capturing an enemy pawn diagnally.
           </p>
+          <div className = 'help--item--3'>
+          
           <img
             src="images\tutorial\Pawn5.PNG"
             alt="pawn5"
-            class="tutorial--img"
+            class="pawn--img"
           />
           <img
             src="images\tutorial\Pawn6.PNG"
             alt="pawn6"
-            class="tutorial--img"
+            class="pawn--img"
           />
+          </div>
           </div>
 
           <p class="help--paragraph">
