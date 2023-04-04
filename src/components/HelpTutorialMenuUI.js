@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Navbar from './Navbar.js';
 
 import "../styles/HelpTutorialMenuUI-style.css";
 
@@ -13,13 +14,12 @@ export default class HelpTutorialMenuUI extends React.Component {
 
   render() {
     return (
-      <body classname>
-        <Link to="/">
-          <button class="help--button">Back</button>
-        </Link>
+      <div className='help'>
 
+          <Navbar/>
+          
         <h1 class="help--title">Help and About us</h1>
-
+        
         <div className="about--container">
           <h1 class="help--subtitle">About Us</h1>
           <p class="about--paragraph">
@@ -262,7 +262,7 @@ export default class HelpTutorialMenuUI extends React.Component {
             class="tutorial--img"
           />
         </div>
-      </body>
+      </div>
     );
   }
 }

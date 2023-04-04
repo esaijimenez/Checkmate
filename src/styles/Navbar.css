@@ -8,13 +8,13 @@
 
 .navbar--link {
     float: right;
-    color: whitesmoke;
+    color: #f1faee;
     border: none;
     text-align: center;
     text-decoration: none;
     font-size: 30px;
     cursor: pointer;
-    padding: 10px 30px 10px 30px;
+    padding: 15px 30px 15px 30px;
     font-family: Georgia;
     margin: auto;
 }
