@@ -2,116 +2,103 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ClassicalUI from "./ClassicalUI";
 import { db } from "../firebase.js";
-import { ref, onValue, set } from 'firebase/database';
-import Navbar from './Navbar.js';
+import { ref, onValue, set } from "firebase/database";
+import Navbar from "./Navbar.js";
 
-import '../styles/LeaderboardUI-style.css'
+import "../styles/LeaderboardUI-style.css";
 
 export default class LeaderboardUI extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            score: 0,
-            _score: 1,
-            allScores: [],
-            numScores: 0
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      score: 0,
+      _score: 1,
+      allScores: [],
+      numScores: 0,
     };
+  }
 
-    componentDidMount(){
-        this.getScores();
-        this.setScores("Test",1);
-    }
-    
-    getScores = () => {
-        const mateRef = ref(db, '/leaderboards/classical');
-        onValue(mateRef, (snapshot) => {
-            const count = snapshot.size;
-            
-            //Pushes all the puzzles from the database into an array
-            let allScores = [];
-            snapshot.forEach((scoreSnapshot) => {
-                allScores.push({
-                    name: scoreSnapshot.child("name").val(),
-                    score: scoreSnapshot.child("score").val()
-                })
-            });
-            //Sets some of the state variables
-            this.setState({
-                numScores: count,
-                allScores: allScores
-            })
-        })
-    }
+  componentDidMount() {
+    this.getScores();
+    this.setScores("Test", 1);
+  }
 
-    setScores = (name, score) => {
-        let userName = name
-        let userScore = score
-        const mateRef = ref(db, '/leaderboards/classical');
-        set(mateRef,{
-            name: userName,
-            score: userScore
+  getScores = () => {
+    const mateRef = ref(db, "/leaderboards/classical");
+    onValue(mateRef, (snapshot) => {
+      const count = snapshot.size;
+
+      //Pushes all the puzzles from the database into an array
+      let allScores = [];
+      snapshot.forEach((scoreSnapshot) => {
+        allScores.push({
+          name: scoreSnapshot.child("name").val(),
+          score: scoreSnapshot.child("score").val(),
         });
-    };
-    
-    render() {
-        return (
-            <div className='leaderboard'>
+      });
+      //Sets some of the state variables
+      this.setState({
+        numScores: count,
+        allScores: allScores,
+      });
+    });
+  };
 
-                <Navbar/>
-                
-                <h1 className = "leaderboard--title">Leaderboard</h1>
-                <div>
-                    <h2>Bullet Mate</h2>
-                    <h2>Classical Mate</h2>
-                </div>
-                <div class = "bullet--leaderboard--wrapper">
-                    <div class = "bullet--name--title">name</div>
-                    <div class = "bullet--score--title">score</div>
-                    <div class = "bullet--time--title">time</div>
+  setScores = (name, score) => {
+    let userName = name;
+    let userScore = score;
+    const mateRef = ref(db, "/leaderboards/classical");
+    set(mateRef, {
+      name: userName,
+      score: userScore,
+    });
+  };
 
-                    <div>paul</div>
-                    <div>24</div>
-                    <div>3</div>
+  render() {
+    return (
+      <div className="leaderboard">
+        <Navbar />
 
-                    <div>paul</div>
-                    <div>24</div>
-                    <div>3</div>
+        <h1 className="leaderboard--title">Leaderboard</h1>
 
-                    <div>paul</div>
-                    <div>24</div>
-                    <div>3</div>
+        <div className="leaderboard--container">
 
-                    <div>paul</div>
-                    <div>24</div>
-                    <div>3</div>
+        <div className = 'classical--leaderboard'>
+        <h2 class = "mode--leaderboard--title">Classical Mate</h2>
 
-                    <div>paul</div>
-                    <div>24</div>
-                    <div>3</div>
+        <table class="classical--leaderboard--results">
+          <thead>
+            <tr>
+              <th class="classical--th">Rank</th>
+              <th class="classical--th">Name</th>
+              <th class="classical--th">Score</th>
+              <th class="classical--th">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+        </div>
 
-                    <div>paul</div>
-                    <div>24</div>
-                    <div>3</div>
-
-                    <div>paul</div>
-                    <div>24</div>
-                    <div>3</div>
-
-                    <div>paul</div>
-                    <div>24</div>
-                    <div>3</div>
-
-                    <div>paul</div>
-                    <div>24</div>
-                    <div>3</div>
-
-                    <div>paul</div>
-                    <div>24</div>
-                    <div>3</div>
-                </div>
-
-            </div>
-        );
-    }
+        <div className = 'bullet--leaderboard'>
+        <h2  class = "mode--leaderboard--title">Bullet Mate</h2>
+        <table class="bullet--leaderboard--results">
+          <thead>
+            <tr>
+              <th class="bullet--th">Rank</th>
+              <th class="bullet--th">Name</th>
+              <th class="bullet--th">Score</th>
+              <th class="bullet--th">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+        </div>
+      </div>
+      </div>
+    );
+  }
 }
