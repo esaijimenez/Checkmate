@@ -64,7 +64,7 @@ export default class LeaderboardUI extends React.Component {
         <div className="leaderboard--container">
 
         <div className = 'classical--leaderboard'>
-        <h2 class = "mode--leaderboard--title">Classical Mate</h2>
+        <h2>Classical Mate</h2>
 
         <table class="classical--leaderboard--results">
           <thead>
@@ -82,7 +82,7 @@ export default class LeaderboardUI extends React.Component {
         </div>
 
         <div className = 'bullet--leaderboard'>
-        <h2  class = "mode--leaderboard--title">Bullet Mate</h2>
+        <h2>Bullet Mate</h2>
         <table class="bullet--leaderboard--results">
           <thead>
             <tr>
