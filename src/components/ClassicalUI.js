@@ -45,6 +45,7 @@ export default class ClassicalUI extends React.Component {
             showStartButton: true,
             score: 0,
             solutionActive: false,
+            showSolutionButton: true,
             squareStyles: null
         };
     };
@@ -128,7 +129,8 @@ export default class ClassicalUI extends React.Component {
                 moves: allMoves,
                 splitMoves: splitAllMoves,
                 position: currPosition,
-                checkmateIndex: this.state.indexes
+                checkmateIndex: this.state.indexes,
+                showSolutionButton: true
             });
 
             console.log("botMoves: ", botMoves)
@@ -405,7 +407,8 @@ export default class ClassicalUI extends React.Component {
     handleSolutionButton = () => {
 
         this.setState({
-            solutionActive: true
+            solutionActive: true,
+            showSolutionButton: false
         })
         //Creates a new Chess instance at the current position
         const chess = new Chess(this.state.position)
@@ -594,7 +597,6 @@ export default class ClassicalUI extends React.Component {
         }, 1000);
     }
 
-
     handleStartButtonClick = () => {
         this.handleBoardState();
         this.setState({ showStartButton: false })
@@ -620,46 +622,48 @@ export default class ClassicalUI extends React.Component {
             return (
                 <div className='classical'>
                     <Navbar />
-                    
-                    {false && <LeaderboardUI score={score}/>}
-                    
-                    <div className = 'classical--container'>
+
+                    {false && <LeaderboardUI score={score} />}
+
+                    <div className='classical--container'>
 
                         <div className='classical--info--container'>
-                            <div className = 'classical--info--1'>
-                            <h1 class = 'classical--title'>Classical Mate</h1>
-                            {this.state.showStartButton && (
-                                <button onClick={this.handleStartButtonClick} class = 'classical--start--button'>Start</button>
-                            )}
-                            <div className = 'classical--item3'><h1>Mate in {theme} moves</h1></div>
-                            <div className = 'classical--item2'><button class = 'classical--solution--button' onClick={this.handleSolutionButton}>Solution</button></div>
+                            <div className='classical--info--1'>
+                                <h1 class='classical--title'>Classical Mate</h1>
+                                {this.state.showStartButton && (
+                                    <button onClick={this.handleStartButtonClick} class='classical--start--button'>Start</button>
+                                )}
+                                <div className='classical--item3'><h1>Mate in {theme} moves</h1></div>
+                                {this.state.showSolutionButton && (
+                                    <div className='classical--item2'><button class='classical--solution--button' onClick={this.handleSolutionButton}>Solution</button></div>
+                                )}
                             </div>
 
                             <div className='classical--chessboard'>
-                            <Chessboard
-                                position={this.state.position}
-                                onSquareClick={this.handleSquareClick}
-                                onPieceDrop={this.handleUserMoves}
-                                onPieceClick={this.handlePieceClick}
-                                customSquareStyles={this.state.squareStyles}
-                                animationDuration={500}
-                                boardOrientation={this.state.color}
-                            />
+                                <Chessboard
+                                    position={this.state.position}
+                                    onSquareClick={this.handleSquareClick}
+                                    onPieceDrop={this.handleUserMoves}
+                                    onPieceClick={this.handlePieceClick}
+                                    customSquareStyles={this.state.squareStyles}
+                                    animationDuration={500}
+                                    boardOrientation={this.state.color}
+                                />
                             </div>
 
-                            <div className = 'classical--info--2'>
-                            <div className = 'classical--item4'><h1>{color} to Move</h1></div>
-                            <div className = 'classical--item1'><h1>Rating: {rating}</h1></div>
-                            <div className = 'classical--item5'><h1>Score: {score}</h1></div>
-                            
-                            <div className = 'classical--info--3'>
-                            <div className = 'classical--item6'><h1>{lives} lives left</h1></div>
+                            <div className='classical--info--2'>
+                                <div className='classical--item4'><h1>{color} to Move</h1></div>
+                                <div className='classical--item1'><h1>Rating: {rating}</h1></div>
+                                <div className='classical--item5'><h1>Score: {score}</h1></div>
+
+                                <div className='classical--info--3'>
+                                    <div className='classical--item6'><h1>{lives} lives left</h1></div>
+                                </div>
                             </div>
-                            </div>
-                       
-                    </div>
-                    {this.state.showGameOver && (<GameOver />)}
-                    {this.state.showGameOverLeaderboard && (<GameOverLeaderboard />)}
+
+                        </div>
+                        {this.state.showGameOver && (<GameOver />)}
+                        {this.state.showGameOverLeaderboard && (<GameOverLeaderboard />)}
                     </div>
                 </div>
             );

@@ -44,6 +44,7 @@ export default class BulletUI extends React.Component {
             seconds: 0,
             timer: 1,
             solutionActive: false,
+            showSolutionButton: true,
             squareStyles: null
         };
     };
@@ -132,7 +133,8 @@ export default class BulletUI extends React.Component {
                 moves: allMoves,
                 splitMoves: splitAllMoves,
                 position: currPosition,
-                checkmateIndex: this.state.indexes
+                checkmateIndex: this.state.indexes,
+                showSolutionButton: true
             });
 
             console.log("botMoves: ", botMoves)
@@ -417,7 +419,8 @@ export default class BulletUI extends React.Component {
     handleSolutionButton = () => {
 
         this.setState({
-            solutionActive: true
+            solutionActive: true,
+            showSolutionButton: false
         })
         //Creates a new Chess instance at the current position
         const chess = new Chess(this.state.position)
@@ -672,46 +675,48 @@ export default class BulletUI extends React.Component {
             return (
                 <div className='bullet'>
                     <Navbar />
-                    <div className = 'bullet--container'>
+                    <div className='bullet--container'>
 
                         <div className='bullet--info--container'>
-                            <div className = 'bullet--info--1'>
-                            <h1 class = 'bullet--title'>Bullet Mate</h1>
-                            {this.state.showStartButton && (
-                                <button onClick={this.handleStartButtonClick} class = 'bullet--start--button'>Start</button>
-                            )}
-                            <div className = 'bullet--item3'><h1>Mate in {theme} moves</h1></div>
-                            <div className = 'bullet--item2'><button class = 'bullet--solution--button' onClick={this.handleSolutionButton}>Solution</button></div>
+                            <div className='bullet--info--1'>
+                                <h1 class='bullet--title'>Bullet Mate</h1>
+                                {this.state.showStartButton && (
+                                    <button onClick={this.handleStartButtonClick} class='bullet--start--button'>Start</button>
+                                )}
+                                <div className='bullet--item3'><h1>Mate in {theme} moves</h1></div>
+                                {this.state.showSolutionButton && (
+                                    <div className='bullet--item2'><button class='bullet--solution--button' onClick={this.handleSolutionButton}>Solution</button></div>
+                                )}
                             </div>
 
                             <div className='bullet--chessboard'>
-                            <Chessboard
-                                position={this.state.position}
-                                onSquareClick={this.handleSquareClick}
-                                onPieceDrop={this.handleUserMoves}
-                                onPieceClick={this.handlePieceClick}
-                                customSquareStyles={this.state.squareStyles}
-                                animationDuration={500}
-                                boardOrientation={this.state.color}
-                            />
+                                <Chessboard
+                                    position={this.state.position}
+                                    onSquareClick={this.handleSquareClick}
+                                    onPieceDrop={this.handleUserMoves}
+                                    onPieceClick={this.handlePieceClick}
+                                    customSquareStyles={this.state.squareStyles}
+                                    animationDuration={500}
+                                    boardOrientation={this.state.color}
+                                />
                             </div>
 
-                            <div className = 'bullet--info--2'>
-                            <div className = 'bullet--item4'><h1>{color} to Move</h1></div>
-                            <div className = 'bullet--item1'><h1>Rating: {rating}</h1></div>
-                            <div className = 'bullet--item5'><h1>Score: {score}</h1></div>
-                            
-                            <div className = 'bullet--info--3'>
-                            <div className = 'bullet--item6'><h1>{lives} lives left</h1></div>
+                            <div className='bullet--info--2'>
+                                <div className='bullet--item4'><h1>{color} to Move</h1></div>
+                                <div className='bullet--item1'><h1>Rating: {rating}</h1></div>
+                                <div className='bullet--item5'><h1>Score: {score}</h1></div>
+
+                                <div className='bullet--info--3'>
+                                    <div className='bullet--item6'><h1>{lives} lives left</h1></div>
+                                </div>
+                                <div className='bullet--item7'>
+                                    <h1>Timer: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
+                                </div>
                             </div>
-                            <div className = 'bullet--item7'>
-                            <h1>Timer: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
-                            </div>
-                            </div>
-                       
-                    </div>
-                    {this.state.showGameOver && (<GameOver />)}
-                    {this.state.showGameOverLeaderboard && (<GameOverLeaderboard />)}
+
+                        </div>
+                        {this.state.showGameOver && (<GameOver />)}
+                        {this.state.showGameOverLeaderboard && (<GameOverLeaderboard />)}
                     </div>
                 </div>
             );
