@@ -92,6 +92,7 @@ export default class CreateUI extends React.Component {
         console.log("piece: ", piece)
 
         const chess = new Chess(this.state.position);
+        chess.remove(sourceSquare.sourceSquare)
 
         chess.put({ type: piece, color: color }, target)
 
