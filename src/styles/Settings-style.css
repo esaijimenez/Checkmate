@@ -26,7 +26,8 @@
 
 .settings--container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  text-decoration: underline;
 }
 
 .user--th {
@@ -43,7 +44,7 @@
 }
 
 .user--scores--table {
-  height: 12em;
+  height: 10em;
 }
 
 .user--leaderboard {
@@ -53,6 +54,7 @@
   margin: auto;
   background-color: #a8dadc;
   border: 2px solid #000000;
+  width: 400px;
 }
 
 .user--leaderboard--wrapper {
@@ -76,4 +78,50 @@
 .settings--user--time--title {
   grid-column: 3;
   grid-row: 1;
+}
+
+.input-hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+input[type="radio"]:checked + label > img {
+  border: 1px solid #fff;
+  box-shadow: 0 0 3px 3px #e63946;
+}
+
+input[type="radio"] + label > img {
+  border: 1px dashed #a8dadc;
+  width: 150px;
+  height: 150px;
+  transition: 500ms all;
+}
+
+.settings--img {
+  height: 300px;
+  width: 300px;
+  padding: 10px;
+  margin: 5px;
+
+}
+
+.settings--radio--buttons {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.options--container {
+    margin: 5px;
+    background-color: #1d3557;
+    color: #f1faee;
+    text-decoration: underline;
+    border: 2px solid black;
+    width: 400px;
+}
+
+.settings--subheading {
+    font-size: 22px;
 }
