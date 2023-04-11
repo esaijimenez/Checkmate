@@ -107,6 +107,11 @@ export default class CreateUI extends React.Component {
     handleDragOverSquare = (sourceSquare) => {
         console.log("Drag Over Square: ", sourceSquare)
     }
+    
+    handleConfirmPositionButton = () => {
+        const chess = new Chess(this.state.position)
+        console.log("Chess Position: ", chess.fen())
+    }
 
     handleDropOffBoard = () => {
         console.log("Dropped Off Board!!!!: ")
@@ -126,7 +131,6 @@ export default class CreateUI extends React.Component {
                 <div className='create--chessboard'>
 
                     <div className='create--info'>
-                        <button onClick={this.handleDropOffBoard}>Remove</button>
                         <button onClick={this.handleConfirmPositionButton}>Confirm Puzzle</button>
                         <Chessboard
                             position={this.state.position}
