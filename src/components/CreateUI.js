@@ -21,7 +21,7 @@ export default class CreateUI extends React.Component {
 
         //State variables that continuously update
         this.state = {
-            position: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+            position: "8/8/8/3k4/4K3/8/8/8 w KQkq - 0 1",
             sparePieces: [],
             isDragging: false,
             placement: [],
@@ -94,7 +94,13 @@ export default class CreateUI extends React.Component {
         const chess = new Chess(this.state.position);
         chess.remove(sourceSquare.sourceSquare)
 
-        chess.put({ type: piece, color: color }, target)
+        if (sourceSquare.sourceSquare === 'spare' && piece === 'K') {
+            console.log("ITS A KINGGGGGGGGGGGGGG ")
+            chess.remove(target)
+        }
+        else {
+            chess.put({ type: piece, color: color }, target)
+        }
 
         console.log("Position: ", chess.fen())
 
@@ -107,7 +113,7 @@ export default class CreateUI extends React.Component {
     handleDragOverSquare = (sourceSquare) => {
         console.log("Drag Over Square: ", sourceSquare)
     }
-    
+
     handleConfirmPositionButton = () => {
         const chess = new Chess(this.state.position)
         console.log("Chess Position: ", chess.fen())
