@@ -660,6 +660,12 @@ export default class BulletUI extends React.Component {
             let score = this.state.score;
             let rating = this.state.checkmates[this.state.indexes].rating;
             let theme = this.state.botMoves.length;
+            let moves = " moves"
+
+            if (theme === 1) {
+                moves = " move"
+            }
+
             let color;
             if (this.state.color === 'black') {
                 color = "Black";
@@ -683,7 +689,7 @@ export default class BulletUI extends React.Component {
                                 {this.state.showStartButton && (
                                     <button onClick={this.handleStartButtonClick} class='bullet--start--button'>Start</button>
                                 )}
-                                <div className='bullet--item3'><h1>Mate in {theme} moves</h1></div>
+                                <div className='bullet--item3'><h1>Mate in {theme} {moves}</h1></div>
                                 {this.state.showSolutionButton && (
                                     <div className='bullet--item2'><button class='bullet--solution--button' onClick={this.handleSolutionButton}>Solution</button></div>
                                 )}

@@ -611,6 +611,12 @@ export default class ClassicalUI extends React.Component {
             let rating = this.state.checkmates[this.state.indexes].rating;
             let theme = this.state.botMoves.length;
             let lives = this.state.lives;
+            let moves = " moves"
+
+            if (theme === 1) {
+                moves = " move"
+            }
+
             let color;
             if (this.state.color === 'black') {
                 color = "Black";
@@ -633,7 +639,7 @@ export default class ClassicalUI extends React.Component {
                                 {this.state.showStartButton && (
                                     <button onClick={this.handleStartButtonClick} class='classical--start--button'>Start</button>
                                 )}
-                                <div className='classical--item3'><h1>Mate in {theme} moves</h1></div>
+                                <div className='classical--item3'><h1>Mate in {theme} {moves}</h1></div>
                                 {this.state.showSolutionButton && (
                                     <div className='classical--item2'><button class='classical--solution--button' onClick={this.handleSolutionButton}>Solution</button></div>
                                 )}
