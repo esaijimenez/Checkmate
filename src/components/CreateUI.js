@@ -30,6 +30,7 @@ export default class CreateUI extends React.Component {
             placementIndex: 0,
             offBoard: "trash",
             showConfirmButton: true,
+            showConfirmSolutionButton: false,
             showBackButton: false
         };
     };
@@ -176,6 +177,7 @@ export default class CreateUI extends React.Component {
             this.setState({
                 showConfirmButton: true,
                 showBackButton: false,
+                showConfirmSolutionButton: false,
                 isSparePieces: true,
                 isPositionSetup: true,
                 isDeletePieces: true
@@ -185,6 +187,7 @@ export default class CreateUI extends React.Component {
             this.setState({
                 showConfirmButton: false,
                 showBackButton: true,
+                showConfirmSolutionButton: true,
                 isSparePieces: false,
                 isPositionSetup: false,
                 isDeletePieces: false
@@ -198,10 +201,15 @@ export default class CreateUI extends React.Component {
         this.setState({
             showConfirmButton: true,
             showBackButton: false,
+            showConfirmSolutionButton: false,
             isSparePieces: true,
             isPositionSetup: true,
             isDeletePieces: true
         })
+    }
+
+    handleConfirmSolutionButton = () => {
+        console.log("Confirmed Solution")
     }
 
     handleDropOffBoard = () => {
@@ -228,8 +236,12 @@ export default class CreateUI extends React.Component {
                                 {this.state.showConfirmButton && (
                                     <button className='create--button' onClick={this.handleConfirmPositionButton}>Confirm Position</button>
                                 )}
+                                {this.state.showConfirmSolutionButton && (
+                                    <button className='create--button' onClick={this.handleConfirmSolutionButton}>Confirm Solution</button>
+                                )}
                                 {this.state.showBackButton && (
-                                    <button className='create--button' onClick={this.handleBackButton}>Back</button>)}
+                                    <button className='create--button' onClick={this.handleBackButton}>Back</button>
+                                )}
                             </div>
 
                             <Chessboard
