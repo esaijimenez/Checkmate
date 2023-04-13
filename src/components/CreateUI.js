@@ -133,11 +133,17 @@ export default class CreateUI extends React.Component {
         return (
             <div className='create'>
                 <Navbar />
-                <h1>Create Mate</h1>
                 <div className='create--chessboard'>
 
                     <div className='create--info'>
-                        <button onClick={this.handleConfirmPositionButton}>Confirm Puzzle</button>
+
+                    <div className='create--info--container'>
+                            <div className='create--info--1'>
+                                <h1 class='create--title'>Custom Puzzle: Create Mate</h1>
+                                <button className='create--button' onClick={this.handleConfirmPositionButton}>Confirm Puzzle</button>
+
+                            </div>
+
                         <Chessboard
                             position={this.state.position}
                             onSquareClick={this.handleSquareClick}
@@ -151,6 +157,7 @@ export default class CreateUI extends React.Component {
                         />
                     </div>
                 </div>
+            </div>
             </div>
         );
     }

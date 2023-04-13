@@ -1,20 +1,23 @@
 .create {
-  display: "flex";
+  display: flex;
   flex-direction: column;
   text-align: center;
   align-items: center;
-  justify-content: "center"
+  justify-content: center;
 }
 
 .create--chessboard {
-  margin: auto;
-  padding: 20px;
-  width: 650px;
+  display: flex;
+  flex-direction: column;
   height: 650px;
+  width: 650px;
+  margin: auto;
 }
 
 .create--info {
+  display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .spare-pieces {
@@ -23,4 +26,82 @@
   right: 0;
   display: flex;
   flex-direction: column;
+}
+
+.create--info--container {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+}
+
+.create--info--1 {
+  display: flex;
+  flex-direction: column;
+  margin-top: 80px;
+  border: 3px solid #1d3557;
+  background-color: #a8dadc;
+  height: 350px;
+  width: 350px;
+  justify-content: center;
+  box-shadow: 4px 26px 58px 1px rgba(29, 53, 87, 1),
+    0px 5px 14px 0px rgba(0, 0, 0, 0.18);
+  margin: auto;
+  margin-right: 10px;
+}
+
+.create--title {
+  font-size: 45px;
+  font-weight: 500;
+  font-family: Georgia;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.create--title:hover {
+  text-decoration: underline;
+  text-decoration-color: #e63946;
+  cursor: context-menu;
+}
+
+.create--button {
+  width: 280px;
+  padding: 10px;
+  font-size: 35px;
+  background: #1d3557;
+  background-image: -webkit-linear-gradient(top, #1d3557, #0f4a9e);
+  background-image: -moz-linear-gradient(top, #1d3557, #0f4a9e);
+  background-image: -ms-linear-gradient(top, #1d3557, #0f4a9e);
+  background-image: -o-linear-gradient(top, #1d3557, #0f4a9e);
+  background-image: -webkit-gradient(to bottom, #1d3557, #0f4a9e);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  height: 80px;
+  line-height: 50px;
+  color: #f1faee;
+  font-family: Georgia;
+  font-weight: 100;
+  margin: auto;
+  -webkit-box-shadow: 1px 1px 20px 0 #000000;
+  -moz-box-shadow: 1px 1px 20px 0 #000000;
+  box-shadow: 1px 1px 20px 0 #000000;
+  border: outset #0059a0 10px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+}
+
+.create--button:hover {
+  border: inset #f1faee 10px;
+  background: #e63946;
+  background-image: -webkit-linear-gradient(top, #0f4a9e, #1d3557);
+  background-image: -moz-linear-gradient(top, #0f4a9e, #1d3557);
+  background-image: -ms-linear-gradient(top, #0f4a9e, #1d3557);
+  background-image: -o-linear-gradient(top, #0f4a9e, #1d3557);
+  background-image: -webkit-gradient(to bottom, #0f4a9e, #1d3557);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  text-decoration: none;
 }
