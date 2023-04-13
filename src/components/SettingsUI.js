@@ -55,6 +55,7 @@ export default class Settings extends React.Component {
               name="preference"
               id="dot"
               class="input-hidden"
+              checked="checked"
             />
             <label for="dot">
               <img
