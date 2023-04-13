@@ -12,7 +12,6 @@ import Navbar from './Navbar.js';
 import '../styles/CreateUI-style.css'
 import GameOver from './GameOver.js';
 import GameOverLeaderboard from './GameOverLeaderboard.js';
-import { isFocusable } from "@testing-library/user-event/dist/utils/index.js";
 
 
 export default class CreateUI extends React.Component {
@@ -21,12 +20,17 @@ export default class CreateUI extends React.Component {
 
         //State variables that continuously update
         this.state = {
-            position: "8/8/8/3k4/4K3/8/8/8 w KQkq - 0 1",
+            position: "8/8/3k4/8/8/4K3/8/8 w KQkq - 0 1",
             sparePieces: [],
+            isSparePieces: true,
             isDragging: false,
+            isPositionSetup: true,
+            isDeletePieces: true,
             placement: [],
             placementIndex: 0,
-            offBoard: "trash"
+            offBoard: "trash",
+            showConfirmButton: true,
+            showBackButton: false
         };
     };
 
@@ -34,30 +38,34 @@ export default class CreateUI extends React.Component {
     componentDidMount() {
         console.log("componentDidMount")
 
-        // this.setState({
-        //     chess: this.state.chess.clear()
-        // })
+
     };
 
     handleSquareClick = (sourceSquare) => {
-        console.log("handleSquareClick: ", sourceSquare)
-        const chess = new Chess(this.state.position)
-        let square = sourceSquare
+        if (this.state.isDeletePieces === true) {
+            console.log("handleSquareClick: ", sourceSquare)
+            const chess = new Chess(this.state.position)
+            let square = sourceSquare
 
-        let pieceType = chess.get(square).type
+            let pieceType = chess.get(square).type
 
-        console.log("piece: ", pieceType)
+            console.log("piece: ", pieceType)
 
-        if (pieceType === 'k') {
-            console.log("Must have a king")
+            if (pieceType === 'k') {
+                console.log("Must have a king")
+            }
+            else {
+                chess.remove(square)
+            }
+
+            this.setState({
+                position: chess.fen()
+            });
         }
-        else {
-            chess.remove(square)
+        else if (this.state.isDeletePieces === false) {
+            console.log("Click back")
         }
 
-        this.setState({
-            position: chess.fen()
-        });
     }
 
     handleDragStart = () => {
@@ -69,45 +77,82 @@ export default class CreateUI extends React.Component {
     };
 
     handleDrop = (sourceSquare, targetSquare) => {
-        console.log("source: ", sourceSquare)
-        console.log("target: ", targetSquare)
+        if (this.state.isPositionSetup === true) {
+            console.log("source: ", sourceSquare)
+            console.log("target: ", targetSquare)
 
-        let _target = sourceSquare.targetSquare
-        let _color = sourceSquare.piece[0]
-        let _piece = sourceSquare.piece[1]
+            let _target = sourceSquare.targetSquare
+            let _color = sourceSquare.piece[0]
+            let _piece = sourceSquare.piece[1]
 
-        let placement = []
-        placement.push(_target, _color, _piece)
-        this.setState({
-            placement: placement
-        })
+            let placement = []
+            placement.push(_target, _color, _piece)
+            this.setState({
+                placement: placement
+            })
 
-        let target = placement[this.state.placementIndex]
-        let color = placement[this.state.placementIndex + 1]
-        let piece = placement[this.state.placementIndex + 2]
+            let target = placement[this.state.placementIndex]
+            let color = placement[this.state.placementIndex + 1]
+            let piece = placement[this.state.placementIndex + 2]
 
-        console.log("placement: ", placement)
-        console.log("target: ", target)
-        console.log("color: ", color)
-        console.log("piece: ", piece)
+            console.log("placement: ", placement)
+            console.log("target: ", target)
+            console.log("color: ", color)
+            console.log("piece: ", piece)
 
-        const chess = new Chess(this.state.position);
-        chess.remove(sourceSquare.sourceSquare)
+            const chess = new Chess(this.state.position);
+            chess.remove(sourceSquare.sourceSquare)
 
-        if (sourceSquare.sourceSquare === 'spare' && piece === 'K') {
-            console.log("ITS A KINGGGGGGGGGGGGGG ")
-            chess.remove(target)
+            if (sourceSquare.sourceSquare === 'spare' && piece === 'K') {
+                console.log("ITS A KINGGGGGGGGGGGGGG ")
+                chess.remove(target)
+            }
+            else {
+                chess.put({ type: piece, color: color }, target)
+            }
+
+            console.log("Position: ", chess.fen())
+
+            this.setState({
+                position: chess.fen()
+            });
         }
-        else {
-            chess.put({ type: piece, color: color }, target)
+        else if (this.state.isPositionSetup === false) {
+            console.log("WHATS GOOOOOODDDDDDDDDD")
+            console.log("Sourcesquare: ", sourceSquare.sourceSquare)
+            const chess = new Chess(this.state.position);
+
+            let _source = sourceSquare.sourceSquare
+            let _target = sourceSquare.targetSquare
+            let _color = sourceSquare.piece[0]
+            let _piece = sourceSquare.piece[1]
+
+            const validMoves = chess.moves({ verbose: true })
+            //const move = validMoves.find((move) => move.from === sourceSquare && move.to === targetSquare);
+
+
+
+            for (let i = 0; i < validMoves.length; i++) {
+                console.log("MOVE: ", validMoves[i])
+                if (_source === validMoves[i].from) {
+                    console.log("MOVE FROM: ", validMoves[i])
+
+                    if (_color === chess.turn() && _target === validMoves[i].to) {
+                        chess.move({
+                            from: sourceSquare.sourceSquare,
+                            to: sourceSquare.targetSquare,
+                            promotion: "Q"
+                        })
+                        this.setState({
+                            position: chess.fen()
+                        });
+                    }
+                    else {
+                        console.log("Invalid Move")
+                    }
+                }
+            }
         }
-
-        console.log("Position: ", chess.fen())
-
-        this.setState({
-            position: chess.fen()
-        });
-
     }
 
     handleDragOverSquare = (sourceSquare) => {
@@ -116,7 +161,47 @@ export default class CreateUI extends React.Component {
 
     handleConfirmPositionButton = () => {
         const chess = new Chess(this.state.position)
+        chess.load(this.state.position)
+
+        if (chess.turn() === 'b') {
+            chess.move(null)
+        }
+
         console.log("Chess Position: ", chess.fen())
+
+        console.log("chess.isCheck: ", chess.inCheck())
+
+        if (chess.inCheck() === true || chess.isCheckmate() === true) {
+            console.log("Cannot be in check or checkmate when confirming position")
+            this.setState({
+                showConfirmButton: true,
+                showBackButton: false,
+                isSparePieces: true,
+                isPositionSetup: true,
+                isDeletePieces: true
+            })
+        }
+        else {
+            this.setState({
+                showConfirmButton: false,
+                showBackButton: true,
+                isSparePieces: false,
+                isPositionSetup: false,
+                isDeletePieces: false
+            })
+        }
+    }
+
+    handleBackButton = () => {
+        const chess = new Chess(this.state.position)
+        console.log("Chess Position: ", chess.fen())
+        this.setState({
+            showConfirmButton: true,
+            showBackButton: false,
+            isSparePieces: true,
+            isPositionSetup: true,
+            isDeletePieces: true
+        })
     }
 
     handleDropOffBoard = () => {
@@ -137,13 +222,18 @@ export default class CreateUI extends React.Component {
                 <div className='create--chessboard'>
 
                     <div className='create--info'>
-                        <button onClick={this.handleConfirmPositionButton}>Confirm Puzzle</button>
+                        {this.state.showConfirmButton && (
+                            <button onClick={this.handleConfirmPositionButton}>Confirm Position</button>
+                        )}
+                        {this.state.showBackButton && (
+                            <button onClick={this.handleBackButton}>Back</button>
+                        )}
                         <Chessboard
                             position={this.state.position}
                             onSquareClick={this.handleSquareClick}
                             onDragStart={this.handleDragStart} // Add onDragStart event handler
                             onDragEnd={this.handleDragEnd} // Add onDragEnd event handler
-                            sparePieces={true}
+                            sparePieces={this.state.isSparePieces}
                             isDragging={this.state.isDragging} // Add isDragging flag to Chessboard
                             onDrop={this.handleDrop}
                             onDragOverSquare={this.handleDragOverSquare}
