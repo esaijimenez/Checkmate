@@ -36,19 +36,6 @@ export default class Settings extends React.Component {
 
           <div className="options--container">
             <h2 class="settings--subheading">Options</h2>
-            <input
-              type="radio"
-              name="preference"
-              id="nodot"
-              class="input-hidden"
-            />
-            <label for="nodot">
-              <img
-                src="images\tutorial\Pawn1.PNG"
-                alt="No dots."
-                class="settings--img"
-              />
-            </label>
 
             <input
               type="radio"
@@ -61,6 +48,20 @@ export default class Settings extends React.Component {
               <img
                 src="images\tutorial\pawn_with_dots.png"
                 alt="Dots toggled."
+                class="settings--img"
+              />
+            </label>
+
+            <input
+              type="radio"
+              name="preference"
+              id="nodot"
+              class="input-hidden"
+            />
+            <label for="nodot">
+              <img
+                src="images\tutorial\Pawn1.PNG"
+                alt="No dots."
                 class="settings--img"
               />
             </label>
