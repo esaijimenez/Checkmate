@@ -218,27 +218,32 @@ export default class CreateUI extends React.Component {
         return (
             <div className='create'>
                 <Navbar />
-                <h1>Create Mate</h1>
                 <div className='create--chessboard'>
 
                     <div className='create--info'>
-                        {this.state.showConfirmButton && (
-                            <button onClick={this.handleConfirmPositionButton}>Confirm Position</button>
-                        )}
-                        {this.state.showBackButton && (
-                            <button onClick={this.handleBackButton}>Back</button>
-                        )}
-                        <Chessboard
-                            position={this.state.position}
-                            onSquareClick={this.handleSquareClick}
-                            onDragStart={this.handleDragStart} // Add onDragStart event handler
-                            onDragEnd={this.handleDragEnd} // Add onDragEnd event handler
-                            sparePieces={this.state.isSparePieces}
-                            isDragging={this.state.isDragging} // Add isDragging flag to Chessboard
-                            onDrop={this.handleDrop}
-                            onDragOverSquare={this.handleDragOverSquare}
-                            dropOffBoard={this.state.offBoard}
-                        />
+
+                        <div className='create--info--container'>
+                            <div className='create--info--1'>
+                                <h1 class='create--title'>Custom Puzzle: Create Mate</h1>
+                                {this.state.showConfirmButton && (
+                                    <button className='create--button' onClick={this.handleConfirmPositionButton}>Confirm Position</button>
+                                )}
+                                {this.state.showBackButton && (
+                                    <button className='create--button' onClick={this.handleBackButton}>Back</button>)}
+                            </div>
+
+                            <Chessboard
+                                position={this.state.position}
+                                onSquareClick={this.handleSquareClick}
+                                onDragStart={this.handleDragStart} // Add onDragStart event handler
+                                onDragEnd={this.handleDragEnd} // Add onDragEnd event handler
+                                sparePieces={this.state.isSparePieces}
+                                isDragging={this.state.isDragging} // Add isDragging flag to Chessboard
+                                onDrop={this.handleDrop}
+                                onDragOverSquare={this.handleDragOverSquare}
+                                dropOffBoard={this.state.offBoard}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

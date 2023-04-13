@@ -33,6 +33,7 @@ tbody {
     margin: auto;
     background-color: #a8dadc;
     border: 2px solid #000000;
+    width: 500px;
 }
 
 .bullet--leaderboard {
@@ -42,6 +43,7 @@ tbody {
     margin: auto;
     background-color: #a8dadc;
     border: 2px solid #000000;
+    width: 500px;
 }
 
 .classical--leaderboard--wrapper {

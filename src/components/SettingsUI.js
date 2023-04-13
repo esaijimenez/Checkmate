@@ -36,35 +36,35 @@ export default class Settings extends React.Component {
 
           <div className="options--container">
             <h2 class="settings--subheading">Options</h2>
-            <div className="settings--radio--buttons">
-              <input
-                type="radio"
-                name="indicator"
-                id="dots"
-                class="input-hidden"
-              />
-              <label for="no-dots">
-                <img
-                  src="images\tutorial\pawn_with_dots.PNG"
-                  alt="Pawn with indicator dots."
-                  class="settings--img"
-                />
-              </label>
 
-              <input
-                type="radio"
-                name="indicator"
-                id="no--dots"
-                class="input-hidden"
+            <input
+              type="radio"
+              name="preference"
+              id="dot"
+              class="input-hidden"
+              checked="checked"
+            />
+            <label for="dot">
+              <img
+                src="images\tutorial\pawn_with_dots.png"
+                alt="Dots toggled."
+                class="settings--img"
               />
-              <label for="no--dots">
-                <img
-                  src="images\tutorial\Pawn1.PNG"
-                  alt="Pawn without indicator dots."
-                  class="settings--img"
-                />
-              </label>
-            </div>
+            </label>
+
+            <input
+              type="radio"
+              name="preference"
+              id="nodot"
+              class="input-hidden"
+            />
+            <label for="nodot">
+              <img
+                src="images\tutorial\Pawn1.PNG"
+                alt="No dots."
+                class="settings--img"
+              />
+            </label>
           </div>
         </div>
       </div>

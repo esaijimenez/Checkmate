@@ -72,7 +72,6 @@ export default class LeaderboardUI extends React.Component {
               <th class="classical--th">Rank</th>
               <th class="classical--th">Name</th>
               <th class="classical--th">Score</th>
-              <th class="classical--th">Time</th>
             </tr>
           </thead>
           <tbody>
