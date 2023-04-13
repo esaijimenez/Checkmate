@@ -121,7 +121,8 @@ export default class CreateUI extends React.Component {
         else if (this.state.isPositionSetup === false) {
             console.log("WHATS GOOOOOODDDDDDDDDD")
             console.log("Sourcesquare: ", sourceSquare.sourceSquare)
-            const chess = new Chess(this.state.position);
+            const chess = new Chess();
+            chess.load(this.state.position)
 
             let _source = sourceSquare.sourceSquare
             let _target = sourceSquare.targetSquare
@@ -153,6 +154,10 @@ export default class CreateUI extends React.Component {
                     }
                 }
             }
+
+            // if(chess.isCheckmate() === true) {
+
+
         }
     }
 
@@ -161,14 +166,12 @@ export default class CreateUI extends React.Component {
     }
 
     handleConfirmPositionButton = () => {
-        const chess = new Chess(this.state.position)
+        const chess = new Chess()
         chess.load(this.state.position)
 
-        if (chess.turn() === 'b') {
-            chess.move(null)
-        }
-
         console.log("Chess Position: ", chess.fen())
+
+        console.log("Chess Turn: ", chess.turn())
 
         console.log("chess.isCheck: ", chess.inCheck())
 
@@ -195,9 +198,15 @@ export default class CreateUI extends React.Component {
         }
     }
 
+
+
     handleBackButton = () => {
-        const chess = new Chess(this.state.position)
+        const chess = new Chess()
+        chess.load(this.state.position)
+
         console.log("Chess Position: ", chess.fen())
+        console.log("Chess Turn: ", chess.turn())
+
         this.setState({
             showConfirmButton: true,
             showBackButton: false,
@@ -241,6 +250,10 @@ export default class CreateUI extends React.Component {
                                 )}
                                 {this.state.showBackButton && (
                                     <button className='create--button' onClick={this.handleBackButton}>Back</button>
+                                )}
+
+                                {this.state.showConfirmSolutionButton && (
+                                    <h2>Make a move for Black to initialize position for White to solve.</h2>
                                 )}
                             </div>
 
