@@ -5,9 +5,10 @@ import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
 import Navbar from './Navbar.js';
 
-import '../styles/PlayUI-style.css'
+import '../styles/ClassicalUI-style.css'
 import GameOver from './GameOver.js';
 import GameOverLeaderboard from './GameOverLeaderboard.js';
+import LeaderboardUI from './LeaderboardUI.js';
 
 
 export default class PlayUI extends React.Component {
@@ -44,7 +45,9 @@ export default class PlayUI extends React.Component {
             showStartButton: true,
             score: 0,
             solutionActive: false,
-            squareStyles: null
+            showSolutionButton: true,
+            squareStyles: null,
+            puzzles: []
         };
     };
 
@@ -52,57 +55,34 @@ export default class PlayUI extends React.Component {
     componentDidMount() {
 
         //Pulls chess puzzles from database
-        const mateRef = ref(db, '/checkmates');
+        const mateRef = ref(db, '/custom-puzzles');
         onValue(mateRef, (snapshot) => {
             const count = snapshot.size;
             let randomIndex = Math.floor(Math.random() * 7)
 
             //Pushes all the puzzles from the database into an array
-            let newState = [];
+            let puzzles = [];
             snapshot.forEach((checkmateSnapshot) => {
-                newState.push({
-                    fen: checkmateSnapshot.child("FEN").val(),
-                    moves: checkmateSnapshot.child("Moves").val(),
-                    puzzleid: checkmateSnapshot.child("PuzzleId").val(),
-                    rating: checkmateSnapshot.child("Rating").val(),
-                    themes: checkmateSnapshot.child("Themes").val()
+                puzzles.push({
+                    fen: checkmateSnapshot.child("fen").val(),
+                    moves: checkmateSnapshot.child("moves").val(),
+                    puzzleId: checkmateSnapshot.child("puzzleId").val(),
+                    username: checkmateSnapshot.child("username").val()
                 })
             });
             //Sets some of the state variables
             this.setState({
-                numCheckmates: count,
-                checkmates: newState,
-                indexes: randomIndex
+                puzzles: puzzles
             })
         })
 
     };
-
-
-    //Gets the initial index of the puzzle by grabbing a random rating within a particular rating range.
-    //After each successful puzzle, the range increases by 50 difficulty.
-    getIndex = (rating) => {
-        let ratings = rating;
-        let index = [];
-
-        for (let i = 0; i < this.state.numCheckmates; i++) {
-            if (this.state.checkmates[i].rating >= (ratings) && (this.state.checkmates[i].rating < ((ratings + 50)))) {
-                index.push(i);
-            }
-        }
-
-        let randomIndex = Math.floor(Math.random() * index.length)
-        this.setState({
-            indexes: index[randomIndex],
-        })
-    }
 
     //Initializes each new chess position, pulls the index created from getIndex()
     //The index is used to grab a puzzle stored in the database
     //The index obtained from getIndex() does not change until a puzzle is completed
     handleBoardState = () => {
         if (this.state.lives !== -1) {
-
             //Initializes the current position by pulling a FEN from the checkmates array at the specific index given by getIndex()
             //The checkmates array was created inside the componentDidMount() method.
             const currPosition = this.state.checkmates[this.state.indexes].fen;
@@ -127,7 +107,8 @@ export default class PlayUI extends React.Component {
                 moves: allMoves,
                 splitMoves: splitAllMoves,
                 position: currPosition,
-                checkmateIndex: this.state.indexes
+                checkmateIndex: this.state.indexes,
+                showSolutionButton: true
             });
 
             console.log("botMoves: ", botMoves)
@@ -255,7 +236,6 @@ export default class PlayUI extends React.Component {
                         //used to obtain the new index for the next puzzle.
                         //Then the new board state is initialized using that new puzzle.
                         setTimeout(() => {
-                            this.getIndex(this.state.ratings)
                             this.handleBoardState()
                         }, 1000);
                     }
@@ -274,7 +254,6 @@ export default class PlayUI extends React.Component {
                         //When the user fails a puzzle, the rating stays around the same difficulty
                         //and they are taken to a new board state.
                         setTimeout(() => {
-                            this.getIndex(this.state.ratings)
                             this.handleBoardState()
                         }, 500);
                     }
@@ -296,7 +275,6 @@ export default class PlayUI extends React.Component {
                     //When the user fails a puzzle, the rating stays around the same difficulty
                     //and they are taken to a new board state.
                     setTimeout(() => {
-                        this.getIndex(this.state.ratings)
                         this.handleBoardState()
                     }, 500);
                 }
@@ -318,7 +296,6 @@ export default class PlayUI extends React.Component {
                     //When the user fails a puzzle, the rating stays around the same difficulty
                     //and they are taken to a new board state.
                     setTimeout(() => {
-                        this.getIndex(this.state.ratings)
                         this.handleBoardState()
                     }, 500);
                 }
@@ -359,7 +336,6 @@ export default class PlayUI extends React.Component {
                         //used to obtain the new index for the next puzzle.
                         //Then the new board state is initialized using that new puzzle.
                         setTimeout(() => {
-                            this.getIndex(this.state.ratings)
                             this.handleBoardState()
                         }, 1000);
                     }
@@ -404,7 +380,8 @@ export default class PlayUI extends React.Component {
     handleSolutionButton = () => {
 
         this.setState({
-            solutionActive: true
+            solutionActive: true,
+            showSolutionButton: false
         })
         //Creates a new Chess instance at the current position
         const chess = new Chess(this.state.position)
@@ -441,7 +418,6 @@ export default class PlayUI extends React.Component {
                         solutionActive: false,
                         squareStyles: {}
                     })
-                    this.getIndex(this.state.ratings)
                     this.handleBoardState();
                 }
                 //If not checkmate, then update the board position and solution index, then recursively
@@ -558,7 +534,6 @@ export default class PlayUI extends React.Component {
                     score: this.state.score + 1,
                     squareStyles: {}
                 })
-                this.getIndex(this.state.ratings);
                 this.handleBoardState();
             }
 
@@ -586,13 +561,11 @@ export default class PlayUI extends React.Component {
                         ratings: this.state.ratings,
                         squareStyles: {}
                     })
-                    this.getIndex(this.state.ratings);
                     this.handleBoardState();
                 }
             }
         }, 1000);
     }
-
 
     handleStartButtonClick = () => {
         this.handleBoardState();
@@ -608,6 +581,12 @@ export default class PlayUI extends React.Component {
             let rating = this.state.checkmates[this.state.indexes].rating;
             let theme = this.state.botMoves.length;
             let lives = this.state.lives;
+            let moves = " moves"
+
+            if (theme === 1) {
+                moves = " move"
+            }
+
             let color;
             if (this.state.color === 'black') {
                 color = "Black";
@@ -617,35 +596,51 @@ export default class PlayUI extends React.Component {
             }
 
             return (
-                <div className='play'>
+                <div className='classical'>
                     <Navbar />
-                    <h1>Play Mate</h1>
-                    <div className='play--chessboard'>
 
-                        <div className='play--info'>
-                            {this.state.showStartButton && (
-                                <button onClick={this.handleStartButtonClick}>Start</button>
-                            )}
-                            <h1>Rating: {rating}</h1>
-                            <h1>{color} to Move</h1>
-                            <h1>Mate in {theme}</h1>
-                            <h1>Score: {score}</h1>
-                            <h1>Lives left: {lives}</h1>
-                            <button onClick={this.handleSolutionButton}>Solution</button>
-                            <Chessboard
-                                position={this.state.position}
-                                onSquareClick={this.handleSquareClick}
-                                onPieceDrop={this.handleUserMoves}
-                                onPieceClick={this.handlePieceClick}
-                                customSquareStyles={this.state.squareStyles}
-                                animationDuration={500}
-                                boardOrientation={this.state.color}
-                            />
+                    {false && <LeaderboardUI score={score} />}
+
+                    <div className='classical--container'>
+
+                        <div className='classical--info--container'>
+                            <div className='classical--info--1'>
+                                <h1 class='classical--title'>Classical Mate</h1>
+                                {this.state.showStartButton && (
+                                    <button onClick={this.handleStartButtonClick} class='classical--start--button'>Start</button>
+                                )}
+                                <div className='classical--item3'><h1>Mate in {theme} {moves}</h1></div>
+                                {this.state.showSolutionButton && (
+                                    <div className='classical--item2'><button class='classical--solution--button' onClick={this.handleSolutionButton}>Solution</button></div>
+                                )}
+                            </div>
+
+                            <div className='classical--chessboard'>
+                                <Chessboard
+                                    position={this.state.position}
+                                    onSquareClick={this.handleSquareClick}
+                                    onPieceDrop={this.handleUserMoves}
+                                    onPieceClick={this.handlePieceClick}
+                                    customSquareStyles={this.state.squareStyles}
+                                    animationDuration={500}
+                                    boardOrientation={this.state.color}
+                                />
+                            </div>
+
+                            <div className='classical--info--2'>
+                                <div className='classical--item4'><h1>{color} to Move</h1></div>
+                                <div className='classical--item1'><h1>Rating: {rating}</h1></div>
+                                <div className='classical--item5'><h1>Score: {score}</h1></div>
+
+                                <div className='classical--info--3'>
+                                    <div className='classical--item6'><h1>{lives} lives left</h1></div>
+                                </div>
+                            </div>
+
                         </div>
+                        {this.state.showGameOver && (<GameOver />)}
+                        {this.state.showGameOverLeaderboard && (<GameOverLeaderboard />)}
                     </div>
-                    {this.state.showGameOver && (<GameOver />)}
-                    {this.state.showGameOverLeaderboard && (<GameOverLeaderboard />)}
-
                 </div>
             );
         }

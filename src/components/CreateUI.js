@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { db } from "../firebase.js";
-import { ref, onValue, push } from 'firebase/database';
+import { ref, onValue, set, push } from 'firebase/database';
 // import{ Chessboard } from 'react-chessboard';
 import Chessboard from 'chessboardjsx';
 import { Piece } from "react-chessboard";
@@ -10,8 +10,7 @@ import { Chess } from "chess.js";
 import Navbar from './Navbar.js';
 
 import '../styles/CreateUI-style.css'
-import GameOver from './GameOver.js';
-import GameOverLeaderboard from './GameOverLeaderboard.js';
+import PuzzleSubmitted from "./PuzzleSubmission.js";
 
 
 export default class CreateUI extends React.Component {
@@ -21,6 +20,7 @@ export default class CreateUI extends React.Component {
         //State variables that continuously update
         this.state = {
             position: "8/8/3k4/8/8/4K3/8/8 w KQkq - 0 1",
+            confirmedPosition: "",
             sparePieces: [],
             isSparePieces: true,
             isDragging: false,
@@ -31,15 +31,87 @@ export default class CreateUI extends React.Component {
             offBoard: "trash",
             showConfirmButton: true,
             showConfirmSolutionButton: false,
-            showBackButton: false
+            showBackButton: false,
+            isConfirmedSolution: false,
+            puzzleId: 1,
+            username: "Carlos Magnusson",
+            fen: "",
+            moves: [],
+            puzzles: [],
+            counter: 0,
+            history: [],
+            historyMoves: [],
+            historyCounter: 0,
         };
     };
 
     //componentDidMount() is the first method called when the component is rendered.
     componentDidMount() {
         console.log("componentDidMount")
+        this.retrievePuzzlesFromDatabase()
+    };
 
+    retrievePuzzlesFromDatabase = () => {
+        const mateRef = ref(db, "/custom-puzzles");
+        onValue(mateRef, (snapshot) => {
+            const count = snapshot.size;
 
+            let databasePuzzles = [];
+            snapshot.forEach((puzzlesSnapshot) => {
+                databasePuzzles.push({
+                    puzzleId: puzzlesSnapshot.child("puzzleId").val(),
+                    username: puzzlesSnapshot.child("username").val(),
+                    fen: puzzlesSnapshot.child("fen").val(),
+                    moves: puzzlesSnapshot.child("moves").val(),
+                })
+            });
+
+            //Sets some of the state variables
+            this.setState({
+                counter: count,
+                puzzleId: count + 1
+            });
+
+            console.log("puzzleId: ", this.state.puzzleId)
+            console.log("count: ", count)
+            console.log("puzzles: ", databasePuzzles[0])
+        });
+    }
+
+    sendPuzzleToDatabase = () => {
+        let puzzleId = this.state.puzzleId;
+        let username = this.state.username;
+        let fen = this.state.position;
+        let moves = this.state.moves;
+        let puzzles = [];
+        puzzles.push({
+            puzzleId: puzzleId,
+            username: username,
+            fen: fen,
+            moves: moves,
+        })
+
+        this.setState({
+            puzzles: puzzles
+        })
+
+        console.log("puzzleId--------: ", this.state.puzzleId)
+        console.log("counter---------: ", this.state.counter)
+        console.log("puzzle-------:", puzzles)
+        console.log("puzzle.puzzleID-------:", puzzles[0].puzzleId)
+
+        const mateRef = ref(db, "/custom-puzzles/" + this.state.counter);
+        set(mateRef, {
+            puzzleId: puzzles[0].puzzleId,
+            username: puzzles[0].username,
+            fen: puzzles[0].fen,
+            moves: puzzles[0].moves,
+        });
+
+        this.setState({
+            puzzleId: this.state.puzzleId + 1,
+            counter: this.state.counter + 1
+        })
     };
 
     handleSquareClick = (sourceSquare) => {
@@ -104,13 +176,15 @@ export default class CreateUI extends React.Component {
             const chess = new Chess(this.state.position);
             chess.remove(sourceSquare.sourceSquare)
 
-            if (sourceSquare.sourceSquare === 'spare' && piece === 'K') {
-                console.log("ITS A KINGGGGGGGGGGGGGG ")
-                chess.remove(target)
-            }
-            else {
-                chess.put({ type: piece, color: color }, target)
-            }
+            if (chess.fen())
+
+                if (sourceSquare.sourceSquare === 'spare' && piece === 'K') {
+                    console.log("ITS A KINGGGGGGGGGGGGGG ")
+                    chess.remove(target)
+                }
+                else {
+                    chess.put({ type: piece, color: color }, target)
+                }
 
             console.log("Position: ", chess.fen())
 
@@ -145,18 +219,30 @@ export default class CreateUI extends React.Component {
                             to: sourceSquare.targetSquare,
                             promotion: "Q"
                         })
+
+                        this.state.history.push(chess.history({ verbose: true }));
+                        console.log("History: ", this.state.history)
+
+                        this.state.historyMoves = this.state.history[this.state.historyCounter]
+                        console.log("HistoryMoves: ", this.state.historyMoves)
+
+                        this.state.moves.push(this.state.historyMoves[0].lan)
+                        let moves = this.state.moves
+                        const movesCombined = moves.flat().map(move => move.slice(0, 4));
+                        console.log("Moves: ", movesCombined)
+
                         this.setState({
-                            position: chess.fen()
+                            position: chess.fen(),
+                            historyCounter: this.state.historyCounter + 1,
+                            moves: movesCombined
                         });
+
                     }
                     else {
                         console.log("Invalid Move")
                     }
                 }
             }
-
-            // if(chess.isCheckmate() === true) {
-
 
         }
     }
@@ -183,42 +269,58 @@ export default class CreateUI extends React.Component {
                 showConfirmSolutionButton: false,
                 isSparePieces: true,
                 isPositionSetup: true,
-                isDeletePieces: true
+                isDeletePieces: true,
+                historyCounter: 0
             })
         }
         else {
             this.setState({
+                confirmedPosition: this.state.position,
                 showConfirmButton: false,
                 showBackButton: true,
                 showConfirmSolutionButton: true,
                 isSparePieces: false,
                 isPositionSetup: false,
-                isDeletePieces: false
+                isDeletePieces: false,
+                historyCounter: 0
             })
         }
     }
 
-
-
     handleBackButton = () => {
         const chess = new Chess()
-        chess.load(this.state.position)
+        chess.load(this.state.confirmedPosition)
 
         console.log("Chess Position: ", chess.fen())
         console.log("Chess Turn: ", chess.turn())
 
         this.setState({
+            position: this.state.confirmedPosition,
             showConfirmButton: true,
             showBackButton: false,
             showConfirmSolutionButton: false,
             isSparePieces: true,
             isPositionSetup: true,
-            isDeletePieces: true
+            isDeletePieces: true,
+            historyCounter: 0,
+            placementIndex: 0,
+            moves: [],
+            puzzles: [],
+            history: [],
+            historyMoves: [],
         })
     }
 
     handleConfirmSolutionButton = () => {
         console.log("Confirmed Solution")
+        console.log("Sending to Database...")
+
+        this.sendPuzzleToDatabase();
+
+        this.setState({
+            isConfirmedSolution: true
+        })
+
     }
 
     handleDropOffBoard = () => {
@@ -253,8 +355,10 @@ export default class CreateUI extends React.Component {
                                 )}
 
                                 {this.state.showConfirmSolutionButton && (
-                                    <h2>Make a move for Black to initialize position for White to solve.</h2>
+                                    <h2>Make moves for white and black to establish the puzzle.</h2>
                                 )}
+
+                                {this.state.isConfirmedSolution && (<PuzzleSubmitted />)}
                             </div>
 
                             <Chessboard
@@ -267,6 +371,7 @@ export default class CreateUI extends React.Component {
                                 onDrop={this.handleDrop}
                                 onDragOverSquare={this.handleDragOverSquare}
                                 dropOffBoard={this.state.offBoard}
+                                orientation='black'
                             />
                         </div>
                     </div>
