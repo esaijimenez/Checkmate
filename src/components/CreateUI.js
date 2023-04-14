@@ -310,10 +310,9 @@ export default class CreateUI extends React.Component {
     }
 
     handleConfirmSolutionButton = () => {
-        console.log("Confirmed Solution")
-        console.log("Sending to Database...")
-
         if (this.state.isMoved) {
+            console.log("Confirmed Solution")
+            console.log("Sending to Database...")
             this.sendPuzzleToDatabase();
 
             this.setState({
