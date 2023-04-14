@@ -33,6 +33,7 @@ export default class CreateUI extends React.Component {
             showConfirmSolutionButton: false,
             showBackButton: false,
             isConfirmedSolution: false,
+            isMoved: false,
             puzzleId: 1,
             username: "Carlos Magnusson",
             fen: "",
@@ -204,9 +205,6 @@ export default class CreateUI extends React.Component {
             let _piece = sourceSquare.piece[1]
 
             const validMoves = chess.moves({ verbose: true })
-            //const move = validMoves.find((move) => move.from === sourceSquare && move.to === targetSquare);
-
-
 
             for (let i = 0; i < validMoves.length; i++) {
                 console.log("MOVE: ", validMoves[i])
@@ -234,9 +232,9 @@ export default class CreateUI extends React.Component {
                         this.setState({
                             position: chess.fen(),
                             historyCounter: this.state.historyCounter + 1,
-                            moves: movesCombined
+                            moves: movesCombined,
+                            isMoved: true
                         });
-
                     }
                     else {
                         console.log("Invalid Move")
@@ -315,12 +313,13 @@ export default class CreateUI extends React.Component {
         console.log("Confirmed Solution")
         console.log("Sending to Database...")
 
-        this.sendPuzzleToDatabase();
+        if (this.state.isMoved) {
+            this.sendPuzzleToDatabase();
 
-        this.setState({
-            isConfirmedSolution: true
-        })
-
+            this.setState({
+                isConfirmedSolution: true
+            })
+        }
     }
 
     handleDropOffBoard = () => {
@@ -359,6 +358,7 @@ export default class CreateUI extends React.Component {
                                 )}
 
                                 {this.state.isConfirmedSolution && (<PuzzleSubmitted />)}
+
                             </div>
 
                             <Chessboard
