@@ -38,6 +38,7 @@ export default class CreateUI extends React.Component {
             username: "Carlos Magnusson",
             fen: "",
             moves: [],
+            date: "",
             puzzles: [],
             counter: 0,
             history: [],
@@ -66,6 +67,7 @@ export default class CreateUI extends React.Component {
                     username: puzzlesSnapshot.child("username").val(),
                     fen: puzzlesSnapshot.child("fen").val(),
                     moves: puzzlesSnapshot.child("moves").val(),
+                    date: puzzlesSnapshot.child("date").val(),
                 })
             });
 
@@ -87,11 +89,21 @@ export default class CreateUI extends React.Component {
         let fen = this.state.position;
         let moves = this.state.moves;
         let puzzles = [];
+        let date = new Date();
+        let day = date.getDate();
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let month = months[date.getMonth()];
+        let year = date.getFullYear();
+        let todayDate = month + " " + day + ", " + year;
+
+        console.log("date: ", todayDate)
+
         puzzles.push({
             puzzleId: puzzleId,
             username: username,
             fen: fen,
             moves: moves,
+            date: date
         })
 
         this.setState({
@@ -110,6 +122,7 @@ export default class CreateUI extends React.Component {
             username: puzzles[0].username,
             fen: puzzles[0].fen,
             moves: puzzles[0].moves,
+            date: todayDate
         });
 
         this.setState({
