@@ -3,6 +3,8 @@ import { ref, onValue } from 'firebase/database';
 import React from "react";
 import { Link } from "react-router-dom";
 
+import Navbar from './Navbar.js';
+
 export default class LoginUI extends React.Component {
     constructor(props) {
         super(props);
@@ -24,7 +26,8 @@ export default class LoginUI extends React.Component {
                     fen: puzzlesSnapshot.child("fen").val(),
                     moves: puzzlesSnapshot.child("moves").val(),
                     puzzleId: puzzlesSnapshot.child("puzzleId").val(),
-                    username: puzzlesSnapshot.child("username").val()
+                    username: puzzlesSnapshot.child("username").val(),
+                    date: puzzlesSnapshot.child("date").val()
                 })
             });
             //Sets some of the state variables
@@ -38,11 +41,7 @@ export default class LoginUI extends React.Component {
     render() {
         return (
             <div>
-                <Link to="/"><button>Back</button></Link>
-
-                <Link to="/play">
-                    <button class="">Play</button>
-                </Link>
+                <Navbar />
 
                 <h1>Puzzle List</h1>
             </div>
