@@ -415,6 +415,14 @@ export default class CreateUI extends React.Component {
                                 {this.state.showConfirmButton && (
                                     <button className='create--button' onClick={this.handleConfirmPositionButton}>Confirm Position</button>
                                 )}
+                                {this.state.showConfirmButton && (
+                                    <ul>
+                                        <li>Drag Spare Pieces on Board</li>
+                                        <li>Click on Piece to Remove it</li>
+                                        <li>Confirm Position when Satisfied</li>
+                                    </ul>
+                                )}
+
                                 {this.state.showConfirmSolutionButton && (
                                     <button className='create--button' onClick={this.handleConfirmSolutionButton}>Confirm Solution</button>
                                 )}
@@ -423,8 +431,15 @@ export default class CreateUI extends React.Component {
                                 )}
 
                                 {this.state.showConfirmSolutionButton && (
-                                    <h2>Make moves for white and black to establish the puzzle.</h2>
+                                    <ul>
+                                        <li>Make First Move with White to Initialize Puzzle</li>
+                                        <li>Always Black to Solve Puzzle</li>
+                                        <li>Confirm Solution when Satisfied</li>
+                                        <li>Click Back to Return to Original Position</li>
+                                    </ul>
                                 )}
+
+
 
                                 {this.state.isConfirmedSolution && (<PuzzleSubmitted />)}
 
