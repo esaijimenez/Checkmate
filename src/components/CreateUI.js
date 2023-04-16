@@ -43,6 +43,8 @@ export default class CreateUI extends React.Component {
             history: [],
             historyMoves: [],
             historyCounter: 0,
+            kingSquare: [],
+            isKingSquare: false,
         };
     };
 
@@ -100,6 +102,7 @@ export default class CreateUI extends React.Component {
         console.log("counter---------: ", this.state.counter)
         console.log("puzzle-------:", puzzles)
         console.log("puzzle.puzzleID-------:", puzzles[0].puzzleId)
+        console.log("puzzle.puzzleID-------:", puzzles.moves)
 
         const mateRef = ref(db, "/custom-puzzles/" + this.state.counter);
         set(mateRef, {
@@ -174,24 +177,90 @@ export default class CreateUI extends React.Component {
             console.log("color: ", color)
             console.log("piece: ", piece)
 
+
             const chess = new Chess(this.state.position);
-            chess.remove(sourceSquare.sourceSquare)
+            chess.remove(sourceSquare.sourceSquare);
 
-            if (chess.fen())
+            let rows = chess.board()
+            let row1 = rows[0]
+            let row2 = rows[1]
+            let row3 = rows[2]
+            let row4 = rows[3]
+            let row5 = rows[4]
+            let row6 = rows[5]
+            let row7 = rows[6]
+            let row8 = rows[7]
+            let columns = []
+            let holder = []
+            let kings = []
 
+            console.log("row1: ", row1)
+            console.log("row2: ", row2)
+            console.log("row3: ", row3)
+            console.log("row4: ", row4)
+            console.log("row5: ", row5)
+            console.log("row6: ", row6)
+            console.log("row7: ", row7)
+            console.log("row8: ", row8)
+            console.log("columns: ", columns)
+
+
+
+            // for(let i = 0; i < rows.length; i++){
+            //     if(rows)
+            // }
+
+            for (let i = 0; i < rows.length; i++) {
+                for (let j = 0; j < rows.length; j++) {
+                    kings.push(rows[i][j])
+                }
+            }
+
+            for (let i = 0; i < kings.length; i++) {
+                if (kings[i] && kings[i].type === 'k') {
+                    this.state.kingSquare.push(kings[i].square)
+                }
+            }
+
+            console.log("columns: ", columns)
+            console.log("rows: ", rows)
+            console.log("kings: ", this.state.kingSquare)
+            console.log("holder: ", holder)
+
+            for (let i = 0; i < this.state.kingSquare.length; i++) {
+                if (target === this.state.kingSquare[i]) {
+                    this.state.isKingSquare = true;
+                }
+            }
+
+            console.log("kingSquare: ", this.state.kingSquare)
+            console.log("target: ", target)
+            console.log("isKingSquare: ", this.state.isKingSquare)
+
+            if (!this.state.isKingSquare) {
                 if (sourceSquare.sourceSquare === 'spare' && piece === 'K') {
                     console.log("ITS A KINGGGGGGGGGGGGGG ")
                     chess.remove(target)
                 }
                 else {
                     chess.put({ type: piece, color: color }, target)
+
                 }
 
-            console.log("Position: ", chess.fen())
+                console.log("Position: ", chess.fen())
+
+                this.setState({
+                    position: chess.fen(),
+                    kingSquare: [],
+                    isKingSquare: false
+                });
+            }
 
             this.setState({
-                position: chess.fen()
+                kingSquare: [],
+                isKingSquare: false
             });
+
         }
         else if (this.state.isPositionSetup === false) {
             console.log("WHATS GOOOOOODDDDDDDDDD")
@@ -227,6 +296,7 @@ export default class CreateUI extends React.Component {
                         this.state.moves.push(this.state.historyMoves[0].lan)
                         let moves = this.state.moves
                         const movesCombined = moves.flat().map(move => move.slice(0, 4));
+                        //let movesJoined = movesCombined.join(',')
                         console.log("Moves: ", movesCombined)
 
                         this.setState({
