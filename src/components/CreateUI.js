@@ -86,7 +86,7 @@ export default class CreateUI extends React.Component {
     sendPuzzleToDatabase = () => {
         let puzzleId = this.state.puzzleId;
         let username = this.state.username;
-        let fen = this.state.position;
+        let fen = this.state.confirmedPosition;
         let moves = this.state.moves;
         let puzzles = [];
         let date = new Date();
