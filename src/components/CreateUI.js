@@ -33,6 +33,8 @@ export default class CreateUI extends React.Component {
             showConfirmButton: true,
             showConfirmSolutionButton: false,
             showBackButton: false,
+            showMustBeCheckmate: false,
+            showTutorialButton: true,
             isConfirmedSolution: false,
             isMoved: false,
             isFirstOKButton: null,
@@ -446,6 +448,11 @@ export default class CreateUI extends React.Component {
                 isConfirmedSolution: true
             })
         }
+        else {
+            this.setState({
+                showMustBeCheckmate: true,
+            })
+        }
     }
 
     handleDropOffBoard = () => {
@@ -461,7 +468,11 @@ export default class CreateUI extends React.Component {
         console.log("Welcome to the Tutorial");
 
         this.setState({
-            isFirstOKButton: true
+            isFirstOKButton: true,
+            showBackButton: false,
+            showConfirmButton: false,
+            showConfirmSolutionButton: false,
+            showTutorialButton: false,
         })
 
     }
@@ -525,7 +536,11 @@ export default class CreateUI extends React.Component {
             setTimeout(() => {
                 this.setState({
                     isFirstOKButton: false,
-                    isSecondOKButton: true
+                    isSecondOKButton: true,
+                    showBackButton: false,
+                    showConfirmButton: false,
+                    showConfirmSolutionButton: false,
+                    showTutorialButton: false,
                 })
             }, 3500);
         }
@@ -543,7 +558,11 @@ export default class CreateUI extends React.Component {
                 showConfirmSolutionButton: true,
                 isSparePieces: false,
                 isPositionSetup: false,
-                isDeletePieces: false
+                isDeletePieces: false,
+                showBackButton: false,
+                showConfirmButton: false,
+                showConfirmSolutionButton: false,
+                showTutorialButton: false,
             })
 
             setTimeout(() => {
@@ -556,24 +575,28 @@ export default class CreateUI extends React.Component {
             setTimeout(() => {
                 this.setState({
                     position: chess.fen(),
-                    isThirdOKButton: true
+                    isThirdOKButton: true,
+                    showBackButton: false,
+                    showConfirmButton: false,
+                    showConfirmSolutionButton: false,
+                    showTutorialButton: false,
                 })
             }, 2000);
 
-            
+
         }
 
         console.log("isThirdOKButton: ", this.state.isThirdOKButton)
 
         if (this.state.isThirdOKButton === true) {
             console.log("Welcome to part three of tutorial");
-            
+
             const chess = new Chess()
             chess.load(this.state.position)
             this.setState({
                 position: chess.fen()
             })
-            
+
             chess.move('e6e1');
             this.setState({
                 position: chess.fen()
@@ -581,12 +604,16 @@ export default class CreateUI extends React.Component {
 
             setTimeout(() => {
                 this.setState({
-                    isFourthOKButton: true
+                    isFourthOKButton: true,
+                    showBackButton: false,
+                    showConfirmButton: false,
+                    showConfirmSolutionButton: false,
+                    showTutorialButton: false,
                 })
             }, 1500);
         }
-        
-        if(this.state.isFourthOKButton === true){
+
+        if (this.state.isFourthOKButton === true) {
             console.log("Welcome to part four of tutorial");
             const chess = new Chess()
             chess.load(this.state.position)
@@ -596,20 +623,28 @@ export default class CreateUI extends React.Component {
 
             setTimeout(() => {
                 this.setState({
-                    isFifthOKButton: true
+                    isFifthOKButton: true,
+                    showBackButton: false,
+                    showConfirmButton: false,
+                    showConfirmSolutionButton: false,
+                    showTutorialButton: false,
                 })
             }, 100);
         }
 
-        if(this.state.isFifthOKButton === true){
+        if (this.state.isFifthOKButton === true) {
             window.location.reload()
         }
-        
+
     }
 
     handleFirstOKButton = () => {
         this.setState({
-            isFirstOKButton: false
+            isFirstOKButton: false,
+            showBackButton: false,
+            showConfirmButton: false,
+            showConfirmSolutionButton: false,
+            showTutorialButton: false,
         })
 
         this.handleTutorial()
@@ -617,7 +652,11 @@ export default class CreateUI extends React.Component {
 
     handleSecondOKButton = () => {
         this.setState({
-            isSecondOKButton: false
+            isSecondOKButton: false,
+            showBackButton: false,
+            showConfirmButton: false,
+            showConfirmSolutionButton: false,
+            showTutorialButton: false,
         })
 
         this.handleTutorial()
@@ -625,7 +664,11 @@ export default class CreateUI extends React.Component {
 
     handleThirdOKButton = () => {
         this.setState({
-            isThirdOKButton: false
+            isThirdOKButton: false,
+            showBackButton: false,
+            showConfirmButton: false,
+            showConfirmSolutionButton: false,
+            showTutorialButton: false,
         })
 
         this.handleTutorial()
@@ -633,18 +676,33 @@ export default class CreateUI extends React.Component {
 
     handleFourthOKButton = () => {
         this.setState({
-            isFourthOKButton: false
+            isFourthOKButton: false,
+            showBackButton: false,
+            showConfirmButton: false,
+            showConfirmSolutionButton: false,
+            showTutorialButton: false,
         })
 
         this.handleTutorial()
     }
-    
+
     handleFifthOKButton = () => {
         this.setState({
-            isFifthOKButton: false
+            isFifthOKButton: false,
+            showBackButton: false,
+            showConfirmButton: false,
+            showConfirmSolutionButton: false,
+            showTutorialButton: false,
         })
 
         this.handleTutorial()
+    }
+
+    handleMustBeCheckmate = () => {
+        console.log("Must be checkmate to submit")
+        this.setState({
+            showMustBeCheckmate: false
+        })
     }
 
     render() {
@@ -657,10 +715,9 @@ export default class CreateUI extends React.Component {
                         <div className="popup-content">
                             <h2 class="popup-message-main">Tutorial</h2>
                             <ol class="popup-message-sub">
-                                        <li>Drag Spare Pieces onto Board</li>
-                                        <li>Click on Piece to Remove it</li>
-                                        <li>Confirm Position when Satisfied</li>
-                                    </ol>
+                                <li>Drag Spare Pieces onto Board</li>
+                                <li>Click on Piece to Remove it</li>
+                            </ol>
                             <div className="popup-buttons">
                                 <button class='popup-button-1' onClick={this.handleFirstOKButton}>OK</button>
                             </div>
@@ -673,11 +730,10 @@ export default class CreateUI extends React.Component {
                         <div className="popup-content">
                             <h2 class="popup-message-main">Tutorial</h2>
                             <ol class="popup-message-sub">
-                                        <li>Drag Spare Pieces onto Board</li>
-                                        <li>Click on Piece to Remove it</li>
-                                        <li>Confirm Position when Satisfied</li>
-                                    </ol>
-                            <p class="popup-message-sub">Next, click "Confirm Position" and make a move for white to initialize the puzzle for black to solve</p>
+                                <li>Click "Confirm Position" once Satisfied with Position</li>
+                                <li>Make a Move with White to Initialize Puzzle</li>
+                                <li>Black to Solve All Puzzles</li>
+                            </ol>
                             <div className="popup-buttons">
                                 <button class='popup-button-1' onClick={this.handleSecondOKButton}>OK</button>
                             </div>
@@ -689,8 +745,11 @@ export default class CreateUI extends React.Component {
                     <div className="popup">
                         <div className="popup-content">
                             <h2 class="popup-message-main">Tutorial</h2>
-                            <p class="popup-message-sub">Then, make moves with black to solve the puzzle. If it is more than a mate in one,
-                                make moves with white after each move with black.</p>
+                            <ol class="popup-message-sub">
+                                <li>Make Moves with Black to Solve Puzzle</li>
+                                <li>If Puzzle is Longer than a Mate in One then Make Subsequent Moves with White</li>
+                                <li>After Each White Move, a Black Move Must be Made</li>
+                            </ol>
                             <div className="popup-buttons">
                                 <button class='popup-button-1' onClick={this.handleThirdOKButton}>OK</button>
                             </div>
@@ -698,11 +757,13 @@ export default class CreateUI extends React.Component {
                     </div>
                 )}
 
-{this.state.isFourthOKButton && (
+                {this.state.isFourthOKButton && (
                     <div className="popup">
                         <div className="popup-content">
                             <h2 class="popup-message-main">Tutorial</h2>
-                            <p class="popup-message-sub">Finally, once you completed the sequence of the puzzle, click "Confirm Solution"</p>
+                            <ol class="popup-message-sub">
+                                <li>Click "Confirm Solution" once the Sequence is Complete</li>
+                            </ol>
                             <div className="popup-buttons">
                                 <button class='popup-button-1' onClick={this.handleFourthOKButton}>OK</button>
                             </div>
@@ -710,15 +771,27 @@ export default class CreateUI extends React.Component {
                     </div>
                 )}
 
-{this.state.isFifthOKButton && (
+                {this.state.isFifthOKButton && (
                     <div className="popup">
-                    <div className="popup-content">
-                        <h2 class="popup-message-main">Tutorial Over</h2>
-                        <div className="popup-buttons">
-                            <button class='popup-button-1' onClick = {this.handleFifthOKButton}>Create My Own</button>
+                        <div className="popup-content">
+                            <h2 class="popup-message-main">Tutorial Over</h2>
+                            <div className="popup-buttons">
+                                <button class='popup-button-1' onClick={this.handleFifthOKButton}>Create My Own</button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
+
+                {this.state.showMustBeCheckmate && (
+                    <div className="popup">
+                        <div className="popup-content">
+                            <h2 class="popup-message-main">Wait...</h2>
+                            <p class="popup-message--sub">King Must be in Checkmate to Submit Puzzle</p>
+                            <div className="popup-buttons">
+                                <button class='popup-button-1' onClick={this.handleMustBeCheckmate}>OK</button>
+                            </div>
+                        </div>
+                    </div>
                 )}
 
                 <div className='create--chessboard'>
@@ -731,18 +804,7 @@ export default class CreateUI extends React.Component {
                                 {this.state.showConfirmButton && (
                                     <button className='create--button' onClick={this.handleConfirmPositionButton}>Confirm Position</button>
                                 )}
-                                {this.state.showConfirmButton && (
-                                    <button className='create--button' onClick={this.handleStartTutorialButton}>Tutorial</button>
-                                )}
                                 {this.state.showConfirmButton && <button className='create--button' onClick={this.handleResetPosition}>Reset Position</button>}
-
-                                {this.state.showConfirmButton && (
-                                    <ul>
-                                        <li>Drag Spare Pieces on Board</li>
-                                        <li>Click on Piece to Remove it</li>
-                                        <li>Confirm Position when Satisfied</li>
-                                    </ul>
-                                )}
 
                                 {this.state.showConfirmSolutionButton && (
                                     <button className='create--button' onClick={this.handleConfirmSolutionButton}>Confirm Solution</button>
@@ -751,19 +813,7 @@ export default class CreateUI extends React.Component {
                                     <button className='create--button' onClick={this.handleBackButton}>Back</button>
                                 )}
 
-                                {this.state.showConfirmSolutionButton && (
-                                    <ul>
-                                        <li>Make First Move with White to Initialize Puzzle</li>
-                                        <li>Always Black to Solve Puzzle</li>
-                                        <li>Confirm Solution when Satisfied</li>
-                                        <li>Click Back to Return to Original Position</li>
-                                    </ul>
-                                )}
-
-
-
                                 {this.state.isConfirmedSolution && (<PuzzleSubmitted />)}
-
                             </div>
 
                             <Chessboard
@@ -778,6 +828,15 @@ export default class CreateUI extends React.Component {
                                 dropOffBoard={this.state.offBoard}
                                 orientation='black'
                             />
+
+                            <div className='create--info--2'>
+                                <h1 class='create--title'>Need Help?</h1>
+
+                                {this.state.showTutorialButton && (
+                                    <button className='create--button' onClick={this.handleStartTutorialButton}>Tutorial</button>
+                                )}
+
+                            </div>
                         </div>
                     </div>
                 </div>

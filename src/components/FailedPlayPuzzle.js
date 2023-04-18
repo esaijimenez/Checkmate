@@ -22,7 +22,7 @@ export default class FailedPlayPuzzle extends React.Component {
             <div className="popup">
                 <div className="popup-content">
                     <h2 class="popup-message-main">Failed Puzzle!</h2>
-                    <p class="popup-message-sub">What now?</p>
+                    <p class="popup-message--sub">What now?</p>
                     <div className="popup-buttons">
                         <button class='popup-button-1' onClick={this.handleReload}>Try again</button>
                         <Link to="/play-list"><button class='popup-button-2'>Puzzle List</button></Link>

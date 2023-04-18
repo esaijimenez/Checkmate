@@ -11,7 +11,7 @@
   flex-direction: column;
   height: 650px;
   width: 650px;
-  margin: auto;
+  margin-top: 20px;
 }
 
 .create--info {
@@ -47,6 +47,21 @@
     0px 5px 14px 0px rgba(0, 0, 0, 0.18);
   margin: auto;
   margin-right: 10px;
+}
+
+.create--info--2 {
+  display: flex;
+  flex-direction: column;
+  margin-top: 80px;
+  border: 3px solid #1d3557;
+  background-color: #a8dadc;
+  height: 225px;
+  width: 350px;
+  justify-content: center;
+  box-shadow: 4px 26px 58px 1px rgba(29, 53, 87, 1),
+    0px 5px 14px 0px rgba(0, 0, 0, 0.18);
+  margin: auto;
+  margin-left: 10px;
 }
 
 .create--title {
@@ -104,4 +119,13 @@
   -moz-border-radius: 10px;
   border-radius: 10px;
   text-decoration: none;
+}
+
+.popup-content {
+  width: auto;
+  height: auto;
+}
+
+.popup-message-sub {
+  text-align: left;
 }

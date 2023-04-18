@@ -31,7 +31,8 @@
     text-decoration: underline;
 }
 
-.popup-message-sub {
+.popup-message--sub {
+    text-align: center;
     font-family: Georgia;
     color: #F1FAEE;
     font-size: 20px;
