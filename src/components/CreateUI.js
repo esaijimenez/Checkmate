@@ -354,6 +354,14 @@ export default class CreateUI extends React.Component {
         }
     }
 
+    handleResetPosition = () => {
+        const chess = new Chess(this.state.position)
+        chess.clear()
+        this.setState({
+            position: "8/8/3k4/8/8/4K3/8/8 w KQkq - 0 1"
+        })
+    }
+
     handleDragOverSquare = (sourceSquare) => {
         console.log("Drag Over Square: ", sourceSquare)
     }
@@ -454,6 +462,8 @@ export default class CreateUI extends React.Component {
                                 {this.state.showConfirmButton && (
                                     <button className='create--button' onClick={this.handleConfirmPositionButton}>Confirm Position</button>
                                 )}
+                                {this.state.showConfirmButton && <button className='create--button' onClick={this.handleResetPosition}>Reset Position</button>}
+
                                 {this.state.showConfirmButton && (
                                     <ul>
                                         <li>Drag Spare Pieces on Board</li>
@@ -461,6 +471,7 @@ export default class CreateUI extends React.Component {
                                         <li>Confirm Position when Satisfied</li>
                                     </ul>
                                 )}
+
 
                                 {this.state.showConfirmSolutionButton && (
                                     <button className='create--button' onClick={this.handleConfirmSolutionButton}>Confirm Solution</button>
