@@ -38,6 +38,8 @@ export default class CreateUI extends React.Component {
             isFirstOKButton: null,
             isSecondOKButton: null,
             isThirdOKButton: null,
+            isFourthOKButton: null,
+            isFifthOKButton: null,
             puzzleId: 1,
             username: "Carlos Magnusson",
             fen: "",
@@ -525,7 +527,7 @@ export default class CreateUI extends React.Component {
                     isFirstOKButton: false,
                     isSecondOKButton: true
                 })
-            }, 3000);
+            }, 3500);
         }
         console.log("isSecondOKButton: ", this.state.isSecondOKButton)
         if (this.state.isSecondOKButton === true) {
@@ -551,17 +553,58 @@ export default class CreateUI extends React.Component {
                 })
             }, 500);
 
-            this.setState({
-                position: chess.fen(),
-                isSecondOKButton: false,
-                isThirdOKButton: true
-            })
+            setTimeout(() => {
+                this.setState({
+                    position: chess.fen(),
+                    isThirdOKButton: true
+                })
+            }, 2000);
+
+            
         }
+
+        console.log("isThirdOKButton: ", this.state.isThirdOKButton)
 
         if (this.state.isThirdOKButton === true) {
             console.log("Welcome to part three of tutorial");
+            
+            const chess = new Chess()
+            chess.load(this.state.position)
+            this.setState({
+                position: chess.fen()
+            })
+            
+            chess.move('e6e1');
+            this.setState({
+                position: chess.fen()
+            })
+
+            setTimeout(() => {
+                this.setState({
+                    isFourthOKButton: true
+                })
+            }, 1500);
+        }
+        
+        if(this.state.isFourthOKButton === true){
+            console.log("Welcome to part four of tutorial");
+            const chess = new Chess()
+            chess.load(this.state.position)
+            this.setState({
+                position: chess.fen()
+            })
+
+            setTimeout(() => {
+                this.setState({
+                    isFifthOKButton: true
+                })
+            }, 100);
         }
 
+        if(this.state.isFifthOKButton === true){
+            window.location.reload()
+        }
+        
     }
 
     handleFirstOKButton = () => {
@@ -588,6 +631,22 @@ export default class CreateUI extends React.Component {
         this.handleTutorial()
     }
 
+    handleFourthOKButton = () => {
+        this.setState({
+            isFourthOKButton: false
+        })
+
+        this.handleTutorial()
+    }
+    
+    handleFifthOKButton = () => {
+        this.setState({
+            isFifthOKButton: false
+        })
+
+        this.handleTutorial()
+    }
+
     render() {
 
         return (
@@ -597,7 +656,11 @@ export default class CreateUI extends React.Component {
                     <div className="popup">
                         <div className="popup-content">
                             <h2 class="popup-message-main">Tutorial</h2>
-                            <p class="popup-message-sub">Place the pieces on the board to setup the puzzle</p>
+                            <ol class="popup-message-sub">
+                                        <li>Drag Spare Pieces onto Board</li>
+                                        <li>Click on Piece to Remove it</li>
+                                        <li>Confirm Position when Satisfied</li>
+                                    </ol>
                             <div className="popup-buttons">
                                 <button class='popup-button-1' onClick={this.handleFirstOKButton}>OK</button>
                             </div>
@@ -609,7 +672,12 @@ export default class CreateUI extends React.Component {
                     <div className="popup">
                         <div className="popup-content">
                             <h2 class="popup-message-main">Tutorial</h2>
-                            <p class="popup-message-sub">Next, confirm the position and make a move for white to initialize the puzzle for black to solve</p>
+                            <ol class="popup-message-sub">
+                                        <li>Drag Spare Pieces onto Board</li>
+                                        <li>Click on Piece to Remove it</li>
+                                        <li>Confirm Position when Satisfied</li>
+                                    </ol>
+                            <p class="popup-message-sub">Next, click "Confirm Position" and make a move for white to initialize the puzzle for black to solve</p>
                             <div className="popup-buttons">
                                 <button class='popup-button-1' onClick={this.handleSecondOKButton}>OK</button>
                             </div>
@@ -628,6 +696,29 @@ export default class CreateUI extends React.Component {
                             </div>
                         </div>
                     </div>
+                )}
+
+{this.state.isFourthOKButton && (
+                    <div className="popup">
+                        <div className="popup-content">
+                            <h2 class="popup-message-main">Tutorial</h2>
+                            <p class="popup-message-sub">Finally, once you completed the sequence of the puzzle, click "Confirm Solution"</p>
+                            <div className="popup-buttons">
+                                <button class='popup-button-1' onClick={this.handleFourthOKButton}>OK</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+{this.state.isFifthOKButton && (
+                    <div className="popup">
+                    <div className="popup-content">
+                        <h2 class="popup-message-main">Tutorial Over</h2>
+                        <div className="popup-buttons">
+                            <button class='popup-button-1' onClick = {this.handleFifthOKButton}>Create My Own</button>
+                        </div>
+                    </div>
+                </div>
                 )}
 
                 <div className='create--chessboard'>
