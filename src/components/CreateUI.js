@@ -26,6 +26,7 @@ export default class CreateUI extends React.Component {
             isDragging: false,
             isPositionSetup: true,
             isDeletePieces: true,
+            isCheckmate: false,
             placement: [],
             placementIndex: 0,
             offBoard: "trash",
@@ -340,8 +341,14 @@ export default class CreateUI extends React.Component {
                             position: chess.fen(),
                             historyCounter: this.state.historyCounter + 1,
                             moves: movesCombined,
-                            isMoved: true
+                            isMoved: true,
                         });
+
+                        if (chess.isCheckmate() === true) {
+                            this.setState({
+                                isCheckmate: true
+                            });
+                        }
                     }
                     else {
                         console.log("Invalid Move")
@@ -425,7 +432,7 @@ export default class CreateUI extends React.Component {
     }
 
     handleConfirmSolutionButton = () => {
-        if (this.state.isMoved) {
+        if (this.state.isMoved && this.state.isCheckmate) {
             console.log("Confirmed Solution")
             console.log("Sending to Database...")
             this.sendPuzzleToDatabase();
@@ -443,6 +450,10 @@ export default class CreateUI extends React.Component {
         })
 
         console.log("offBoard: ", this.state.offBoard)
+    }
+
+    handleTutorialButton = () => {
+        console.log("Welcome to the Tutorial");
     }
 
     render() {
@@ -469,7 +480,6 @@ export default class CreateUI extends React.Component {
                                         <li>Confirm Position when Satisfied</li>
                                     </ul>
                                 )}
-
 
                                 {this.state.showConfirmSolutionButton && (
                                     <button className='create--button' onClick={this.handleConfirmSolutionButton}>Confirm Solution</button>

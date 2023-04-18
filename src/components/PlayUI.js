@@ -138,7 +138,6 @@ export default class PlayUI extends React.Component {
         }
     }
 
-
     //render() returns a JSX element that allows us to write HTML in React.
     //Handles what the user sees and interacts with on their screen. 
     render() {
