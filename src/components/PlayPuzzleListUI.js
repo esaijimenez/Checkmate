@@ -18,7 +18,8 @@ export default class PlayPuzzleListUI extends React.Component {
             numPuzzles: 0,
             puzzles: [],
             table: [],
-            chessboardImage: []
+            chessboardImage: [],
+            showRefreshPage: false,
         };
     };
 
@@ -62,9 +63,19 @@ export default class PlayPuzzleListUI extends React.Component {
             this.addRowToTable(this.state.numPuzzles)
             //console.log("numPuzzles: ", this.state.numPuzzles)
             console.log("componentDidMount")
+
+            if (this.state.numPuzzles === 0) {
+                this.setState({
+                    showRefreshPage: true
+                })
+            }
         })
 
     };
+
+    handleRefreshPage = () => {
+        window.location.reload();
+    }
 
     addRowToTable = (numPuzzles) => {
         const table = document.getElementById("puzzleTable");
@@ -123,6 +134,8 @@ export default class PlayPuzzleListUI extends React.Component {
             <div className='play'>
                 <Navbar />
                 <h1>Puzzle List</h1>
+
+                {this.state.showRefreshPage && <button onClick={this.handleRefreshPage}>Refresh Page</button>}
 
                 <div class="table-container">
                     <table id='puzzleTable'>
