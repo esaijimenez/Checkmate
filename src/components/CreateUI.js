@@ -324,8 +324,6 @@ export default class CreateUI extends React.Component {
                             })
                         }
 
-
-
                         this.state.history.push(chess.history({ verbose: true }));
                         console.log("History: ", this.state.history)
 

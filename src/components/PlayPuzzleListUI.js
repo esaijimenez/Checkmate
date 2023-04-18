@@ -133,9 +133,9 @@ export default class PlayPuzzleListUI extends React.Component {
         return (
             <div className='play'>
                 <Navbar />
-                <h1>Puzzle List</h1>
+                <h1 className='play-title'>Puzzle List</h1>
 
-                {this.state.showRefreshPage && <button onClick={this.handleRefreshPage}>Refresh Page</button>}
+                {this.state.showRefreshPage && <button className="play--button" onClick={this.handleRefreshPage}>Refresh Page</button>}
 
                 <div class="table-container">
                     <table id='puzzleTable'>

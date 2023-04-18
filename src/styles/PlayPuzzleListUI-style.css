@@ -215,3 +215,69 @@ button {
     text-decoration-color: #e63946;
     cursor: context-menu;
 }
+
+.play--button {
+    width: 280px;
+    padding: 10px;
+    font-size: 31px;
+    background: #1d3557;
+    background-image: -webkit-linear-gradient(top, #1d3557, #0f4a9e);
+    background-image: -moz-linear-gradient(top, #1d3557, #0f4a9e);
+    background-image: -ms-linear-gradient(top, #1d3557, #0f4a9e);
+    background-image: -o-linear-gradient(top, #1d3557, #0f4a9e);
+    background-image: -webkit-gradient(to bottom, #1d3557, #0f4a9e);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    height: 80px;
+    line-height: 50px;
+    color: #f1faee;
+    font-family: Georgia;
+    font-weight: 100;
+    margin: auto;
+    -webkit-box-shadow: 1px 1px 20px 0 #000000;
+    -moz-box-shadow: 1px 1px 20px 0 #000000;
+    box-shadow: 1px 1px 20px 0 #000000;
+    border: outset #0059a0 10px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+}
+
+.play--button:hover {
+    border: inset #f1faee 10px;
+    background: #e63946;
+    background-image: -webkit-linear-gradient(top, #0f4a9e, #1d3557);
+    background-image: -moz-linear-gradient(top, #0f4a9e, #1d3557);
+    background-image: -ms-linear-gradient(top, #0f4a9e, #1d3557);
+    background-image: -o-linear-gradient(top, #0f4a9e, #1d3557);
+    background-image: -webkit-gradient(to bottom, #0f4a9e, #1d3557);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.play-title {
+    margin: auto;
+    font-size: 100px;
+    position: static;
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-size: 80px;
+    font-weight: 600;
+    font-family: 'Roboto', sans-serif;
+    color: #f1faee;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0px #e63946,
+        1px 2px 0px #e63946,
+        1px 3px 0px #e63946,
+        1px 4px 0px #a8dadc,
+        1px 5px 0px #a8dadc,
+        1px 6px 0px #a8dadc,
+        1px 10px 5px rgba(16, 16, 16, 0.5),
+        1px 15px 10px rgba(16, 16, 16, 0.4),
+        1px 20px 30px rgba(16, 16, 16, 0.3),
+        1px 25px 50px rgba(16, 16, 16, 0.2);
+}

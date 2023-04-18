@@ -9,7 +9,8 @@ import '../styles/PlayUI-style.css'
 import GameOver from './GameOver.js';
 import GameOverLeaderboard from './GameOverLeaderboard.js';
 import LeaderboardUI from './LeaderboardUI.js';
-import GameOverPlayPuzzle from './GameOverPlayPuzzle.js';
+import FailedPlayPuzzle from './FailedPlayPuzzle.js';
+import SuccessPlayPuzzle from './SuccessPlayPuzzle.js';
 
 
 export default class PlayUI extends React.Component {
@@ -27,7 +28,8 @@ export default class PlayUI extends React.Component {
             botMoveIndex: 0,
             userMoveIndex: 1,
             showStartButton: true,
-            showGameOverPlayPuzzle: false,
+            showFailedPlayPuzzle: false,
+            showSuccessPlayPuzzle: false,
         };
     };
 
@@ -101,13 +103,13 @@ export default class PlayUI extends React.Component {
             if (validMove && validMove.from !== userSourceSquare) {
                 console.log("Im sorry, but that is the wrong move. ):");
                 this.setState({
-                    showGameOverPlayPuzzle: true
+                    showFailedPlayPuzzle: true
                 })
             }
             else if (validMove && validMove.from == userSourceSquare && validMove.to !== userTargetSquare) {
                 console.log("Im sorry, but that is the wrong move. ):")
                 this.setState({
-                    showGameOverPlayPuzzle: true
+                    showFailedPlayPuzzle: true
                 })
             }
             else if (validMove && validMove.from == userSourceSquare && validMove.to == userTargetSquare) {
@@ -115,6 +117,7 @@ export default class PlayUI extends React.Component {
                 this.setState({
                     fen: chess.fen(),
                     userMoveIndex: this.state.userMoveIndex + 2,
+
                 })
 
                 if (chess.isCheckmate() === false) {
@@ -123,6 +126,10 @@ export default class PlayUI extends React.Component {
                 }
                 else {
                     console.log("Checkmate!");
+
+                    this.setState({
+                        showSuccessPlayPuzzle: true
+                    })
                 }
             }
         }
@@ -149,9 +156,11 @@ export default class PlayUI extends React.Component {
                             <h1 class='play--title'>Play Mate</h1>
                             <h1>{this.state.value}</h1>
 
-                            {this.state.showStartButton && <button onClick={this.handleStartButton}>Start</button>}
+                            {this.state.showStartButton && <button className="play--button" onClick={this.handleStartButton}>Start</button>}
 
-                            {this.state.showGameOverPlayPuzzle && (<GameOverPlayPuzzle />)}
+                            {this.state.showFailedPlayPuzzle && (<FailedPlayPuzzle />)}
+
+                            {this.state.showSuccessPlayPuzzle && (<SuccessPlayPuzzle />)}
 
                         </div>
 

@@ -8,10 +8,10 @@ import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
 
 import Navbar from './Navbar.js';
-import '../styles/GameOverPlayPuzzle.css'
+import '../styles/FailedPlayPuzzle.css'
 import PlayUI from "./PlayUI.js";
 
-export default class GameOverPlayPuzzle extends React.Component {
+export default class FailedPlayPuzzle extends React.Component {
 
     handleReload = () => {
         window.location.reload();
