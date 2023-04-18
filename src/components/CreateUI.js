@@ -35,6 +35,7 @@ export default class CreateUI extends React.Component {
             showBackButton: false,
             isConfirmedSolution: false,
             isMoved: false,
+            isOKButton: null,
             puzzleId: 1,
             username: "Carlos Magnusson",
             fen: "",
@@ -452,8 +453,80 @@ export default class CreateUI extends React.Component {
         console.log("offBoard: ", this.state.offBoard)
     }
 
-    handleTutorialButton = () => {
+    handleStartTutorialButton = () => {
         console.log("Welcome to the Tutorial");
+
+        this.setState({
+            isOKButton: true
+        })
+
+    }
+
+    handleTutorial = () => {
+        const chess = new Chess();
+        chess.clear();
+        this.setState({
+            position: "8/8/3k4/8/8/4K3/8/8 w KQkq - 0 1"
+        })
+
+        chess.load("8/8/3k4/8/8/4K3/8/8 w KQkq - 0 1")
+
+        console.log("isOKButton: ", this.state.isOKButton)
+
+        if (this.state.isOKButton === true) {
+            setTimeout(() => {
+                chess.put({ type: 'p', color: 'w' }, "a2")
+                this.setState({
+                    position: chess.fen()
+                })
+            }, 100);
+
+            setTimeout(() => {
+                chess.put({ type: 'p', color: 'w' }, "b2")
+                this.setState({
+                    position: chess.fen()
+                })
+            }, 500);
+
+            setTimeout(() => {
+                chess.put({ type: 'p', color: 'w' }, "c2")
+                this.setState({
+                    position: chess.fen()
+                })
+            }, 900);
+
+            setTimeout(() => {
+                chess.put({ type: 'p', color: 'w' }, "f2")
+                this.setState({
+                    position: chess.fen()
+                })
+            }, 1300);
+
+            setTimeout(() => {
+                chess.remove('e3')
+                chess.put({ type: 'k', color: 'w' }, "b1")
+                this.setState({
+                    position: chess.fen()
+                })
+            }, 1700);
+
+            setTimeout(() => {
+                chess.put({ type: 'r', color: 'b' }, "e6")
+                this.setState({
+                    position: chess.fen()
+
+                })
+            }, 2500);
+        }
+
+    }
+
+    handleOKButton = () => {
+        this.setState({
+            isOKButton: false
+        })
+
+        this.handleTutorial()
     }
 
     render() {
@@ -461,6 +534,18 @@ export default class CreateUI extends React.Component {
         return (
             <div className='create'>
                 <Navbar />
+                {this.state.isOKButton && (
+                    <div className="popup">
+                        <div className="popup-content">
+                            <h2 class="popup-message-main">Tutorial</h2>
+                            <p class="popup-message-sub">Place the pieces on the board to setup the puzzle</p>
+                            <div className="popup-buttons">
+                                <button class='popup-button-1' onClick={this.handleOKButton}>OK</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 <div className='create--chessboard'>
 
                     <div className='create--info'>
@@ -470,6 +555,9 @@ export default class CreateUI extends React.Component {
                                 <h1 class='create--title'>Custom Puzzle: Create Mate</h1>
                                 {this.state.showConfirmButton && (
                                     <button className='create--button' onClick={this.handleConfirmPositionButton}>Confirm Position</button>
+                                )}
+                                {this.state.showConfirmButton && (
+                                    <button className='create--button' onClick={this.handleStartTutorialButton}>Tutorial</button>
                                 )}
                                 {this.state.showConfirmButton && <button className='create--button' onClick={this.handleResetPosition}>Reset Position</button>}
 
