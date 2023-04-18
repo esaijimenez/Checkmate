@@ -255,9 +255,15 @@ export default class CreateUI extends React.Component {
                     console.log("ITS A KINGGGGGGGGGGGGGG ")
                     chess.remove(target)
                 }
+                else if (piece === 'Q' && color === 'b' || piece === 'R' && color === 'b') {
+                    chess.remove(target)
+                    this.setState({
+                        position: chess.fen()
+                    });
+                    chess.put({ type: piece, color: color }, target)
+                }
                 else {
                     chess.put({ type: piece, color: color }, target)
-
                 }
 
                 console.log("Position: ", chess.fen())
@@ -294,11 +300,31 @@ export default class CreateUI extends React.Component {
                     console.log("MOVE FROM: ", validMoves[i])
 
                     if (_color === chess.turn() && _target === validMoves[i].to) {
-                        chess.move({
-                            from: sourceSquare.sourceSquare,
-                            to: sourceSquare.targetSquare,
-                            promotion: "Q"
-                        })
+
+                        if (_piece === 'Q' && _color === 'b' || _piece === 'R' && _color === 'b') {
+                            chess.move({
+                                from: sourceSquare.sourceSquare,
+                                to: sourceSquare.targetSquare,
+                                promotion: "Q"
+                            })
+                            chess.remove(_target)
+                            this.setState({
+                                position: chess.fen()
+                            });
+                            chess.put({ type: _piece, color: _color }, _target)
+                            this.setState({
+                                position: chess.fen()
+                            });
+                        }
+                        else {
+                            chess.move({
+                                from: sourceSquare.sourceSquare,
+                                to: sourceSquare.targetSquare,
+                                promotion: "Q"
+                            })
+                        }
+
+
 
                         this.state.history.push(chess.history({ verbose: true }));
                         console.log("History: ", this.state.history)
