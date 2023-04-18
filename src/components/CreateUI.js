@@ -35,7 +35,9 @@ export default class CreateUI extends React.Component {
             showBackButton: false,
             isConfirmedSolution: false,
             isMoved: false,
-            isOKButton: null,
+            isFirstOKButton: null,
+            isSecondOKButton: null,
+            isThirdOKButton: null,
             puzzleId: 1,
             username: "Carlos Magnusson",
             fen: "",
@@ -457,7 +459,7 @@ export default class CreateUI extends React.Component {
         console.log("Welcome to the Tutorial");
 
         this.setState({
-            isOKButton: true
+            isFirstOKButton: true
         })
 
     }
@@ -471,9 +473,9 @@ export default class CreateUI extends React.Component {
 
         chess.load("8/8/3k4/8/8/4K3/8/8 w KQkq - 0 1")
 
-        console.log("isOKButton: ", this.state.isOKButton)
+        console.log("isOKButton: ", this.state.isFirstOKButton)
 
-        if (this.state.isOKButton === true) {
+        if (this.state.isFirstOKButton === true) {
             setTimeout(() => {
                 chess.put({ type: 'p', color: 'w' }, "a2")
                 this.setState({
@@ -517,30 +519,112 @@ export default class CreateUI extends React.Component {
 
                 })
             }, 2500);
+
+            setTimeout(() => {
+                this.setState({
+                    isFirstOKButton: false,
+                    isSecondOKButton: true
+                })
+            }, 3000);
+        }
+        console.log("isSecondOKButton: ", this.state.isSecondOKButton)
+        if (this.state.isSecondOKButton === true) {
+            console.log("Welcome to part two of tutorial");
+            const chess = new Chess()
+            chess.load(this.state.position)
+
+            this.setState({
+                position: this.state.position,
+                confirmedPosition: this.state.position,
+                showConfirmButton: false,
+                showBackButton: true,
+                showConfirmSolutionButton: true,
+                isSparePieces: false,
+                isPositionSetup: false,
+                isDeletePieces: false
+            })
+
+            setTimeout(() => {
+                chess.move('f2f4')
+                this.setState({
+                    position: chess.fen()
+                })
+            }, 500);
+
+            this.setState({
+                position: chess.fen(),
+                isSecondOKButton: false,
+                isThirdOKButton: true
+            })
+        }
+
+        if (this.state.isThirdOKButton === true) {
+            console.log("Welcome to part three of tutorial");
         }
 
     }
 
-    handleOKButton = () => {
+    handleFirstOKButton = () => {
         this.setState({
-            isOKButton: false
+            isFirstOKButton: false
+        })
+
+        this.handleTutorial()
+    }
+
+    handleSecondOKButton = () => {
+        this.setState({
+            isSecondOKButton: false
+        })
+
+        this.handleTutorial()
+    }
+
+    handleThirdOKButton = () => {
+        this.setState({
+            isThirdOKButton: false
         })
 
         this.handleTutorial()
     }
 
     render() {
-        console.log("Placement: ", this.state.placement)
+
         return (
             <div className='create'>
                 <Navbar />
-                {this.state.isOKButton && (
+                {this.state.isFirstOKButton && (
                     <div className="popup">
                         <div className="popup-content">
                             <h2 class="popup-message-main">Tutorial</h2>
                             <p class="popup-message-sub">Place the pieces on the board to setup the puzzle</p>
                             <div className="popup-buttons">
-                                <button class='popup-button-1' onClick={this.handleOKButton}>OK</button>
+                                <button class='popup-button-1' onClick={this.handleFirstOKButton}>OK</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {this.state.isSecondOKButton && (
+                    <div className="popup">
+                        <div className="popup-content">
+                            <h2 class="popup-message-main">Tutorial</h2>
+                            <p class="popup-message-sub">Next, confirm the position and make a move for white to initialize the puzzle for black to solve</p>
+                            <div className="popup-buttons">
+                                <button class='popup-button-1' onClick={this.handleSecondOKButton}>OK</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {this.state.isThirdOKButton && (
+                    <div className="popup">
+                        <div className="popup-content">
+                            <h2 class="popup-message-main">Tutorial</h2>
+                            <p class="popup-message-sub">Then, make moves with black to solve the puzzle. If it is more than a mate in one,
+                                make moves with white after each move with black.</p>
+                            <div className="popup-buttons">
+                                <button class='popup-button-1' onClick={this.handleThirdOKButton}>OK</button>
                             </div>
                         </div>
                     </div>
