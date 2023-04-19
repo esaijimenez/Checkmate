@@ -30,15 +30,15 @@
     color: #f1faee;
     text-transform: uppercase;
     text-shadow: 1px 1px 0px #e63946,
-                 1px 2px 0px #e63946,
-                 1px 3px 0px #e63946,
-                 1px 4px 0px #a8dadc,
-                 1px 5px 0px #a8dadc,
-                 1px 6px 0px #a8dadc,
-                 1px 10px 5px rgba(16, 16, 16, 0.5),
-                 1px 15px 10px rgba(16, 16, 16, 0.4),
-                 1px 20px 30px rgba(16, 16, 16, 0.3),
-                 1px 25px 50px rgba(16, 16, 16, 0.2);
+        1px 2px 0px #e63946,
+        1px 3px 0px #e63946,
+        1px 4px 0px #a8dadc,
+        1px 5px 0px #a8dadc,
+        1px 6px 0px #a8dadc,
+        1px 10px 5px rgba(16, 16, 16, 0.5),
+        1px 15px 10px rgba(16, 16, 16, 0.4),
+        1px 20px 30px rgba(16, 16, 16, 0.3),
+        1px 25px 50px rgba(16, 16, 16, 0.2);
 }
 
 .gameMode-button {
@@ -54,7 +54,7 @@
     height: 80px;
     line-height: 50px;
     color: #F1FAEE;
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     width: 300px;
     font-size: 30px;
     font-weight: 100;
@@ -81,7 +81,7 @@
     border-radius: 10px;
     height: 50px;
     color: #F1FAEE;
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     width: 120px;
     font-size: 20px;
     font-weight: 100;
@@ -96,7 +96,8 @@
     text-align: center;
 }
 
-.gameMode-button:hover, .gameMode-back-button:hover {
+.gameMode-button:hover,
+.gameMode-back-button:hover {
     border: inset #A8DADC 10px;
     background: #0F4A9E;
     background-image: -webkit-linear-gradient(top, #0F4A9E, #1D3557);
@@ -115,11 +116,11 @@
     margin: auto;
     font-size: 30px;
     font-weight: 400;
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: #f1faee;
     text-shadow: 1px 1px 0px #e63946;
 }
 
 .gameMode--page--img {
-font-size: 200px;
+    font-size: 200px;
 }

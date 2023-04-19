@@ -30,8 +30,8 @@
   height: 500px;
   width: 350px;
   justify-content: center;
-  box-shadow: 4px 26px 58px 1px rgba(29,53,87,1),
-0px 5px 14px 0px rgba(0,0,0,0.18);
+  box-shadow: 4px 26px 58px 1px rgba(29, 53, 87, 1),
+    0px 5px 14px 0px rgba(0, 0, 0, 0.18);
 }
 
 .bullet--info--2 {
@@ -42,8 +42,8 @@
   height: 500px;
   width: 350px;
   background-color: #a8dadc;
-  box-shadow: 4px 26px 58px 1px rgba(29,53,87,1),
-0px 5px 14px 0px rgba(0,0,0,0.18);
+  box-shadow: 4px 26px 58px 1px rgba(29, 53, 87, 1),
+    0px 5px 14px 0px rgba(0, 0, 0, 0.18);
 }
 
 .bullet--info--3 {
@@ -62,10 +62,15 @@
   justify-content: center;
 }
 
-.bullet--item1, .bullet--item2, .bullet--item3, 
-.bullet--item4, .bullet--item5, .bullet--item6, .bullet--item7 {
+.bullet--item1,
+.bullet--item2,
+.bullet--item3,
+.bullet--item4,
+.bullet--item5,
+.bullet--item6,
+.bullet--item7 {
   margin: auto;
-  font-family: Georgia;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .bullet--item7 {
@@ -73,7 +78,7 @@
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
   background-color: #64d86b;
-  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   border-radius: 8px;
   padding: 5px;
   border: 2px solid black;
@@ -85,29 +90,29 @@
   padding: 10px;
   font-size: 40px;
   background: #1D3557;
-    background-image: -webkit-linear-gradient(top, #1D3557, #0F4A9E);
-    background-image: -moz-linear-gradient(top, #1D3557, #0F4A9E);
-    background-image: -ms-linear-gradient(top, #1D3557, #0F4A9E);
-    background-image: -o-linear-gradient(top, #1D3557, #0F4A9E);
-    background-image: -webkit-gradient(to bottom, #1D3557, #0F4A9E);
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    height: 80px;
-    line-height: 50px;
-    color: #F1FAEE;
-    font-family: Georgia;
-    font-weight: 100;
-    margin: 20px;
-    margin-top: -50px;
-    -webkit-box-shadow: 1px 1px 20px 0 #000000;
-    -moz-box-shadow: 1px 1px 20px 0 #000000;
-    box-shadow: 1px 1px 20px 0 #000000;
-    border: outset #0059a0 10px;
-    text-decoration: none;
-    display: inline-block;
-    cursor: pointer;
-    text-align: center;
+  background-image: -webkit-linear-gradient(top, #1D3557, #0F4A9E);
+  background-image: -moz-linear-gradient(top, #1D3557, #0F4A9E);
+  background-image: -ms-linear-gradient(top, #1D3557, #0F4A9E);
+  background-image: -o-linear-gradient(top, #1D3557, #0F4A9E);
+  background-image: -webkit-gradient(to bottom, #1D3557, #0F4A9E);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  height: 80px;
+  line-height: 50px;
+  color: #F1FAEE;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 100;
+  margin: 20px;
+  margin-top: -50px;
+  -webkit-box-shadow: 1px 1px 20px 0 #000000;
+  -moz-box-shadow: 1px 1px 20px 0 #000000;
+  box-shadow: 1px 1px 20px 0 #000000;
+  border: outset #0059a0 10px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
 }
 
 .bullet--solution--button:hover {
@@ -128,7 +133,7 @@
   width: 100px;
   font-size: 25px;
   margin: auto;
-  font-family: Georgia;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background: #1D3557;
   background-image: -webkit-linear-gradient(top, #1D3557, #0F4A9E);
   background-image: -moz-linear-gradient(top, #1D3557, #0F4A9E);
@@ -141,7 +146,7 @@
   height: 80px;
   line-height: 50px;
   color: #F1FAEE;
-  font-family: Georgia;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: 100;
   -webkit-box-shadow: 1px 1px 20px 0 #000000;
   -moz-box-shadow: 1px 1px 20px 0 #000000;
@@ -170,12 +175,12 @@
 .bullet--title {
   font-size: 50px;
   font-weight: 500;
-  font-family: Georgia;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   margin: auto;
 }
 
 .bullet--title:hover {
-  text-decoration:underline;
+  text-decoration: underline;
   text-decoration-color: #e63946;
   cursor: context-menu;
 }

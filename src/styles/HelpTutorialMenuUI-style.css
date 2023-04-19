@@ -4,9 +4,9 @@
     text-align: center;
     align-items: center;
     justify-content: center;
-  }
+}
 
-.tutorial--img{
+.tutorial--img {
     height: 300px;
     width: 300px;
     padding: 10px;
@@ -34,7 +34,7 @@
     width: 270px;
 }
 
-.help--title{
+.help--title {
     text-align: center;
     position: static;
     margin: auto;
@@ -47,25 +47,25 @@
     color: #f1faee;
     text-transform: uppercase;
     text-shadow: 1px 1px 0px #e63946,
-                 1px 2px 0px #e63946,
-                 1px 3px 0px #e63946,
-                 1px 4px 0px #a8dadc,
-                 1px 5px 0px #a8dadc,
-                 1px 6px 0px #a8dadc,
-                 1px 10px 5px rgba(16, 16, 16, 0.5),
-                 1px 15px 10px rgba(16, 16, 16, 0.4),
-                 1px 20px 30px rgba(16, 16, 16, 0.3),
-                 1px 25px 50px rgba(16, 16, 16, 0.2);
+        1px 2px 0px #e63946,
+        1px 3px 0px #e63946,
+        1px 4px 0px #a8dadc,
+        1px 5px 0px #a8dadc,
+        1px 6px 0px #a8dadc,
+        1px 10px 5px rgba(16, 16, 16, 0.5),
+        1px 15px 10px rgba(16, 16, 16, 0.4),
+        1px 20px 30px rgba(16, 16, 16, 0.3),
+        1px 25px 50px rgba(16, 16, 16, 0.2);
 }
 
-.about--subtitle{
+.about--subtitle {
     text-align: center;
     font-size: 35px;
     font-weight: 400;
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: #f1faee;
     font-weight: 500;
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin: auto;
     text-decoration: underline;
     text-decoration-color: #e63946;
@@ -73,33 +73,33 @@
     padding: 4px;
 }
 
-.help--subtitle{
+.help--subtitle {
     text-align: center;
     font-size: 35px;
     font-weight: 400;
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: #1d3557;
     font-weight: 600;
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin: auto;
     border-radius: 4px;
     padding: 4px;
     text-decoration: underline;
 }
 
-.about--paragraph{
+.about--paragraph {
     text-align: center;
     font-size: 25px;
     font-weight: 400;
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: #f1faee;
 }
 
-.help--paragraph{
+.help--paragraph {
     text-align: left;
     font-size: 25px;
     font-weight: 400;
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: #1d3557;
     margin: auto;
     padding: 10px;
@@ -109,7 +109,7 @@
     text-align: center;
     font-size: 25px;
     font-weight: 400;
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: #f1faee;
     margin: auto;
     width: 80%;
@@ -129,7 +129,7 @@
     padding: 20px;
     justify-content: center;
     box-shadow: 4px 26px 58px 1px rgb(0, 0, 0),
-    0px 5px 14px 0px rgba(0,0,0,0.18);
+        0px 5px 14px 0px rgba(0, 0, 0, 0.18);
 }
 
 .tutorial--container {
@@ -145,7 +145,7 @@
     padding: 20px;
     justify-content: center;
     box-shadow: 4px 26px 58px 1px rgb(0, 0, 0),
-    0px 5px 14px 0px rgba(0,0,0,0.18);
+        0px 5px 14px 0px rgba(0, 0, 0, 0.18);
     align-items: start;
     flex-wrap: wrap;
 }

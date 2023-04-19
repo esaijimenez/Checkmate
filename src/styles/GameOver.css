@@ -9,7 +9,7 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    
+
 }
 
 .popup-content {
@@ -21,18 +21,18 @@
     border-radius: 10px;
     text-align: center;
     box-shadow: 4px 26px 58px 1px rgb(0, 0, 0),
-0px 5px 14px 0px rgba(0, 0, 0, 0.18);
+        0px 5px 14px 0px rgba(0, 0, 0, 0.18);
 }
 
 .popup-message-main {
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: #F1FAEE;
     font-size: 40px;
     text-decoration: underline;
 }
 
 .popup-message-sub {
-    font-family: Georgia;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: #F1FAEE;
     font-size: 20px;
 }
@@ -51,57 +51,58 @@
     width: 200px;
     font-size: 20px;
     background: #1D3557;
-      background-image: -webkit-linear-gradient(top, #1D3557, #0F4A9E);
-      background-image: -moz-linear-gradient(top, #1D3557, #0F4A9E);
-      background-image: -ms-linear-gradient(top, #1D3557, #0F4A9E);
-      background-image: -o-linear-gradient(top, #1D3557, #0F4A9E);
-      background-image: -webkit-gradient(to bottom, #1D3557, #0F4A9E);
-      -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
-      border-radius: 10px;
-      height: 50px;
-      color: #F1FAEE;
-      font-family: Georgia;
-      font-weight: 100;
-      margin: 20px;
-      -webkit-box-shadow: 1px 1px 20px 0 #000000;
-      -moz-box-shadow: 1px 1px 20px 0 #000000;
-      box-shadow: 1px 1px 20px 0 #000000;
-      border: outset #0059a0 10px;
-      text-decoration: none;
-      display: inline-block;
-      cursor: pointer;
-      text-align: center;
+    background-image: -webkit-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -moz-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -ms-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -o-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -webkit-gradient(to bottom, #1D3557, #0F4A9E);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    height: 50px;
+    color: #F1FAEE;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 100;
+    margin: 20px;
+    -webkit-box-shadow: 1px 1px 20px 0 #000000;
+    -moz-box-shadow: 1px 1px 20px 0 #000000;
+    box-shadow: 1px 1px 20px 0 #000000;
+    border: outset #0059a0 10px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
 }
 
 .popup-button-2 {
     width: 200px;
     font-size: 20px;
     background: #1D3557;
-      background-image: -webkit-linear-gradient(top, #1D3557, #0F4A9E);
-      background-image: -moz-linear-gradient(top, #1D3557, #0F4A9E);
-      background-image: -ms-linear-gradient(top, #1D3557, #0F4A9E);
-      background-image: -o-linear-gradient(top, #1D3557, #0F4A9E);
-      background-image: -webkit-gradient(to bottom, #1D3557, #0F4A9E);
-      -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
-      border-radius: 10px;
-      color: #F1FAEE;
-      font-family: Georgia;
-      font-weight: 100;
-      height: 50px;
-      margin: 20px;
-      -webkit-box-shadow: 1px 1px 20px 0 #000000;
-      -moz-box-shadow: 1px 1px 20px 0 #000000;
-      box-shadow: 1px 1px 20px 0 #000000;
-      border: outset #0059a0 10px;
-      text-decoration: none;
-      display: inline-block;
-      cursor: pointer;
-      text-align: center;
+    background-image: -webkit-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -moz-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -ms-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -o-linear-gradient(top, #1D3557, #0F4A9E);
+    background-image: -webkit-gradient(to bottom, #1D3557, #0F4A9E);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    color: #F1FAEE;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 100;
+    height: 50px;
+    margin: 20px;
+    -webkit-box-shadow: 1px 1px 20px 0 #000000;
+    -moz-box-shadow: 1px 1px 20px 0 #000000;
+    box-shadow: 1px 1px 20px 0 #000000;
+    border: outset #0059a0 10px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
 }
 
-.popup-button-1:hover, .popup-button-2:hover {
+.popup-button-1:hover,
+.popup-button-2:hover {
     border: inset #f1faee 10px;
     background: #e63946;
     background-image: -webkit-linear-gradient(top, #0F4A9E, #1D3557);
@@ -113,4 +114,4 @@
     -moz-border-radius: 10px;
     border-radius: 10px;
     text-decoration: none;
-  }
+}

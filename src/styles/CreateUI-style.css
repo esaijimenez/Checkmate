@@ -67,7 +67,7 @@
 .create--title {
   font-size: 45px;
   font-weight: 500;
-  font-family: Georgia;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   margin: auto;
   margin-top: 20px;
 }
@@ -94,7 +94,7 @@
   height: 80px;
   line-height: 50px;
   color: #f1faee;
-  font-family: Georgia;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: 100;
   margin: auto;
   -webkit-box-shadow: 1px 1px 20px 0 #000000;
@@ -124,8 +124,10 @@
 .popup-content {
   width: auto;
   height: auto;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .popup-message-sub {
   text-align: left;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
