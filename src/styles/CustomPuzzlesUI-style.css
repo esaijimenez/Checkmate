@@ -94,6 +94,7 @@
     display: inline-block;
     cursor: pointer;
     text-align: center;
+    padding-top: 3px;
 }
 
 .customPuzzle-button:hover,
