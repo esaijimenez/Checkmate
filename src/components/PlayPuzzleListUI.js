@@ -20,6 +20,7 @@ export default class PlayPuzzleListUI extends React.Component {
             table: [],
             chessboardImage: [],
             showRefreshPage: false,
+
         };
     };
 
@@ -99,7 +100,7 @@ export default class PlayPuzzleListUI extends React.Component {
             const chessboardContainer = document.createElement("div");
             ReactDOM.render(
                 <Chessboard position={this.state.puzzles[i].fen}
-                    boardWidth={200}
+                    boardWidth={150}
                     arePiecesDraggable={false}
                     boardOrientation={'black'}
                 />, chessboardContainer);
@@ -127,15 +128,13 @@ export default class PlayPuzzleListUI extends React.Component {
         });
     };
 
-
-
     render() {
         return (
-            <div className='play'>
+            <div className='play-list'>
                 <Navbar />
                 <h1 className='play-title'>Puzzle List</h1>
 
-                {this.state.showRefreshPage && <button className="play--button" onClick={this.handleRefreshPage}>Refresh List</button>}
+                {this.state.showRefreshPage && <button className="refresh-button" onClick={this.handleRefreshPage}>Refresh List</button>}
 
                 <div class="table-container">
                     <table id='puzzleTable'>

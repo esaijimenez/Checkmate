@@ -1,6 +1,6 @@
 import React from 'react';
 import { db } from "../firebase.js";
-import { ref, onValue } from 'firebase/database';
+import { ref, onValue, set } from 'firebase/database';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
 import Navbar from './Navbar.js';
@@ -43,9 +43,11 @@ export default class BulletUI extends React.Component {
             minutes: 1,
             seconds: 0,
             timer: 1,
+            overallTime: 0,
             solutionActive: false,
             showSolutionButton: true,
-            squareStyles: null
+            squareStyles: null,
+            scoreCounter: 0
         };
     };
 
@@ -77,12 +79,16 @@ export default class BulletUI extends React.Component {
             })
         })
 
-        // //After a delay, it calls handleBoardState() that starts the game.
-        // setTimeout(() => {
-        //     this.timer()
-        //     this.handleBoardState()
-        // }, 3000);
+        const leaderboardRef = ref(db, '/leaderboard/bullet');
+        onValue(leaderboardRef, (snapshot) => {
+            const count = snapshot.size;
 
+            this.setState({
+                scoreCounter: count,
+            })
+
+            console.log("Score COunt: " + this.state.scoreCounter)
+        })
     };
 
     //Gets the initial index of the puzzle by grabbing a random rating within a particular rating range.
@@ -182,6 +188,7 @@ export default class BulletUI extends React.Component {
                 showGameOverLeaderboard: this.state.confirmGameOverLeaderboard,
                 lives: 3
             })
+            this.sendScoreToDatabase()
         }
     }
 
@@ -476,7 +483,7 @@ export default class BulletUI extends React.Component {
     }
 
     timer = () => {
-        this.interval = setInterval(() => {
+        const interval = setInterval(() => {
             let minutes = this.state.minutes
             let seconds = this.state.seconds
 
@@ -488,11 +495,11 @@ export default class BulletUI extends React.Component {
             if (seconds === 0) {
                 if (minutes === 0) {
                     console.log("Timer is up")
+                    clearInterval(interval);
                     this.setState({
-                        showGameOver: this.state.confirmGameOver,
-                        showGameOverLeaderboard: this.state.confirmGameOverLeaderboard,
+                        lives: -1
                     })
-                    clearInterval(this.interval);
+                    this.handleBoardState()
 
                 } else {
                     this.setState({
@@ -501,6 +508,14 @@ export default class BulletUI extends React.Component {
                     });
                 }
             }
+        }, 100);
+    }
+
+    overallTimer = () => {
+        const interval = setInterval(() => {
+            this.setState({
+                overallTime: this.state.overallTime + 1
+            })
         }, 1000);
     }
 
@@ -650,7 +665,27 @@ export default class BulletUI extends React.Component {
     handleStartButtonClick = () => {
         this.handleBoardState();
         this.timer()
+        this.overallTimer()
         this.setState({ showStartButton: false })
+    }
+
+    sendScoreToDatabase = () => {
+        const totalSeconds = this.state.overallTime;
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+
+        const overallTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+        const mateRef = ref(db, "/leaderboards/bullet/" + this.state.scoreCounter);
+        set(mateRef, {
+            name: "",
+            score: this.state.score,
+            time: overallTime
+        });
+
+        this.setState({
+            scoreCounter: this.state.scoreCounter + 1
+        })
     }
 
     //render() returns a JSX element that allows us to write HTML in React.

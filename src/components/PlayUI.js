@@ -155,7 +155,7 @@ export default class PlayUI extends React.Component {
                             <h1 class='play--title'>Play Mate</h1>
                             <h1>{this.state.value}</h1>
 
-                            {this.state.showStartButton && <button className="play--button" onClick={this.handleStartButton}>Start</button>}
+                            {this.state.showStartButton && <button className="play--start--button" onClick={this.handleStartButton}>Start</button>}
 
                             {this.state.showFailedPlayPuzzle && (<FailedPlayPuzzle />)}
 

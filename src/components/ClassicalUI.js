@@ -1,6 +1,6 @@
 import React from 'react';
 import { db } from "../firebase.js";
-import { ref, onValue } from 'firebase/database';
+import { ref, onValue, set } from 'firebase/database';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
 import Navbar from './Navbar.js';
@@ -46,7 +46,8 @@ export default class ClassicalUI extends React.Component {
             score: 0,
             solutionActive: false,
             showSolutionButton: true,
-            squareStyles: null
+            squareStyles: null,
+            scoreCounter: 0
         };
     };
 
@@ -75,6 +76,15 @@ export default class ClassicalUI extends React.Component {
                 numCheckmates: count,
                 checkmates: newState,
                 indexes: randomIndex
+            })
+        })
+
+        const leaderboardRef = ref(db, '/leaderboard/classical');
+        onValue(leaderboardRef, (snapshot) => {
+            const count = snapshot.size;
+
+            this.setState({
+                scoreCounter: count,
             })
         })
 
@@ -178,6 +188,7 @@ export default class ClassicalUI extends React.Component {
                 showGameOverLeaderboard: this.state.confirmGameOverLeaderboard,
                 lives: 3
             })
+            this.sendScoreToDatabase()
         }
     }
 
@@ -600,6 +611,18 @@ export default class ClassicalUI extends React.Component {
     handleStartButtonClick = () => {
         this.handleBoardState();
         this.setState({ showStartButton: false })
+    }
+
+    sendScoreToDatabase = () => {
+        const mateRef = ref(db, "/leaderboards/classical/" + this.state.scoreCounter);
+        set(mateRef, {
+            name: "",
+            score: this.state.score
+        });
+
+        this.setState({
+            scoreCounter: this.state.scoreCounter + 1
+        })
     }
 
     //render() returns a JSX element that allows us to write HTML in React.

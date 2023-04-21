@@ -827,6 +827,7 @@ export default class CreateUI extends React.Component {
                                 onDragOverSquare={this.handleDragOverSquare}
                                 dropOffBoard={this.state.offBoard}
                                 orientation='black'
+                                width={"500"}
                             />
 
                             <div className='create--info--2'>
