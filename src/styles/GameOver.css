@@ -9,7 +9,6 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-
 }
 
 .popup-content {
@@ -17,7 +16,6 @@
     height: 320px;
     background-color: #457b9d;
     border: 2px solid #1D3557;
-    padding: 20px;
     border-radius: 10px;
     text-align: center;
     box-shadow: 4px 26px 58px 1px rgb(0, 0, 0),
@@ -29,12 +27,14 @@
     color: #F1FAEE;
     font-size: 40px;
     text-decoration: underline;
+    margin: auto;
 }
 
 .popup-message-sub {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: #F1FAEE;
     font-size: 20px;
+    margin: auto;
 }
 
 
@@ -45,6 +45,7 @@
     text-align: center;
     align-items: center;
     margin-top: 20px;
+    margin: auto;
 }
 
 .popup-button-1 {
@@ -64,6 +65,7 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 100;
     margin: 20px;
+    padding-bottom: 35px;
     -webkit-box-shadow: 1px 1px 20px 0 #000000;
     -moz-box-shadow: 1px 1px 20px 0 #000000;
     box-shadow: 1px 1px 20px 0 #000000;
@@ -99,6 +101,7 @@
     display: inline-block;
     cursor: pointer;
     text-align: center;
+    padding-bottom: 35px;
 }
 
 .popup-button-1:hover,
