@@ -79,7 +79,7 @@ export default class ClassicalUI extends React.Component {
             })
         })
 
-        const leaderboardRef = ref(db, '/leaderboard/classical');
+        const leaderboardRef = ref(db, '/leaderboards/classical');
         onValue(leaderboardRef, (snapshot) => {
             const count = snapshot.size;
 

@@ -58,6 +58,7 @@ export default class BulletUI extends React.Component {
         const mateRef = ref(db, '/checkmates');
         onValue(mateRef, (snapshot) => {
             const count = snapshot.size;
+            console.log('Count: ', count);
             let randomIndex = Math.floor(Math.random() * 7)
 
             //Pushes all the puzzles from the database into an array
@@ -77,17 +78,20 @@ export default class BulletUI extends React.Component {
                 checkmates: newState,
                 indexes: randomIndex
             })
+
+            console.log('numCheckmates: ', this.state.numCheckmates);
+
         })
 
-        const leaderboardRef = ref(db, '/leaderboard/bullet');
+        const leaderboardRef = ref(db, '/leaderboards/bullet');
         onValue(leaderboardRef, (snapshot) => {
-            const count = snapshot.size;
+            const leaderboardCount = snapshot.size;
+            console.log("Score Count: ", leaderboardCount)
 
             this.setState({
-                scoreCounter: count,
+                scoreCounter: leaderboardCount,
             })
 
-            console.log("Score COunt: " + this.state.scoreCounter)
         })
     };
 
