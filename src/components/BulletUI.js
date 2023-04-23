@@ -16,6 +16,7 @@ export default class BulletUI extends React.Component {
 
         //State variables that continuously update
         this.state = {
+            username: props.location.state.username,
             checkmateIndex: 0,
             numCheckmates: 0,
             checkmates: [],
@@ -192,7 +193,9 @@ export default class BulletUI extends React.Component {
                 showGameOverLeaderboard: this.state.confirmGameOverLeaderboard,
                 lives: 3
             })
-            this.sendScoreToDatabase()
+            if (this.state.showGameOverLeaderboard === true) {
+                this.sendScoreToDatabase()
+            }
         }
     }
 

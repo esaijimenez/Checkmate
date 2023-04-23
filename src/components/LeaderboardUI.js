@@ -13,7 +13,6 @@ export default class LeaderboardUI extends React.Component {
     this.state = {
       numBulletSubmissions: 0,
       bulletSubmissions: [],
-      bulletScoreArray: [],
       numClassicalSubmissions: 0,
       classicalSubmissions: [],
       classicalScoreArray: [],

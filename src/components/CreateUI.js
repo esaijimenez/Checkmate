@@ -21,7 +21,6 @@ export default class CreateUI extends React.Component {
         this.state = {
             position: "8/8/3k4/8/8/4K3/8/8 w KQkq - 0 1",
             confirmedPosition: "",
-            sparePieces: [],
             isSparePieces: true,
             isDragging: false,
             isPositionSetup: true,

@@ -18,7 +18,6 @@ export default class PlayPuzzleListUI extends React.Component {
             numPuzzles: 0,
             puzzles: [],
             table: [],
-            chessboardImage: [],
             showRefreshPage: false,
 
         };
