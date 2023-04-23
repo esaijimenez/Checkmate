@@ -17,7 +17,6 @@ export default class ClassicalUI extends React.Component {
 
         //State variables that continuously update
         this.state = {
-            username: props.location.state.username,
             checkmateIndex: 0,
             numCheckmates: 0,
             checkmates: [],
@@ -623,7 +622,7 @@ export default class ClassicalUI extends React.Component {
     sendScoreToDatabase = () => {
         const mateRef = ref(db, "/leaderboards/classical/" + this.state.scoreCounter);
         set(mateRef, {
-            name: this.state.username,
+            name: "",
             score: this.state.score
         });
 

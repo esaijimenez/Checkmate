@@ -1,46 +1,31 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { initializeApp } from 'firebase/compat/app';
+import { auth, provider } from '../firebase.js';
+import { signInWithPopup } from 'firebase/auth';
+import MainMenuUI from './MainMenuUI.js';
 
 export default class LoginUI extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pathname: ""
+            email: ''
         };
     };
 
-    componentDidMount() {
-    };
 
-    handleSubmit = () => {
-        console.log("Submitted")
-        const usernameInput = document.getElementById("username");
-        const username = usernameInput.value;
-        console.log(username);
-
-        this.props.history.push({
-            pathname: '/classical',
-            state: {
-                username
-            }
-        });
+    handleClick = () => {
+        signInWithPopup(auth, provider).then((data) => {
+            this.setState({ email: data.user.email })
+            localStorage.setItem("email", data.user.email)
+        })
     }
 
     render() {
         return (
             <div>
-                <Link to="/"><button>Back</button></Link>
-                <h1>LoginUI</h1>
-
-                <form>
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" /><br />
-
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" /><br />
-
-                    <input type="submit" value="Submit" onClick={this.handleSubmit}></input>
-                </form>
+                {this.state.email ? <MainMenuUI /> :
+                    <button onClick={this.handleClick}>SignIn with Google</button>
+                }
             </div>
 
         );
