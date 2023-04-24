@@ -514,7 +514,7 @@ export default class BulletUI extends React.Component {
                     });
                 }
             }
-        }, 100);
+        }, 1000);
     }
 
     overallTimer = () => {
