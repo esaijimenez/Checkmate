@@ -14,7 +14,33 @@
   background-color: #a8dadc;
   font-size: 16px;
   font-weight: bold;
-  width: 120px;
+  width: 70px;
+  text-align: center;
+  text-align: center;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  letter-spacing: 1px;
+  text-decoration: underline;
+}
+
+.classical--th--name {
+  padding: 10px;
+  background-color: #a8dadc;
+  font-size: 16px;
+  font-weight: bold;
+  width: 240px;
+  text-align: center;
+  text-align: center;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  letter-spacing: 1px;
+  text-decoration: underline;
+}
+
+.bullet--th--name {
+  padding: 10px;
+  background-color: #a8dadc;
+  font-size: 16px;
+  font-weight: bold;
+  width: 240px;
   text-align: center;
   text-align: center;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
@@ -28,11 +54,11 @@
   align-items: center;
   margin: auto;
   margin-right: 100px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   background-color: #a8dadc;
   border: 2px solid #000000;
   width: 500px;
-  height: 550px;
+  height: 500px;
 }
 
 .bullet--leaderboard {
@@ -41,11 +67,11 @@
   align-items: center;
   margin: auto;
   margin-left: 100px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   background-color: #a8dadc;
   border: 2px solid #000000;
   width: 500px;
-  height: 550px;
+  height: 500px;
 }
 
 .classical--leaderboard--wrapper {
@@ -79,7 +105,7 @@
 .refresh-button {
   width: 200px;
   font-size: 25px;
-  margin: 15px;
+  margin: auto;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   background: #1d3557;
   background-image: -webkit-linear-gradient(top, #1d3557, #0f4a9e);

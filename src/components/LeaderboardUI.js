@@ -234,7 +234,7 @@ export default class LeaderboardUI extends React.Component {
               <thead>
                 <tr>
                   <th class="classical--th">Rank</th>
-                  <th class="classical--th">Name</th>
+                  <th class="classical--th--name">Name</th>
                   <th class="classical--th">Score</th>
                 </tr>
               </thead>
@@ -251,7 +251,7 @@ export default class LeaderboardUI extends React.Component {
               <thead>
                 <tr>
                   <th class="bullet--th">Rank</th>
-                  <th class="bullet--th">Name</th>
+                  <th class="bullet--th--name">Name</th>
                   <th class="bullet--th">Score</th>
                   <th class="bullet--th">Time</th>
                 </tr>
