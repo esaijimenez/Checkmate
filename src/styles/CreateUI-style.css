@@ -65,7 +65,7 @@
 .create--title {
   font-size: 45px;
   font-weight: 500;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   margin: auto;
   margin-top: 20px;
 }
@@ -78,7 +78,7 @@
 
 .create--button {
   width: 280px;
-  padding: 10px;
+  padding: auto;
   font-size: 31px;
   background: #1d3557;
   background-image: -webkit-linear-gradient(top, #1d3557, #0f4a9e);
@@ -92,7 +92,7 @@
   height: 80px;
   line-height: 50px;
   color: #f1faee;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   font-weight: 100;
   margin: auto;
   -webkit-box-shadow: 1px 1px 20px 0 #000000;
@@ -122,10 +122,10 @@
 .popup-content {
   width: auto;
   height: auto;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .popup-message-sub {
   text-align: left;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
