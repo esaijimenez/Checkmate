@@ -28,6 +28,7 @@
   align-items: center;
   margin: auto;
   margin-right: 100px;
+  margin-bottom: 20px;
   background-color: #a8dadc;
   border: 2px solid #000000;
   width: 500px;
@@ -40,6 +41,7 @@
   align-items: center;
   margin: auto;
   margin-left: 100px;
+  margin-bottom: 20px;
   background-color: #a8dadc;
   border: 2px solid #000000;
   width: 500px;
