@@ -111,14 +111,14 @@
   left: -9999px;
 }
 
-input[type="radio"]+label>img {
+input[type="radio"] + label > img {
   border: 1px dashed #a8dadc;
   width: 150px;
   height: 150px;
   transition: 500ms all;
 }
 
-input[type="radio"]:checked+label>img {
+input[type="radio"]:checked + label > img {
   border: 1px solid #f1faee;
   box-shadow: 0 0 3px 3px #e63946;
 }
