@@ -15,13 +15,15 @@ export default class Settings extends React.Component {
 
 
   render() {
-
+    // this functino executes on the save settings button click
     function saveSettings(){
       if(document.getElementById('dot').checked){
         sessionStorage.setItem('dotSetting', 'dots');
       }else{
         sessionStorage.setItem('dotSetting', 'nodots');
       }
+      //alerts user of settings being saved. This can be removed if need be
+      alert("settings saved!");
     }
 
     return (
