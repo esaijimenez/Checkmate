@@ -12,7 +12,18 @@ export default class Settings extends React.Component {
 
   componentDidMount() {}
 
+
+
   render() {
+
+    function saveSettings(){
+      if(document.getElementById('dot').checked){
+        sessionStorage.setItem('dotSetting', 'dots');
+      }else{
+        sessionStorage.setItem('dotSetting', 'nodots');
+      }
+    }
+
     return (
       <div className="settings">
         <Navbar />
@@ -42,6 +53,7 @@ export default class Settings extends React.Component {
               name="preference"
               id="dot"
               class="input-hidden"
+              value="dot"
               checked="checked"
             />
             <label for="dot">
@@ -57,6 +69,7 @@ export default class Settings extends React.Component {
               name="preference"
               id="nodot"
               class="input-hidden"
+              value="nodot"
             />
             <label for="nodot">
               <img
@@ -65,6 +78,8 @@ export default class Settings extends React.Component {
                 class="settings--img"
               />
             </label>
+
+            <button id = 'save' onClick={saveSettings}>Save Setting</button>
           </div>
         </div>
       </div>
