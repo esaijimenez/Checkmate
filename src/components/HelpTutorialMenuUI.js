@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from './Navbar.js';
 
 import "../styles/HelpTutorialMenuUI-style.css";
+import { getAllByAltText } from "@testing-library/react";
 
 export default class HelpTutorialMenuUI extends React.Component {
   constructor(props) {
@@ -22,7 +23,7 @@ export default class HelpTutorialMenuUI extends React.Component {
           <h1 class="about--subtitle">About Us</h1>
           <p class="about--paragraph">
             Checkmate is a website for practicing chess puzzles, creating
-            puzzles, playing other's puzzles, and competing to earn a spot on a
+            puzzles, playing user created puzzles, and competing to earn a spot on a
             leaderboard. This website was made by Esai Jimenez, Autumn Hale, and
             Trentin Barnhart during the spring semester of 2023 for their senior
             capstone project.{" "}
@@ -307,3 +308,9 @@ export default class HelpTutorialMenuUI extends React.Component {
     );
   }
 }
+
+
+
+
+
+

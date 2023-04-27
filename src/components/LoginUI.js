@@ -8,6 +8,7 @@ import MainMenuUI from './MainMenuUI.js';
 import ReactDOM from 'react-dom';
 import { db } from "../firebase.js";
 import { ref, onValue, set } from 'firebase/database';
+import { getSpaceUntilMaxLength } from '@testing-library/user-event/dist/utils/index.js';
 
 export default class LoginUI extends React.Component {
     constructor(props) {
@@ -103,24 +104,6 @@ export default class LoginUI extends React.Component {
             pathname: '/'
         });
     }
-
-    handleNavToUsername = () => {
-
-    }
-
-    // handleUsernameToDatabase = () => {
-    //     const username = document.getElementById('textbox');
-
-    //     const userRef = ref(db, "/users" + this.state.userCounter);
-    //     set(userRef, {
-    //         username: username,
-    //         userID: this.state.uid
-    //     });
-
-    //     this.setState({
-    //         userCounter: this.state.userCounter + 1
-    //     })
-    // }
 
     render() {
         // if (this.state.localStorageUID === null) {
