@@ -32,7 +32,7 @@ export default class HelpTutorialMenuUI extends React.Component {
 
         <div className="tutorial--container">
 
-          <h1 class="help--subtitle">Piece movement and capturing</h1>
+          <h1 class="help--subtitle">Piece Movement and Capturing</h1>
           <p class="help--paragraph">
             Pawns can move forward one space and can only capture
             diagonally forward one space. If a pawn has not moved yet, it is
@@ -204,7 +204,7 @@ export default class HelpTutorialMenuUI extends React.Component {
             </p>
           </div>
 
-          <h1 class="help--subtitle">How to check and checkmate</h1>
+          <h1 class="help--subtitle">How to Check and Checkmate</h1>
 
           <p class="help--paragraph">
             'Check' is the term used to describe a situation where unless

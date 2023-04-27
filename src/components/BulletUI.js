@@ -558,15 +558,19 @@ export default class BulletUI extends React.Component {
 
             const squareStyles = {};
 
-            move.map((move) => {
-                squareStyles[move.to] = {
-                    background:
-                        chess.get(move.to) && chess.get(move.to).color !== chess.get(sourceSquare).color
-                            ? "radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)"
-                            : "radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)",
-                    borderRadius: "50%",
-                };
-            })
+            //if dots setting enabled, display dot move indicators
+            var dotSetting = sessionStorage.getItem('dotSetting');
+            if(dotSetting == "dots"){
+                move.map((move) => {
+                    squareStyles[move.to] = {
+                        background:
+                            chess.get(move.to) && chess.get(move.to).color !== chess.get(sourceSquare).color
+                                ? "radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)"
+                                : "radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)",
+                        borderRadius: "50%",
+                    };
+                })
+            }
 
             console.log("squareStyles: ", squareStyles);
 
