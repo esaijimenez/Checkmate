@@ -60,6 +60,9 @@ export default class MainMenuUI extends React.Component {
                 }
             }
             console.log("username: ", localStorage.getItem("username"));
+            setTimeout(() => {
+                window.location.reload();
+            }, 10)
         })
     }
 
