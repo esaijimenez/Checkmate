@@ -223,7 +223,6 @@ export default class LeaderboardUI extends React.Component {
 
         <h1 className="leaderboard--title">Leaderboard</h1>
 
-        {this.state.showRefreshPage && <button className="refresh-button" onClick={this.handleRefreshPage}>Refresh List</button>}
 
         <div className="leaderboard--container">
 
@@ -244,6 +243,7 @@ export default class LeaderboardUI extends React.Component {
             </table>
           </div>
 
+          {this.state.showRefreshPage && <button className="refresh-button" onClick={this.handleRefreshPage}>Refresh List</button>}
 
           <div className='bullet--leaderboard'>
             <h2>Bullet Mate</h2>

@@ -560,7 +560,7 @@ export default class BulletUI extends React.Component {
 
             //if dots setting enabled, display dot move indicators
             var dotSetting = sessionStorage.getItem('dotSetting');
-            if(dotSetting == "dots"){
+            if (dotSetting == "dots") {
                 move.map((move) => {
                     squareStyles[move.to] = {
                         background:
@@ -688,7 +688,7 @@ export default class BulletUI extends React.Component {
 
         const mateRef = ref(db, "/leaderboards/bullet/" + this.state.scoreCounter);
         set(mateRef, {
-            name: "",
+            name: localStorage.getItem("username"),
             score: this.state.score,
             time: overallTime
         });

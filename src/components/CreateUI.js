@@ -42,7 +42,7 @@ export default class CreateUI extends React.Component {
             isFourthOKButton: null,
             isFifthOKButton: null,
             puzzleId: 1,
-            username: "Carlos Magnusson",
+            username: localStorage.getItem("username"),
             fen: "",
             moves: [],
             date: "",

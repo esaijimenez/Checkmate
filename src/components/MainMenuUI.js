@@ -15,6 +15,9 @@ export default class MainMenuUI extends React.Component {
             localStorageUIDsize: 0,
             localStorageUIDall: [],
             isUserInDatabase: false,
+            isNewUser: false,
+            username: "",
+            usernames: [],
         };
     };
 
@@ -29,21 +32,44 @@ export default class MainMenuUI extends React.Component {
         console.log("UIDall: ", this.state.localStorageUIDall)
 
         this.handleSendUserToDatabase();
+
+        if (localStorage.getItem("username") === null) {
+            this.grabUsernameFromDatabase();
+        }
+    }
+
+    grabUsernameFromDatabase = () => {
+        const usernameRef = ref(db, '/users');
+        onValue(usernameRef, (snapshot) => {
+            const count = snapshot.size;
+            console.log("username count: ", count)
+
+            let usernames = [];
+            snapshot.forEach((usersSnapshot) => {
+                usernames.push({
+                    userID: usersSnapshot.child("userID").val(),
+                    username: usersSnapshot.child("username").val(),
+                })
+            });
+            this.setState({ usernames: usernames });
+
+            for (let i = 0; i < this.state.usernames.length; i++) {
+                console.log("username: ", this.state.usernames[i].userID)
+                if (this.state.localStorageUID === this.state.usernames[i].userID) {
+                    localStorage.setItem("username", this.state.usernames[i].username)
+                }
+            }
+            console.log("username: ", localStorage.getItem("username"));
+        })
     }
 
     handleSendUserToDatabase() {
         if (this.state.localStorageUID !== null) {
-            if (this.state.localStorageUIDsize === 0) {
-                const mateRef = ref(db, "/users/" + this.state.userCounter);
-                set(mateRef, {
-                    username: "",
-                    userID: this.state.localStorageUID,
-                    userSettings: "",
-                });
 
-                this.setState({
-                    userCounter: 1
-                })
+            if (this.state.localStorageUIDsize === 0) {
+
+                this.setState({ isNewUser: true })
+
             }
 
             for (let i = 0; i < this.state.localStorageUIDsize; i++) {
@@ -61,18 +87,34 @@ export default class MainMenuUI extends React.Component {
             console.log("isUserInDatabase: ", this.state.isUserInDatabase)
 
             if (this.state.isUserInDatabase === false) {
-                const mateRef = ref(db, "/users/" + this.state.userCounter);
-                set(mateRef, {
-                    username: "",
-                    userID: this.state.localStorageUID,
-                    userSettings: "",
-                });
 
-                this.setState({
-                    userCounter: this.state.userCounter + 1
-                })
+                this.setState({ isNewUser: true })
+
             }
         }
+    }
+
+    handleUsernameChange = (event) => {
+        this.setState({ username: event.target.value });
+    }
+
+    handleUsernameSubmit = () => {
+        console.log(this.state.username);
+
+        localStorage.setItem("username", this.state.username);
+
+        const mateRef = ref(db, "/users/" + this.state.userCounter);
+        set(mateRef, {
+            username: this.state.username,
+            userID: this.state.localStorageUID,
+            userSettings: "",
+        });
+
+        this.setState({
+            userCounter: parseInt(this.state.userCounter) + 1,
+        })
+
+        this.setState({ isNewUser: false })
     }
 
     handleLogout = () => {
@@ -82,37 +124,25 @@ export default class MainMenuUI extends React.Component {
                 pathname: '/login'
             });
         }, 100)
-
-        // if (localStorage.getItem("email") !== '') {
-        //     localStorage.clear()
-        //     // window.location.reload()
-        //     console.log(localStorage.getItem("email"))
-        // }
     }
 
     render() {
-        let email = localStorage.getItem("email")
-        let uid = localStorage.getItem("userUID")
-        let isEmail = true;
-        if (email === null) {
-            isEmail = false;
-        }
-        //console.log(email)
-        //console.log(uid)
         return (
             <div className="container">
-                {/* {!isEmail && (<div className="popup">
-                    <div className="popup-content">
-                        <h2 class="popup-message-main">Login</h2>
-                        <ul class="popup-message-sub">
-                            <li>Please login first</li>
-                        </ul>
-                        <div className="popup-buttons">
-                            <Link to="/login"><button class='popup-button-1'>OK</button></Link>
+                {this.state.isNewUser && (
+                    <div className="popup">
+                        <div className="popup-content">
+                            <h2 class="popup-message-main">Username</h2>
+                            <p class="popup-message-sub">Please enter username:</p>
+                            <div className="popup-input">
+                                <input type="text" value={this.state.username} onChange={this.handleUsernameChange} />
+                            </div>
+                            <div className="popup-buttons">
+                                <button class='popup-button-1' onClick={this.handleUsernameSubmit}>OK</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                )} */}
+                )}
 
                 <h1 class="title">Checkmate</h1>
                 <p class="caption">Find the checkmate!</p>

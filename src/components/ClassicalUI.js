@@ -53,7 +53,7 @@ export default class ClassicalUI extends React.Component {
 
     //componentDidMount() is the first method called when the component is rendered.
     componentDidMount() {
-
+        console.log(localStorage.getItem("username"));
         //Pulls chess puzzles from database
         const mateRef = ref(db, '/checkmates');
         onValue(mateRef, (snapshot) => {
@@ -515,7 +515,7 @@ export default class ClassicalUI extends React.Component {
 
             //if dots setting enabled, display dot move indicators
             var dotSetting = sessionStorage.getItem('dotSetting');
-            if(dotSetting == "dots"){
+            if (dotSetting == "dots") {
                 move.map((move) => {
                     squareStyles[move.to] = {
                         background:
@@ -626,7 +626,7 @@ export default class ClassicalUI extends React.Component {
     sendScoreToDatabase = () => {
         const mateRef = ref(db, "/leaderboards/classical/" + this.state.scoreCounter);
         set(mateRef, {
-            name: "",
+            name: localStorage.getItem("username"),
             score: this.state.score
         });
 
