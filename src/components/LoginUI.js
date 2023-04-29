@@ -8,7 +8,6 @@ import MainMenuUI from './MainMenuUI.js';
 import ReactDOM from 'react-dom';
 import { db } from "../firebase.js";
 import { ref, onValue, set } from 'firebase/database';
-import { getSpaceUntilMaxLength } from '@testing-library/user-event/dist/utils/index.js';
 
 export default class LoginUI extends React.Component {
     constructor(props) {
@@ -41,8 +40,12 @@ export default class LoginUI extends React.Component {
                 userCounter: count,
                 allUID: UID
             })
+
+            localStorage.setItem("UIDsize", count)
+            localStorage.setItem('UIDall', JSON.stringify(UID))
+
             console.log("User Count: ", this.state.userCounter)
-            console.log("All UIDs: ", this.state.allUID)
+            console.log("All UIDs: ", localStorage.getItem("UIDall"))
         })
     }
 
@@ -55,6 +58,7 @@ export default class LoginUI extends React.Component {
             localStorage.setItem("email", data.user.email)
             localStorage.setItem("userUID", data.user.uid)
         })
+        localStorage.setItem("UIDsize", this.state.allUID.length)
         this.state.localStorageEmail = localStorage.getItem("email")
         this.state.localStorageUID = localStorage.getItem("userUID")
         //console.log(this.state.localStorageEmail)
@@ -65,36 +69,36 @@ export default class LoginUI extends React.Component {
             })
         }
 
-        for (let i = 0; i <= this.state.allUID.length; i++) {
-            console.log("Inside for loop ");
-            console.log("this.state.allUID: ", this.state.allUID[i])
-            console.log("this.state.localStorageUID: ", this.state.localStorageUID)
+        // for (let i = 0; i <= this.state.allUID.length; i++) {
+        //     console.log("Inside for loop ");
+        //     console.log("this.state.allUID: ", this.state.allUID[i])
+        //     console.log("this.state.localStorageUID: ", this.state.localStorageUID)
 
-            if (this.state.allUID[i] != this.state.localStorageUID && this.state.localStorageUID !== null) {
-                console.log("This UserID was not found in database");
-                this.state.isUserInDatabase = false;
-            }
-        }
+        //     if (this.state.allUID[i] != this.state.localStorageUID && this.state.localStorageUID !== null) {
+        //         console.log("This UserID was not found in database");
+        //         this.state.isUserInDatabase = false;
+        //     }
+        // }
 
 
-        console.log("this.state.isUserInDatabase: ", this.state.isUserInDatabase);
+        // console.log("this.state.isUserInDatabase: ", this.state.isUserInDatabase);
 
-        if (this.state.isUserInDatabase === false) {
-            console.log("Inside of an If statement that should be IMPOSSIBLE")
-            //console.log("this.state.allUID: ", this.state.allUID)
-            //console.log("this.state.localStorageUID: ", this.state.localStorageUID)
+        // if (this.state.isUserInDatabase === false) {
+        //     console.log("Inside of an If statement that should be IMPOSSIBLE")
+        //     //console.log("this.state.allUID: ", this.state.allUID)
+        //     //console.log("this.state.localStorageUID: ", this.state.localStorageUID)
 
-            const mateRef = ref(db, "/users/" + this.state.userCounter);
-            set(mateRef, {
-                username: "",
-                userID: this.state.localStorageUID,
-                userSettings: "",
-            });
+        //     const mateRef = ref(db, "/users/" + this.state.userCounter);
+        //     set(mateRef, {
+        //         username: "",
+        //         userID: this.state.localStorageUID,
+        //         userSettings: "",
+        //     });
 
-            this.setState({
-                userCounter: this.state.userCounter + 1
-            })
-        }
+        //     this.setState({
+        //         userCounter: this.state.userCounter + 1
+        //     })
+        // }
 
     }
 
