@@ -107,6 +107,7 @@ export default class LoginUI extends React.Component {
         this.props.history.push({
             pathname: '/'
         });
+        localStorage.setItem("loggedInUser", this.state.isLoggedIn);
     }
 
     render() {

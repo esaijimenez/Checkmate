@@ -18,11 +18,11 @@ export default class MainMenuUI extends React.Component {
             isNewUser: false,
             username: "",
             usernames: [],
+            grabUsername: true
         };
     };
 
     componentDidMount() {
-
         this.state.localStorageUID = localStorage.getItem("userUID")
         this.state.localStorageUIDsize = localStorage.getItem("UIDsize")
         this.state.localStorageUIDall = JSON.parse(localStorage.getItem("UIDall"));
@@ -31,14 +31,20 @@ export default class MainMenuUI extends React.Component {
         console.log("UIDsize: ", this.state.localStorageUIDsize)
         console.log("UIDall: ", this.state.localStorageUIDall)
 
-        this.handleSendUserToDatabase();
+        if (localStorage.getItem("loggedInUser")) {
+            this.handleSendUserToDatabase();
+        }
 
         if (localStorage.getItem("username") === null) {
-            this.grabUsernameFromDatabase();
+            if (this.state.grabUsername) {
+                this.grabUsernameFromDatabase();
+            }
         }
     }
 
     grabUsernameFromDatabase = () => {
+        console.log("Inside of grabUsernameFromDatabase")
+
         const usernameRef = ref(db, '/users');
         onValue(usernameRef, (snapshot) => {
             const count = snapshot.size;
@@ -60,13 +66,17 @@ export default class MainMenuUI extends React.Component {
                 }
             }
             console.log("username: ", localStorage.getItem("username"));
-            setTimeout(() => {
-                window.location.reload();
-            }, 10)
+            if (this.state.grabUsername) {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 10)
+            }
         })
     }
 
     handleSendUserToDatabase() {
+        this.setState({ grabUsername: false })
+
         if (this.state.localStorageUID !== null) {
 
             if (this.state.localStorageUIDsize === 0) {
@@ -90,9 +100,7 @@ export default class MainMenuUI extends React.Component {
             console.log("isUserInDatabase: ", this.state.isUserInDatabase)
 
             if (this.state.isUserInDatabase === false) {
-
                 this.setState({ isNewUser: true })
-
             }
         }
     }
@@ -111,6 +119,7 @@ export default class MainMenuUI extends React.Component {
             username: this.state.username,
             userID: this.state.localStorageUID,
             userSettings: "",
+            scores: null
         });
 
         this.setState({

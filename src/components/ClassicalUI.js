@@ -185,6 +185,8 @@ export default class ClassicalUI extends React.Component {
         //When the user runs out of lives, the game over pop-up will display or
         //the leaderboard message will display.
         else if (this.state.lives === -1) {
+            this.sendScoreToUsers()
+
             this.setState({
                 showGameOver: this.state.confirmGameOver,
                 showGameOverLeaderboard: this.state.confirmGameOverLeaderboard,
@@ -633,6 +635,53 @@ export default class ClassicalUI extends React.Component {
         this.setState({
             scoreCounter: this.state.scoreCounter + 1
         })
+    }
+
+    sendScoreToUsers = () => {
+
+        const usersRef = ref(db, '/users');
+        onValue(usersRef, (snapshot) => {
+            const count = snapshot.size;
+
+            let users = [];
+            snapshot.forEach((userSnapshot) => {
+                users.push({
+                    username: userSnapshot.child("username").val()
+                })
+            });
+
+            console.log(users)
+
+            let scores = [];
+            scores.push(this.state.score);
+            console.log(scores)
+
+            for (let i = 0; i < users.length; i++) {
+                console.log("this.state.username: ", localStorage.getItem("username"));
+                console.log("users[i]: ", users[i].username);
+                if (localStorage.getItem("username") === users[i].username) {
+                    console.log("User found");
+                    console.log("[i]", i);
+                    const scoresRef = ref(db, "/users/" + i);
+                    set(scoresRef, {
+                        scores: 2
+                    });
+                }
+            }
+            console.log("User Not found");
+        })
+
+
+
+        // const mateRef = ref(db, "/user/");
+        // set(mateRef, {
+        //     name: localStorage.getItem("username"),
+        //     score: this.state.score
+        // });
+
+        // this.setState({
+        //     scoreCounter: this.state.scoreCounter + 1
+        // })
     }
 
     //render() returns a JSX element that allows us to write HTML in React.
