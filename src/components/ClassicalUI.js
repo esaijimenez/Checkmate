@@ -1,6 +1,6 @@
 import React from 'react';
 import { db } from "../firebase.js";
-import { ref, onValue, set } from 'firebase/database';
+import { ref, onValue, set, update } from 'firebase/database';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
 import Navbar from './Navbar.js';
@@ -37,17 +37,22 @@ export default class ClassicalUI extends React.Component {
             from: "",
             to: [],
             validMoves: [],
-            lives: 3,
+            lives: 0,
             showGameOver: false,
             confirmGameOver: false,
             showGameOverLeaderboard: false,
             confirmGameOverLeaderboard: true,
             showStartButton: true,
             score: 0,
+            scores: [],
             solutionActive: false,
             showSolutionButton: true,
             squareStyles: null,
-            scoreCounter: 0
+            scoreCounter: 0,
+            scoreCount: 0,
+            foundUser: false,
+            foundUserIndex: 0,
+            users: []
         };
     };
 
@@ -185,13 +190,15 @@ export default class ClassicalUI extends React.Component {
         //When the user runs out of lives, the game over pop-up will display or
         //the leaderboard message will display.
         else if (this.state.lives === -1) {
-            this.sendScoreToUsers()
-
             this.setState({
                 showGameOver: this.state.confirmGameOver,
                 showGameOverLeaderboard: this.state.confirmGameOverLeaderboard,
-                lives: 3
+                lives: 3,
+                foundUser: false,
             })
+            if (this.state.showGameOverLeaderboard === true || this.state.showGameOverLeaderboard === false) {
+                this.sendScoreToUsers()
+            }
             if (this.state.showGameOverLeaderboard === true) {
                 this.sendScoreToDatabase()
             }
@@ -652,36 +659,36 @@ export default class ClassicalUI extends React.Component {
 
             console.log(users)
 
-            let scores = [];
-            scores.push(this.state.score);
-            console.log(scores)
-
             for (let i = 0; i < users.length; i++) {
                 console.log("this.state.username: ", localStorage.getItem("username"));
                 console.log("users[i]: ", users[i].username);
                 if (localStorage.getItem("username") === users[i].username) {
                     console.log("User found");
                     console.log("[i]", i);
-                    const scoresRef = ref(db, "/users/" + i);
-                    set(scoresRef, {
-                        scores: 2
-                    });
+                    this.setState({
+                        foundUser: true,
+                        foundUserIndex: i
+                    })
                 }
             }
-            console.log("User Not found");
         })
 
+        console.log("this.state.foundUser: ", this.state.foundUser)
 
+        if (this.state.foundUser === true) {
+            console.log("foundUserIndex: ", this.state.foundUserIndex);
 
-        // const mateRef = ref(db, "/user/");
-        // set(mateRef, {
-        //     name: localStorage.getItem("username"),
-        //     score: this.state.score
-        // });
+            const usersRef = ref(db, "/users/" + this.state.foundUserIndex + "/recentScores");
+            onValue(usersRef, (snapshot) => {
+                let scoreCount = snapshot.size;
+                this.setState({ scoreCount: scoreCount })
+            })
 
-        // this.setState({
-        //     scoreCounter: this.state.scoreCounter + 1
-        // })
+            const scoreRef = ref(db, "/users/" + this.state.foundUserIndex + "/recentScores/" + this.state.scoreCount);
+            update(scoreRef, {
+                score: this.state.score
+            });
+        }
     }
 
     //render() returns a JSX element that allows us to write HTML in React.

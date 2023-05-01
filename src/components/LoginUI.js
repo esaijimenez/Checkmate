@@ -63,6 +63,8 @@ export default class LoginUI extends React.Component {
         this.state.localStorageUID = localStorage.getItem("userUID")
         //console.log(this.state.localStorageEmail)
         //console.log(this.state.localStorageUID)
+        localStorage.setItem("loggedInUser", false);
+
         if (this.state.email !== null) {
             this.setState({
                 isLoggedIn: true
@@ -107,7 +109,7 @@ export default class LoginUI extends React.Component {
         this.props.history.push({
             pathname: '/'
         });
-        localStorage.setItem("loggedInUser", this.state.isLoggedIn);
+        localStorage.setItem("loggedInUser", true);
     }
 
     render() {

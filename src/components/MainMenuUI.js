@@ -31,9 +31,8 @@ export default class MainMenuUI extends React.Component {
         console.log("UIDsize: ", this.state.localStorageUIDsize)
         console.log("UIDall: ", this.state.localStorageUIDall)
 
-        if (localStorage.getItem("loggedInUser")) {
-            this.handleSendUserToDatabase();
-        }
+
+        this.handleSendUserToDatabase();
 
         if (localStorage.getItem("username") === null) {
             if (this.state.grabUsername) {
@@ -75,7 +74,9 @@ export default class MainMenuUI extends React.Component {
     }
 
     handleSendUserToDatabase() {
-        this.setState({ grabUsername: false })
+        this.setState({
+            grabUsername: false
+        })
 
         if (this.state.localStorageUID !== null) {
 
@@ -103,6 +104,7 @@ export default class MainMenuUI extends React.Component {
                 this.setState({ isNewUser: true })
             }
         }
+
     }
 
     handleUsernameChange = (event) => {
@@ -119,7 +121,7 @@ export default class MainMenuUI extends React.Component {
             username: this.state.username,
             userID: this.state.localStorageUID,
             userSettings: "",
-            scores: null
+            scores: []
         });
 
         this.setState({
