@@ -37,7 +37,7 @@ export default class ClassicalUI extends React.Component {
             from: "",
             to: [],
             validMoves: [],
-            lives: 0,
+            lives: 3,
             showGameOver: false,
             confirmGameOver: false,
             showGameOverLeaderboard: false,

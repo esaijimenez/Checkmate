@@ -1,6 +1,6 @@
 import React from 'react';
 import { db } from "../firebase.js";
-import { ref, onValue, set } from 'firebase/database';
+import { ref, onValue, set, update } from 'firebase/database';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from "chess.js";
 import Navbar from './Navbar.js';
@@ -47,7 +47,10 @@ export default class BulletUI extends React.Component {
             solutionActive: false,
             showSolutionButton: true,
             squareStyles: null,
-            scoreCounter: 0
+            scoreCounter: 0,
+            foundUser: false,
+            foundUserIndex: 0,
+            scoreCount: 0,
         };
     };
 
@@ -187,11 +190,24 @@ export default class BulletUI extends React.Component {
         //When the user runs out of lives, the game over pop-up will display or
         //the leaderboard message will display.
         else if (this.state.lives === -1) {
+            const totalSeconds = this.state.overallTime;
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            const overallTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            this.setState({
+                overallTime: overallTime
+            })
+
             this.setState({
                 showGameOver: this.state.confirmGameOver,
                 showGameOverLeaderboard: this.state.confirmGameOverLeaderboard,
                 lives: 3
             })
+            if (this.state.showGameOverLeaderboard === true || this.state.showGameOverLeaderboard === false) {
+                this.sendScoreToUsers()
+            }
             if (this.state.showGameOverLeaderboard === true) {
                 this.sendScoreToDatabase()
             }
@@ -686,6 +702,10 @@ export default class BulletUI extends React.Component {
 
         const overallTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
+        this.setState({
+            overallTime: overallTime
+        })
+
         const mateRef = ref(db, "/leaderboards/bullet/" + this.state.scoreCounter);
         set(mateRef, {
             name: localStorage.getItem("username"),
@@ -696,6 +716,63 @@ export default class BulletUI extends React.Component {
         this.setState({
             scoreCounter: this.state.scoreCounter + 1
         })
+    }
+
+    sendScoreToUsers = () => {
+        let date = new Date();
+        let day = date.getDate();
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let month = months[date.getMonth()];
+        let year = date.getFullYear();
+        let todayDate = month + " " + day + ", " + year;
+
+        console.log("date: ", todayDate)
+
+        const usersRef = ref(db, '/users');
+        onValue(usersRef, (snapshot) => {
+            const count = snapshot.size;
+
+            let users = [];
+            snapshot.forEach((userSnapshot) => {
+                users.push({
+                    username: userSnapshot.child("username").val()
+                })
+            });
+
+            console.log(users)
+
+            for (let i = 0; i < users.length; i++) {
+                console.log("this.state.username: ", localStorage.getItem("username"));
+                console.log("users[i]: ", users[i].username);
+                if (localStorage.getItem("username") === users[i].username) {
+                    console.log("User found");
+                    console.log("[i]", i);
+                    this.setState({
+                        foundUser: true,
+                        foundUserIndex: i
+                    })
+                }
+            }
+        })
+
+        console.log("this.state.foundUser: ", this.state.foundUser)
+
+        if (this.state.foundUser === true) {
+            console.log("foundUserIndex: ", this.state.foundUserIndex);
+
+            const usersRef = ref(db, "/users/" + this.state.foundUserIndex + "/recentScores");
+            onValue(usersRef, (snapshot) => {
+                let scoreCount = snapshot.size;
+                this.setState({ scoreCount: scoreCount })
+            })
+
+            const scoreRef = ref(db, "/users/" + this.state.foundUserIndex + "/recentScores/" + this.state.scoreCount);
+            update(scoreRef, {
+                score: this.state.score,
+                time: this.state.overallTime,
+                date: todayDate
+            });
+        }
     }
 
     //render() returns a JSX element that allows us to write HTML in React.
