@@ -645,6 +645,14 @@ export default class ClassicalUI extends React.Component {
     }
 
     sendScoreToUsers = () => {
+        let date = new Date();
+        let day = date.getDate();
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let month = months[date.getMonth()];
+        let year = date.getFullYear();
+        let todayDate = month + " " + day + ", " + year;
+
+        console.log("date: ", todayDate)
 
         const usersRef = ref(db, '/users');
         onValue(usersRef, (snapshot) => {
@@ -686,7 +694,9 @@ export default class ClassicalUI extends React.Component {
 
             const scoreRef = ref(db, "/users/" + this.state.foundUserIndex + "/recentScores/" + this.state.scoreCount);
             update(scoreRef, {
-                score: this.state.score
+                score: this.state.score,
+                time: "N/A",
+                date: todayDate
             });
         }
     }
