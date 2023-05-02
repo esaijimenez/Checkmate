@@ -1,4 +1,4 @@
-Checkmate
+<h1>Checkmate</h1>
 
 This project is a web based application for
 playing recreation chess puzzles. This project 
