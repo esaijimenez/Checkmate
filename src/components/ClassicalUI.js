@@ -698,6 +698,7 @@ export default class ClassicalUI extends React.Component {
                 time: "N/A",
                 date: todayDate
             });
+            console.log("SUCCESS")
         }
     }
 

@@ -34,10 +34,9 @@ export default class MainMenuUI extends React.Component {
 
         this.handleSendUserToDatabase();
 
-        if (localStorage.getItem("username") === null) {
-            if (this.state.grabUsername) {
-                this.grabUsernameFromDatabase();
-            }
+
+        if (this.state.grabUsername) {
+            this.grabUsernameFromDatabase();
         }
     }
 
