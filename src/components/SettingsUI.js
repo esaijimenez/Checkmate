@@ -180,7 +180,7 @@ export default class Settings extends React.Component {
         sessionStorage.setItem('dotSetting', 'nodots');
       }
       //alerts user of settings being saved. This can be removed if need be
-      alert("settings saved!");
+      alert("Settings Saved!");
     }
 
     return (
