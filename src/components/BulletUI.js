@@ -197,9 +197,9 @@ export default class BulletUI extends React.Component {
                 lives: 3,
                 foundUser: false,
             })
-            if (this.state.showGameOverLeaderboard === true || this.state.showGameOverLeaderboard === false) {
-                this.sendScoreToUsers()
-            }
+
+            this.sendScoreToUsers()
+
             if (this.state.showGameOverLeaderboard === true) {
                 this.sendScoreToDatabase()
             }
