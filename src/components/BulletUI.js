@@ -190,20 +190,12 @@ export default class BulletUI extends React.Component {
         //When the user runs out of lives, the game over pop-up will display or
         //the leaderboard message will display.
         else if (this.state.lives === -1) {
-            const totalSeconds = this.state.overallTime;
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-
-            const overallTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-
-            this.setState({
-                overallTime: overallTime
-            })
 
             this.setState({
                 showGameOver: this.state.confirmGameOver,
                 showGameOverLeaderboard: this.state.confirmGameOverLeaderboard,
-                lives: 3
+                lives: 3,
+                foundUser: false,
             })
             if (this.state.showGameOverLeaderboard === true || this.state.showGameOverLeaderboard === false) {
                 this.sendScoreToUsers()
@@ -765,13 +757,19 @@ export default class BulletUI extends React.Component {
                 let scoreCount = snapshot.size;
                 this.setState({ scoreCount: scoreCount })
             })
+            const totalSeconds = this.state.overallTime;
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            const overallTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
             const scoreRef = ref(db, "/users/" + this.state.foundUserIndex + "/recentScores/" + this.state.scoreCount);
             update(scoreRef, {
                 score: this.state.score,
-                time: this.state.overallTime,
+                time: overallTime,
                 date: todayDate
             });
+            console.log("SUCCESS")
         }
     }
 
