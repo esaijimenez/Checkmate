@@ -26,6 +26,7 @@ export default class Settings extends React.Component {
     const usersRef = ref(db, '/users');
     onValue(usersRef, (snapshot) => {
       const count = snapshot.size;
+      console.log(count)
 
       let users = [];
       snapshot.forEach((userSnapshot) => {
@@ -70,6 +71,13 @@ export default class Settings extends React.Component {
           })
 
           console.log("this.state.foundUser: ", this.state.foundUser)
+
+          if (this.state.foundUser === false) {
+            this.setState({
+              showRefreshPage: true
+            })
+          }
+
 
           if (this.state.foundUser === true) {
             const scoreRef = ref(db, "/users/" + this.state.foundUserIndex + "/recentScores");
@@ -157,6 +165,9 @@ export default class Settings extends React.Component {
 
   handleRefreshPage = () => {
     window.location.reload();
+    this.setState({
+      showRefreshPage: false
+    })
   }
 
   render() {
