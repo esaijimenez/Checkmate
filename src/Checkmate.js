@@ -19,7 +19,6 @@ import CreateUI from "./components/CreateUI";
 import PlayPuzzleListUI from "./components/PlayPuzzleListUI";
 
 export default class Checkmate extends React.Component {
-
   render() {
     return (
       <>

@@ -1,14 +1,14 @@
 import { db } from "../firebase.js";
-import { ref, onValue } from 'firebase/database';
+import { ref, onValue } from "firebase/database";
 import React from "react";
-import ReactDOM from 'react-dom';
-import { withRouter } from 'react-router-dom';
+import ReactDOM from "react-dom";
+import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Chessboard } from 'react-chessboard';
+import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 
-import Navbar from './Navbar.js';
-import '../styles/PlayPuzzleListUI-style.css'
+import Navbar from "./Navbar.js";
+import "../styles/PlayPuzzleListUI-style.css";
 import PlayUI from "./PlayUI.js";
 
 export default class PlayPuzzleListUI extends React.Component {
@@ -19,12 +19,11 @@ export default class PlayPuzzleListUI extends React.Component {
             puzzles: [],
             table: [],
             showRefreshPage: false,
-
         };
-    };
+    }
 
     componentDidMount() {
-        const mateRef = ref(db, '/custom-puzzles');
+        const mateRef = ref(db, "/custom-puzzles");
         onValue(mateRef, (snapshot) => {
             const count = snapshot.size;
 
@@ -37,45 +36,38 @@ export default class PlayPuzzleListUI extends React.Component {
                     moves: puzzlesSnapshot.child("moves").val(),
                     puzzleId: puzzlesSnapshot.child("puzzleId").val(),
                     username: puzzlesSnapshot.child("username").val(),
-                    date: puzzlesSnapshot.child("date").val()
-                })
+                    date: puzzlesSnapshot.child("date").val(),
+                });
             });
 
             snapshot.forEach((puzzlesSnapshot) => {
                 table.push({
                     puzzleId: puzzlesSnapshot.child("puzzleId").val(),
                     username: puzzlesSnapshot.child("username").val(),
-                    date: puzzlesSnapshot.child("date").val()
-                })
+                    date: puzzlesSnapshot.child("date").val(),
+                });
             });
 
             //Sets some of the state variables
             this.setState({
                 numPuzzles: count,
                 puzzles: puzzles,
-                table: table
-            })
+                table: table,
+            });
 
-            console.log("Count: ", count)
-            console.log("numPuzzles: ", this.state.numPuzzles)
-            console.log("puzzles: ", this.state.puzzles)
-
-            this.addRowToTable(this.state.numPuzzles)
-            //console.log("numPuzzles: ", this.state.numPuzzles)
-            console.log("componentDidMount")
+            this.addRowToTable(this.state.numPuzzles);
 
             if (this.state.numPuzzles === 0) {
                 this.setState({
-                    showRefreshPage: true
-                })
+                    showRefreshPage: true,
+                });
             }
-        })
-
-    };
+        });
+    }
 
     handleRefreshPage = () => {
         window.location.reload();
-    }
+    };
 
     addRowToTable = (numPuzzles) => {
         const table = document.getElementById("puzzleTable");
@@ -98,57 +90,60 @@ export default class PlayPuzzleListUI extends React.Component {
             const chessboardImage = document.createElement("button");
             const chessboardContainer = document.createElement("div");
             ReactDOM.render(
-                <Chessboard position={this.state.puzzles[i].fen}
+                <Chessboard
+                    position={this.state.puzzles[i].fen}
                     boardWidth={150}
                     arePiecesDraggable={false}
-                    boardOrientation={'black'}
-                />, chessboardContainer);
+                    boardOrientation={"black"}
+                />,
+                chessboardContainer
+            );
 
-
-            chessboardImage.onclick = () => this.handleChessboardClick(this.state.puzzles[i].puzzleId);
+            chessboardImage.onclick = () =>
+                this.handleChessboardClick(this.state.puzzles[i].puzzleId);
 
             chessboardImage.appendChild(chessboardContainer);
             row.appendChild(chessboardImage);
 
-
             tbody.appendChild(row);
         }
-    }
+    };
 
     handleChessboardClick = (puzzleId) => {
-        console.log("Chessboard clicked!");
-        console.log("Puzzle ID CLicked: ", puzzleId)
-        const puzzle = this.state.puzzles.find(puzzle => puzzle.puzzleId === puzzleId);
+        const puzzle = this.state.puzzles.find(
+            (puzzle) => puzzle.puzzleId === puzzleId
+        );
         this.props.history.push({
-            pathname: '/play',
+            pathname: "/play",
             state: {
-                puzzle
-            }
+                puzzle,
+            },
         });
     };
 
     render() {
         return (
-            <div className='play-list'>
+            <div className="play-list">
                 <Navbar />
-                <h1 className='play-title'>Puzzle List</h1>
+                <h1 className="play-title">Puzzle List</h1>
 
-                {this.state.showRefreshPage && <button className="refresh-button" onClick={this.handleRefreshPage}>Refresh List</button>}
+                {this.state.showRefreshPage && (
+                    <button className="refresh-button" onClick={this.handleRefreshPage}>
+                        Refresh List
+                    </button>
+                )}
 
                 <div class="table-container">
-                    <table id='puzzleTable'>
+                    <table id="puzzleTable">
                         <thead>
                             <tr>
                                 <th>Puzzle ID: </th>
                                 <th>Username: </th>
                                 <th>Date Created: </th>
                                 <th>Puzzle: </th>
-
                             </tr>
                         </thead>
-                        <tbody>
-
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>

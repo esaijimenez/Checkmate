@@ -50,20 +50,17 @@ export default class LeaderboardUI extends React.Component {
       }
 
       this.setState({
-        numBulletSubmissions: count
+        numBulletSubmissions: count,
       });
 
-      this.bullet()
+      this.bullet();
 
-      console.log("NumBullet: " + this.state.numBulletSubmissions);
-      console.log("Count: " + count);
-
-      this.addRowToBulletTable(this.state.numBulletSubmissions)
+      this.addRowToBulletTable(this.state.numBulletSubmissions);
 
       if (this.state.numBulletSubmissions === 0) {
         this.setState({
-          showRefreshPage: true
-        })
+          showRefreshPage: true,
+        });
       }
     });
   };
@@ -83,27 +80,23 @@ export default class LeaderboardUI extends React.Component {
       });
 
       for (let i = count; i >= 0; i--) {
-
         this.setState({
           classicalSubmissions: classicalSubmissions,
         });
       }
 
       this.setState({
-        numClassicalSubmissions: count
+        numClassicalSubmissions: count,
       });
 
-      this.classical()
+      this.classical();
 
-      console.log("NumClassical: " + this.state.numClassicalSubmissions);
-      console.log("Count: " + count);
-
-      this.addRowToClassicalTable(this.state.numClassicalSubmissions)
+      this.addRowToClassicalTable(this.state.numClassicalSubmissions);
 
       if (this.state.numClassicalSubmissions === 0) {
         this.setState({
-          showRefreshPage: true
-        })
+          showRefreshPage: true,
+        });
       }
     });
   };
@@ -119,7 +112,6 @@ export default class LeaderboardUI extends React.Component {
       row.appendChild(rank);
 
       const name = document.createElement("td");
-      console.log("this.state.bulletSubmissions[i].name: ", this.state.bulletSubmissions[i].name);
       name.textContent = this.state.bulletSubmissions[i].name;
       row.appendChild(name);
 
@@ -133,7 +125,7 @@ export default class LeaderboardUI extends React.Component {
 
       tbody.appendChild(row);
     }
-  }
+  };
 
   addRowToClassicalTable = (numClassicalSubmissions) => {
     const table = document.getElementById("classical--leaderboard--results");
@@ -155,66 +147,53 @@ export default class LeaderboardUI extends React.Component {
 
       tbody.appendChild(row);
     }
-  }
+  };
 
   classical = () => {
-    let _classicalSubmissions = this.state.classicalSubmissions.sort((a, b) => b.score - a.score);
+    let _classicalSubmissions = this.state.classicalSubmissions.sort(
+      (a, b) => b.score - a.score
+    );
 
     this.setState({
       classicalSubmissions: [],
-      numClassicalSubmissions: _classicalSubmissions.length
-    })
-
-    console.log("numClassicalSubmissions: ", this.state.numClassicalSubmissions)
+      numClassicalSubmissions: _classicalSubmissions.length,
+    });
 
     if (this.state.numClassicalSubmissions >= 10) {
       for (let i = 0; i < 10; i++) {
-        console.log("i: ", _classicalSubmissions[i])
-        this.state.classicalSubmissions.push(_classicalSubmissions[i])
+        this.state.classicalSubmissions.push(_classicalSubmissions[i]);
       }
     } else {
       for (let i = 0; i < this.state.numClassicalSubmissions; i++) {
-        console.log("i: ", _classicalSubmissions[i])
-        this.state.classicalSubmissions.push(_classicalSubmissions[i])
+        this.state.classicalSubmissions.push(_classicalSubmissions[i]);
       }
     }
-
-
-
-    console.log(this.state.classicalSubmissions)
-  }
+  };
 
   bullet = () => {
-    let _battleSubmissions = this.state.bulletSubmissions.sort((a, b) => b.score - a.score);
+    let _battleSubmissions = this.state.bulletSubmissions.sort(
+      (a, b) => b.score - a.score
+    );
 
     this.setState({
       bulletSubmissions: [],
-      numBulletSubmissions: _battleSubmissions.length
-    })
-
-    console.log("numBulletSubmissions: ", this.state.numBulletSubmissions)
+      numBulletSubmissions: _battleSubmissions.length,
+    });
 
     if (this.state.numBulletSubmissions >= 10) {
       for (let i = 0; i < 10; i++) {
-        console.log("i: ", _battleSubmissions[i])
-        this.state.bulletSubmissions.push(_battleSubmissions[i])
+        this.state.bulletSubmissions.push(_battleSubmissions[i]);
       }
-    }
-    else {
+    } else {
       for (let i = 0; i < this.state.numBulletSubmissions; i++) {
-        console.log("i: ", _battleSubmissions[i])
-        this.state.bulletSubmissions.push(_battleSubmissions[i])
+        this.state.bulletSubmissions.push(_battleSubmissions[i]);
       }
     }
-
-
-    console.log(this.state.bulletSubmissions)
-
-  }
+  };
 
   handleRefreshPage = () => {
     window.location.reload();
-  }
+  };
 
   render() {
     return (
@@ -223,10 +202,8 @@ export default class LeaderboardUI extends React.Component {
 
         <h1 className="leaderboard--title">Leaderboard</h1>
 
-
         <div className="leaderboard--container">
-
-          <div className='classical--leaderboard'>
+          <div className="classical--leaderboard">
             <h2>Classical Mate</h2>
 
             <table id="classical--leaderboard--results">
@@ -237,15 +214,17 @@ export default class LeaderboardUI extends React.Component {
                   <th class="classical--th">Score</th>
                 </tr>
               </thead>
-              <tbody>
-
-              </tbody>
+              <tbody></tbody>
             </table>
           </div>
 
-          {this.state.showRefreshPage && <button className="refresh-button" onClick={this.handleRefreshPage}>Refresh List</button>}
+          {this.state.showRefreshPage && (
+            <button className="refresh-button" onClick={this.handleRefreshPage}>
+              Refresh List
+            </button>
+          )}
 
-          <div className='bullet--leaderboard'>
+          <div className="bullet--leaderboard">
             <h2>Bullet Mate</h2>
             <table id="bullet--leaderboard--results">
               <thead>
@@ -256,9 +235,7 @@ export default class LeaderboardUI extends React.Component {
                   <th class="bullet--th">Time</th>
                 </tr>
               </thead>
-              <tbody>
-
-              </tbody>
+              <tbody></tbody>
             </table>
           </div>
         </div>

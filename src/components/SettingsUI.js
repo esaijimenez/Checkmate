@@ -1,6 +1,6 @@
 import React from "react";
 import { db } from "../firebase.js";
-import { ref, onValue, set, update } from 'firebase/database';
+import { ref, onValue, set, update } from "firebase/database";
 import { Link } from "react-router-dom";
 
 import Navbar from "./Navbar.js";
@@ -23,64 +23,51 @@ export default class Settings extends React.Component {
   }
 
   getRecentScores() {
-    const usersRef = ref(db, '/users');
+    const usersRef = ref(db, "/users");
     onValue(usersRef, (snapshot) => {
       const count = snapshot.size;
-      console.log(count)
 
       let users = [];
       snapshot.forEach((userSnapshot) => {
         users.push({
-          username: userSnapshot.child("username").val()
-        })
+          username: userSnapshot.child("username").val(),
+        });
       });
 
-      console.log(users)
-
       for (let i = 0; i < users.length; i++) {
-        console.log("this.state.username: ", localStorage.getItem("username"));
-        console.log("users[i]: ", users[i].username);
         if (localStorage.getItem("username") === users[i].username) {
-          console.log("User found");
-          console.log("[i]", i);
-          const usersRef = ref(db, '/users');
+          const usersRef = ref(db, "/users");
           onValue(usersRef, (snapshot) => {
             const count = snapshot.size;
 
             let users = [];
             snapshot.forEach((userSnapshot) => {
               users.push({
-                username: userSnapshot.child("username").val()
-              })
+                username: userSnapshot.child("username").val(),
+              });
             });
 
-            console.log(users)
-
             for (let i = 0; i < users.length; i++) {
-              console.log("this.state.username: ", localStorage.getItem("username"));
-              console.log("users[i]: ", users[i].username);
               if (localStorage.getItem("username") === users[i].username) {
-                console.log("User found");
-                console.log("[i]", i);
                 this.setState({
                   foundUser: true,
-                  foundUserIndex: i
-                })
+                  foundUserIndex: i,
+                });
               }
             }
-          })
-
-          console.log("this.state.foundUser: ", this.state.foundUser)
+          });
 
           if (this.state.foundUser === false) {
             this.setState({
-              showRefreshPage: true
-            })
+              showRefreshPage: true,
+            });
           }
 
-
           if (this.state.foundUser === true) {
-            const scoreRef = ref(db, "/users/" + this.state.foundUserIndex + "/recentScores");
+            const scoreRef = ref(
+              db,
+              "/users/" + this.state.foundUserIndex + "/recentScores"
+            );
             onValue(scoreRef, (snapshot) => {
               const count = snapshot.size;
 
@@ -92,30 +79,26 @@ export default class Settings extends React.Component {
                   time: scoreSnapshot.child("time").val(),
                 });
               });
-              console.log(recentScores)
-              console.log("Count: ", count)
 
               if (count === 0) {
                 this.setState({
-                  showRefreshPage: true
-                })
+                  showRefreshPage: true,
+                });
               }
 
               this.setState({ recentScores: recentScores });
 
               this.scores();
 
-              this.addScoreToTable(this.state.recentScores.length)
+              this.addScoreToTable(this.state.recentScores.length);
             });
           }
         }
       }
-    })
+    });
   }
 
   addScoreToTable = (numRecentScores) => {
-    console.log("HELOOOOOOOOOOOO")
-    console.log("numRecentScores: ", numRecentScores)
     const table = document.getElementById("user--leaderboard--results");
     const tbody = table.getElementsByClassName("user--scores--table")[0];
     for (let i = 0; i < numRecentScores; i++) {
@@ -123,7 +106,6 @@ export default class Settings extends React.Component {
 
       const score = document.createElement("td");
       score.textContent = this.state.recentScores[i].score;
-      console.log(this.state.recentScores[i].score)
       row.appendChild(score);
 
       const time = document.createElement("td");
@@ -136,48 +118,41 @@ export default class Settings extends React.Component {
 
       tbody.appendChild(row);
     }
-  }
+  };
 
   scores = () => {
     let _scores = this.state.recentScores.reverse();
 
     this.setState({
       recentScores: [],
-      numRecentScores: _scores.length
-    })
-
-    console.log("numClassicalSubmissions: ", this.state.numRecentScores)
+      numRecentScores: _scores.length,
+    });
 
     if (this.state.numRecentScores >= 5) {
       for (let i = 0; i < 5; i++) {
-        console.log("i: ", _scores[i])
-        this.state.recentScores.push(_scores[i])
+        this.state.recentScores.push(_scores[i]);
       }
     } else {
       for (let i = 0; i < this.state.numRecentScores; i++) {
-        console.log("i: ", _scores[i])
-        this.state.recentScores.push(_scores[i])
+        this.state.recentScores.push(_scores[i]);
       }
     }
-
-    console.log(this.state.recentScores)
-  }
+  };
 
   handleRefreshPage = () => {
     window.location.reload();
     this.setState({
-      showRefreshPage: false
-    })
-  }
+      showRefreshPage: false,
+    });
+  };
 
   render() {
     // this functino executes on the save settings button click
     function saveSettings() {
-      if (document.getElementById('dot').checked) {
-        sessionStorage.setItem('dotSetting', 'dots');
-      }
-      else {
-        sessionStorage.setItem('dotSetting', 'nodots');
+      if (document.getElementById("dot").checked) {
+        sessionStorage.setItem("dotSetting", "dots");
+      } else {
+        sessionStorage.setItem("dotSetting", "nodots");
       }
       //alerts user of settings being saved. This can be removed if need be
       alert("Settings Saved!");
@@ -188,7 +163,11 @@ export default class Settings extends React.Component {
         <Navbar />
         <h1 class="settings--title">Settings</h1>
 
-        {this.state.showRefreshPage && <button className="refresh-button" onClick={this.handleRefreshPage}>Refresh List</button>}
+        {this.state.showRefreshPage && (
+          <button className="refresh-button" onClick={this.handleRefreshPage}>
+            Refresh List
+          </button>
+        )}
 
         <div className="settings--container">
           <div className="user--leaderboard">
@@ -202,9 +181,7 @@ export default class Settings extends React.Component {
                   <th class="user--th">Date</th>
                 </tr>
               </thead>
-              <tbody class="user--scores--table">
-
-              </tbody>
+              <tbody class="user--scores--table"></tbody>
             </table>
           </div>
 
@@ -240,9 +217,12 @@ export default class Settings extends React.Component {
                 alt="No dots."
                 class="settings--img"
               />
-            </label><br />
+            </label>
+            <br />
 
-            <button id='save' onClick={saveSettings}>Save Setting</button>
+            <button id="save" onClick={saveSettings}>
+              Save Setting
+            </button>
           </div>
         </div>
       </div>
