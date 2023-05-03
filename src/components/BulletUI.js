@@ -50,6 +50,7 @@ export default class BulletUI extends React.Component {
             foundUser: false,
             foundUserIndex: 0,
             scoreCount: 0,
+            username: localStorage.getItem("username")
         };
     }
 
@@ -181,14 +182,13 @@ export default class BulletUI extends React.Component {
         //When the user runs out of lives, the game over pop-up will display or
         //the leaderboard message will display.
         else if (this.state.lives === -1) {
+            this.sendScoreToUsers();
+
             this.setState({
                 showGameOver: this.state.confirmGameOver,
                 showGameOverLeaderboard: this.state.confirmGameOverLeaderboard,
                 lives: 3,
-                foundUser: false,
             });
-
-            this.sendScoreToUsers();
 
             if (this.state.showGameOverLeaderboard === true) {
                 this.sendScoreToDatabase();
@@ -683,7 +683,7 @@ export default class BulletUI extends React.Component {
 
         const mateRef = ref(db, "/leaderboards/bullet/" + this.state.scoreCounter);
         set(mateRef, {
-            name: localStorage.getItem("username"),
+            name: this.state.username,
             score: this.state.score,
             time: overallTime,
         });
@@ -726,7 +726,7 @@ export default class BulletUI extends React.Component {
             });
 
             for (let i = 0; i < users.length; i++) {
-                if (localStorage.getItem("username") === users[i].username) {
+                if (this.state.username === users[i].username) {
                     this.setState({
                         foundUser: true,
                         foundUserIndex: i,
@@ -735,34 +735,32 @@ export default class BulletUI extends React.Component {
             }
         });
 
-        if (this.state.foundUser === true) {
-            const usersRef = ref(
-                db,
-                "/users/" + this.state.foundUserIndex + "/recentScores"
-            );
-            onValue(usersRef, (snapshot) => {
-                let scoreCount = snapshot.size;
-                this.setState({ scoreCount: scoreCount });
-            });
-            const totalSeconds = this.state.overallTime;
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
+        const userRef = ref(
+            db,
+            "/users/" + this.state.foundUserIndex + "/recentScores"
+        );
+        onValue(userRef, (snapshot) => {
+            let scoreCount = snapshot.size;
+            this.setState({ scoreCount: scoreCount });
+        });
+        const totalSeconds = this.state.overallTime;
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
 
-            const overallTime = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+        const overallTime = `${minutes}:${seconds.toString().padStart(2, "0")}`;
 
-            const scoreRef = ref(
-                db,
-                "/users/" +
-                this.state.foundUserIndex +
-                "/recentScores/" +
-                this.state.scoreCount
-            );
-            update(scoreRef, {
-                score: this.state.score,
-                time: overallTime,
-                date: todayDate,
-            });
-        }
+        const scoreRef = ref(
+            db,
+            "/users/" +
+            this.state.foundUserIndex +
+            "/recentScores/" +
+            this.state.scoreCount
+        );
+        update(scoreRef, {
+            score: this.state.score,
+            time: overallTime,
+            date: todayDate,
+        });
     };
 
     //render() returns a JSX element that allows us to write HTML in React.
